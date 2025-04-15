@@ -3,7 +3,11 @@ import {
   errorAlert,
   successAlert,
 } from "../../components/common/alerts/alerts";
-import { bucketName, supabaseClient } from "../config/config";
+import {
+  bucketName,
+  documentationCudBillingFolder,
+  supabaseClient,
+} from "../config/config";
 
 export const createCudBillingRecord = async (newCudBillingRecord) => {
   try {
@@ -48,6 +52,27 @@ export const getCudBillingRecords = async () => {
     return {
       status: 404,
       message: "Error al obtener registros",
+      error: error.message,
+    };
+  }
+};
+
+export const getCudBillingRecord = async (cudBillingRecordId) => {
+  try {
+    const { data, error } = await supabaseClient
+      .from("facturacioncud")
+      .select("*")
+      .eq("id", cudBillingRecordId);
+    if (error) throw error;
+    return {
+      status: 201,
+      message: "Registro obtenido con éxito",
+      data,
+    };
+  } catch (error) {
+    return {
+      status: 404,
+      message: "Error al obtener registro",
       error: error.message,
     };
   }
@@ -109,41 +134,30 @@ export const deleteCudBillingRecord = async (
   if (!confirm) return;
 
   try {
-    // 1. Obtener el registro para acceder a las URLs de los documentos
-    const { data: recordData, error: fetchError } = await supabaseClient
-      .from("facturacioncud")
-      .select("imgasistenciamensual, documentofacturamensual")
-      .eq("id", cudBillingRecordId)
-      .single();
+    const response = await getCudBillingRecord(cudBillingRecordId);
+    const record = response?.data?.[0];
 
-    if (fetchError) throw fetchError;
+    if (!record) throw new Error("Registro no encontrado");
 
-    // 2. Extraer los paths de las URLs públicas
-    const urls = [
-      recordData.imgasistenciamensual,
-      recordData.documentofacturamensual,
-    ];
+    // Extrae ruta relativa a partir de un nombre de carpeta conocido
+    const extractPath = (url) => {
+      if (!url) return null;
+      const start = url.indexOf(documentationCudBillingFolder);
+      return start !== -1 ? url.substring(start) : null;
+    };
 
-    const pathsToDelete = urls
-      .filter(Boolean)
-      .map((url) => {
-        const parts = url.split("/storage/v1/object/public/");
-        return parts.length === 2 ? decodeURIComponent(parts[1]) : null;
-      })
-      .filter(Boolean);
+    const filesToDelete = [
+      extractPath(record.documentofacturamensual),
+      extractPath(record.imgasistenciamensual),
+    ].filter(Boolean); // Saca nulls o undefined
 
-    // 3. Eliminar archivos del bucket
-    if (pathsToDelete.length) {
-      const { error: deleteFilesError } = await supabaseClient.storage
-        .from(bucketName) // Asegúrate de que `bucketName` está definido
-        .remove(pathsToDelete);
-
-      if (deleteFilesError) {
-        console.warn("Error al borrar archivos:", deleteFilesError.message);
-      }
+    if (filesToDelete.length > 0) {
+      const { error: deleteError } = await supabaseClient.storage
+        .from(bucketName)
+        .remove(filesToDelete);
+      if (deleteError) throw deleteError;
     }
 
-    // 4. Eliminar el registro de la tabla
     const { data, error } = await supabaseClient
       .from("facturacioncud")
       .delete()
@@ -160,6 +174,7 @@ export const deleteCudBillingRecord = async (
       data,
     };
   } catch (error) {
+    console.error("Error en deleteCudBillingRecord:", error);
     errorAlert("Error al eliminar registro");
     return {
       status: 400,

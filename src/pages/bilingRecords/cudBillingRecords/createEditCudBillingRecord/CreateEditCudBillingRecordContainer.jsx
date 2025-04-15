@@ -142,7 +142,7 @@ export const CreateEditCudBillingRecordContainer = () => {
       // Subir factura mensual
       const facturaMensualUrl = await uploadDocument2(
         formData.documentofacturamensual,
-        professionalDocumentationFolder,
+        documentationCudBillingFolder,
         "documentofacturamensual",
         "facturaMensual"
       );
@@ -152,7 +152,7 @@ export const CreateEditCudBillingRecordContainer = () => {
       // Subir asistencia mensual
       const asistenciaMensualUrl = await uploadDocument2(
         formData.imgasistenciamensual,
-        professionalDocumentationFolder,
+        documentationCudBillingFolder,
         "imgasistenciamensual",
         "asistenciaMensual"
       );
