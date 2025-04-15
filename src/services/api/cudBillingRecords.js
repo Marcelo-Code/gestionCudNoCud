@@ -109,7 +109,7 @@ export const deleteCudBillingRecord = async (
   if (!confirm) return;
 
   try {
-    // 1. Obtener el registro para acceder a las URLs
+    // 1. Obtener el registro para acceder a las URLs de los documentos
     const { data: recordData, error: fetchError } = await supabaseClient
       .from("facturacioncud")
       .select("imgasistenciamensual, documentofacturamensual")
@@ -128,18 +128,19 @@ export const deleteCudBillingRecord = async (
       .filter(Boolean)
       .map((url) => {
         const parts = url.split("/storage/v1/object/public/");
-        return parts.length === 2 ? parts[1] : null;
+        return parts.length === 2 ? decodeURIComponent(parts[1]) : null;
       })
       .filter(Boolean);
 
     // 3. Eliminar archivos del bucket
     if (pathsToDelete.length) {
       const { error: deleteFilesError } = await supabaseClient.storage
-        .from(bucketName) // Asegurate de que `bucketName` está definido globalmente o pasalo como parámetro
+        .from(bucketName) // Asegúrate de que `bucketName` está definido
         .remove(pathsToDelete);
 
-      if (deleteFilesError)
+      if (deleteFilesError) {
         console.warn("Error al borrar archivos:", deleteFilesError.message);
+      }
     }
 
     // 4. Eliminar el registro de la tabla
