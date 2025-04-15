@@ -18,24 +18,23 @@ import {
 import { Link } from "react-router-dom";
 import { TrafficLightStatus } from "../../../../components/common/trafficLightStatus/TrafficLight";
 
-export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
+export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
   const {
-    cudBillingRecords,
-    setEditMode,
+    noCudBillingRecords,
     editMode,
-    handleDeleteCudBillingRecord,
-    totalMontoFacturado,
-    totalMontoPercibido,
+    setEditMode,
+    handleDeleteNoCudBillingRecord,
+    totalMontoSesion,
     totalProfesional,
     totalRetencion,
   } = cudBillingRecordsListProps;
 
   const generalBarContainerProps = {
-    buttonText: "Factura CUD",
+    buttonText: "Factura No CUD",
     buttonIcon: <Icons.AddIcon />,
     enableReportBar: false,
     setEditMode,
-    to: "/billingRecords/createCudBillingRecord",
+    to: "/billingRecords/createNoCudBillingRecord",
   };
 
   const iconStyle = { color: "blue", fontSize: "1.2em", margin: "5px" };
@@ -61,7 +60,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     <Box className="generalContainer">
       <GeneralBarContainer {...generalBarContainerProps} />
       <Box className="generalSubTitle">
-        {`${cudBillingRecords.length} registros obtenidos`}
+        {`${noCudBillingRecords.length} registros obtenidos`}
       </Box>
 
       <Card sx={{ width: "100vw" }}>
@@ -87,25 +86,20 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                   )}
                   {[
                     "Profesional",
-                    "Paciente",
                     "Prestación",
-                    "Período Facturado",
-                    "Fecha Presentación O.S.",
-                    "Estado Facturación",
-                    "Factura Mensual",
-                    "Asistencia Mensual",
-                    "Monto Facturado",
-                    "Nro. Factura",
-                    "Obra Social",
-
-                    // "Informe Mensual",
-
-                    "Fecha Aviso Recepción O.S.",
-                    "Reclamos",
-                    "Fecha de Cobro",
-                    "Monto Percibido",
+                    "Paciente",
+                    "Modo Pago",
+                    "Medio de Pago",
+                    "Destinatario",
+                    "Monto Sesión",
                     "35% Retención",
                     "Monto Final Profesional",
+                    "Fecha de Pago",
+                    "Destinatario",
+                    "Paciente Adeuda",
+                    "Fecha Deuda",
+                    "Pago Monto Adeudado",
+                    "Fecha Pago",
                   ].map((label, index) => (
                     <th
                       key={index}
@@ -122,7 +116,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                 </tr>
               </thead>
               <tbody>
-                {cudBillingRecords.map((record) => (
+                {noCudBillingRecords.map((record) => (
                   <tr
                     key={record.id}
                     style={{
@@ -150,122 +144,67 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                         <div style={{ display: "flex", gap: "8px" }}>
                           <Tooltip title="Eliminar" placement="top-end" arrow>
                             <IconButton
-                              onClick={() =>
-                                handleDeleteCudBillingRecord(record.id)
-                              }
+                            // onClick={() =>
+                            //   handleDeleteCudBillingRecord(record.id)
+                            // }
                             >
                               <Icons.DeleteIcon sx={iconStyle} />
                             </IconButton>
                           </Tooltip>
                           <Tooltip title="Editar" placement="top-end" arrow>
-                            <Link
+                            {/* <Link
                               to={`/billingRecords/cudBillingRecords/edit/${record.id}`}
-                            >
+                              > */}
+                            <IconButton>
                               <Icons.EditIcon sx={iconStyle} />
-                            </Link>
+                            </IconButton>
+                            {/* </Link> */}
                           </Tooltip>
                         </div>
                       </td>
                     )}
                     <td style={colStyle}>
-                      <span style={inLineStyle}>
-                        <TrafficLightStatus status={record.estadofacturacion} />
-                        {record.profesionales.nombreyapellidoprofesional}
-                      </span>
+                      {record.profesionales.nombreyapellidoprofesional}
                     </td>
                     <td style={colStyle}>
-                      <span style={inLineStyle}>
-                        <TrafficLightStatus status={record.estadofacturacion} />
-                        {record.pacientes.nombreyapellidopaciente}
-                      </span>
+                      {record.profesionales.especialidadprofesional}
                     </td>
                     <td style={colStyle}>
-                      <span style={inLineStyle}>
-                        <TrafficLightStatus status={record.estadofacturacion} />
-                        {record.profesionales.especialidadprofesional}
-                      </span>
+                      {record.pacientes.nombreyapellidopaciente}
                     </td>
-                    <td style={colStyle}>
-                      <span style={inLineStyle}>
-                        <TrafficLightStatus status={record.estadofacturacion} />
-                        {record.periodofacturado
-                          ? monthFormat(record.periodofacturado)
-                          : "Sin fecha"}
-                      </span>
+                    <td style={{ padding: "16px" }}>{record.modopago}</td>
+                    <td style={{ padding: "16px" }}>{record.mediopago}</td>
+                    <td style={{ padding: "16px" }}>{record.destinatario}</td>
+                    <td style={{ padding: "16px" }}>
+                      {currencyFormat(record.montosesion)}
                     </td>
                     <td style={{ padding: "16px" }}>
-                      <span style={inLineStyle}>
-                        <TrafficLightStatus status={record.estadofacturacion} />
-                        {record.fechapresentacionos
-                          ? dateFormat(record.fechapresentacionos)
-                          : "Sin fecha"}
-                      </span>
-                    </td>
-                    <td style={{ padding: "16px" }}>
-                      <span style={inLineStyle}>
-                        <TrafficLightStatus status={record.estadofacturacion} />
-                        {record.estadofacturacion}
-                      </span>
-                    </td>
-                    <td style={colStyle}>
-                      {record.documentofacturamensual ? (
-                        <Link
-                          to={record.documentofacturamensual}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Documento Fact. Mensual
-                        </Link>
-                      ) : (
-                        "Sin Documento"
-                      )}
-                    </td>
-                    <td style={colStyle}>
-                      {record.imgasistenciamensual ? (
-                        <Link
-                          to={record.imgasistenciamensual}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Documento Asist. Mensual
-                        </Link>
-                      ) : (
-                        "Sin Documento"
-                      )}
-                    </td>
-
-                    <td>{currencyFormat(record.montofacturado)}</td>
-                    <td style={{ padding: "16px" }}>{record.nrofactura}</td>
-                    <td style={colStyle}>
-                      {record.pacientes.obrasocialpaciente}
-                    </td>
-                    <td style={{ padding: "16px" }}>
-                      {record.fecharecepcionos
-                        ? dateFormat(record.fecharecepcionos)
-                        : "Sin fecha"}
-                    </td>
-                    <td style={{ padding: "16px" }}>
-                      <Button
-                        size="small"
-                        startIcon={<Icons.ErrorIcon />}
-                        variant="contained"
-                      >
-                        Reclamos
-                      </Button>
-                    </td>
-                    <td style={{ padding: "16px" }}>
-                      {record.fechacobro
-                        ? dateFormat(record.fechacobro)
-                        : "Sin fecha"}
-                    </td>
-                    <td style={{ padding: "16px" }}>
-                      {currencyFormat(record.montopercibido)}
-                    </td>
-                    <td style={{ padding: "16px" }}>
-                      {currencyFormat(record.montopercibido * 0.35)}
+                      {currencyFormat(record.retencion)}
                     </td>
                     <td style={{ padding: "16px" }}>
                       {currencyFormat(record.montofinalprofesional)}
+                    </td>
+                    <td style={{ padding: "16px" }}>
+                      {record.fechadepago
+                        ? dateFormat(record.fechadepago)
+                        : "Sin fecha"}
+                    </td>
+                    <td style={{ padding: "16px" }}>{record.destinatario}</td>
+                    <td style={{ padding: "16px" }}>
+                      {record.pacienteadeuda ? "Si" : "No"}
+                    </td>
+                    <td style={{ padding: "16px" }}>
+                      {record.fechadeuda
+                        ? dateFormat(record.fechadeuda)
+                        : "Sin fecha"}
+                    </td>
+                    <td style={{ padding: "16px" }}>
+                      {record.pagomontoadeudado}
+                    </td>
+                    <td style={{ padding: "16px" }}>
+                      {record.fechadeuda
+                        ? dateFormat(record.fechapagomontoadeudado)
+                        : "Sin fecha"}
                     </td>
                   </tr>
                 ))}
@@ -281,7 +220,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                   }}
                 >
                   <td
-                    colSpan={editMode ? 9 : 8}
+                    colSpan={editMode ? 7 : 6}
                     style={{
                       padding: "16px",
                       fontWeight: "bold",
@@ -290,26 +229,14 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                   >
                     Totales:
                   </td>
-                  <td>{currencyFormat(totalMontoFacturado)}</td>
-                  <td
-                    colSpan={5}
-                    style={{
-                      padding: "16px",
-                      fontWeight: "bold",
-                      textAlign: "right",
-                    }}
-                  >
-                    Totales:{" "}
-                  </td>
-                  <td style={{ padding: "16px" }}>
-                    {currencyFormat(totalMontoPercibido)}
-                  </td>
+                  <td>{currencyFormat(totalMontoSesion)}</td>
                   <td style={{ padding: "16px" }}>
                     {currencyFormat(totalRetencion)}
                   </td>
                   <td style={{ padding: "16px" }}>
                     {currencyFormat(totalProfesional)}
                   </td>
+                  <td colSpan={6}></td>
                 </tr>
               </tfoot>
             </table>

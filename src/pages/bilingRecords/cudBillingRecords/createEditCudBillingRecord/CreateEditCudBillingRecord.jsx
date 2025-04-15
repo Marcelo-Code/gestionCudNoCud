@@ -7,7 +7,7 @@ import { FormButtonGroupContainer } from "../../../../components/common/formButt
 import { Icons } from "../../../../assets/Icons";
 import { billingOptions } from "../../../../data/DocumentData";
 import { TrafficLightStatus } from "../../../../components/common/trafficLightStatus/TrafficLight";
-import { extractPath } from "../../../../utils/helpers";
+import { extractPath, formatToInputMonth } from "../../../../utils/helpers";
 import { documentationCudBillingFolder } from "../../../../services/config/config";
 
 export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
@@ -123,11 +123,11 @@ export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
                 onChange={handleChange}
                 required
                 variant="outlined"
-                type="date"
+                type="month"
                 InputLabelProps={{
                   shrink: true,
                 }}
-                value={formData.periodofacturado}
+                value={formatToInputMonth(formData.periodofacturado)}
               />
             </Box>
             <Box className="createEditPatientElement">

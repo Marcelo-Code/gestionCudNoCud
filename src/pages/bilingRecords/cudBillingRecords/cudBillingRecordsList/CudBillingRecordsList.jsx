@@ -13,6 +13,7 @@ import { Icons } from "../../../../assets/Icons";
 import {
   currencyFormat,
   dateFormat,
+  getExtension,
   monthFormat,
 } from "../../../../utils/helpers";
 import { Link } from "react-router-dom";
@@ -55,6 +56,14 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     whiteSpace: "normal",
     maxWidth: "300px",
     minWidth: "200px",
+  };
+
+  // const iconStyle = { color: "blue", fontSize: "1.5em", margin: "10px" };
+
+  const iconDocumentStyle = {
+    margin: "10px",
+    fontSize: "2em",
+    verticalAlign: "middle",
   };
 
   return (
@@ -211,26 +220,58 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                     </td>
                     <td style={colStyle}>
                       {record.documentofacturamensual ? (
-                        <Link
-                          to={record.documentofacturamensual}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Documento Fact. Mensual
-                        </Link>
+                        <>
+                          <Link
+                            to={record.documentofacturamensual}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Documento Fact. Mensual
+                          </Link>
+                          {["jpg", "png", "jpeg"].includes(
+                            getExtension(record.documentofacturamensual)
+                          ) && <Icons.ImageIcon sx={iconDocumentStyle} />}
+                          {["doc", "docx"].includes(
+                            getExtension(record.documentofacturamensual)
+                          ) && <Icons.ArticleIcon sx={iconDocumentStyle} />}
+                          {["pdf"].includes(
+                            getExtension(record.documentofacturamensual)
+                          ) && (
+                            <Icons.PictureAsPdfIcon sx={iconDocumentStyle} />
+                          )}
+                          {getExtension(
+                            record.documentofacturamensual
+                          ).toUpperCase()}
+                        </>
                       ) : (
                         "Sin Documento"
                       )}
                     </td>
                     <td style={colStyle}>
                       {record.imgasistenciamensual ? (
-                        <Link
-                          to={record.imgasistenciamensual}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Documento Asist. Mensual
-                        </Link>
+                        <>
+                          <Link
+                            to={record.imgasistenciamensual}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Documento Asist. Mensual
+                          </Link>
+                          {["jpg", "png", "jpeg"].includes(
+                            getExtension(record.imgasistenciamensual)
+                          ) && <Icons.ImageIcon sx={iconDocumentStyle} />}
+                          {["doc", "docx"].includes(
+                            getExtension(record.imgasistenciamensual)
+                          ) && <Icons.ArticleIcon sx={iconDocumentStyle} />}
+                          {["pdf"].includes(
+                            getExtension(record.imgasistenciamensual)
+                          ) && (
+                            <Icons.PictureAsPdfIcon sx={iconDocumentStyle} />
+                          )}
+                          {getExtension(
+                            record.imgasistenciamensual
+                          ).toUpperCase()}
+                        </>
                       ) : (
                         "Sin Documento"
                       )}

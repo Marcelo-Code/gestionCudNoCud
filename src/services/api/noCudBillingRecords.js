@@ -2,7 +2,11 @@ import { supabaseClient } from "../config/config";
 
 export const getNoCudBillingRecords = async () => {
   try {
-    const { data } = await supabaseClient.from("facturacionnocud").select("*");
+    const { data } = await supabaseClient
+      .from("facturacionnocud")
+      .select(
+        "*, pacientes: idpaciente(nombreyapellidopaciente, obrasocialpaciente), profesionales: idprofesional(nombreyapellidoprofesional, matriculaprofesional, cuitprofesional, especialidadprofesional)"
+      );
 
     return {
       status: 201,

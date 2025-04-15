@@ -154,6 +154,12 @@ export const CreateEditCudBillingRecordContainer = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    let updatedFormData = { ...formData };
+
+    // Eliminar campos que no van a la base de datos
+    delete updatedFormData.pacientes;
+    delete updatedFormData.profesionales;
+
     if (existingCudBillingNumber) {
       errorAlert(
         "El número de factura ya existe. Por favor, ingresá uno diferente."
@@ -169,11 +175,10 @@ export const CreateEditCudBillingRecordContainer = () => {
     setIsLoadingButton(true);
 
     let halfDocumentName = "";
-    halfDocumentName = `facturaMensual_${formData.nrofactura}`;
 
     try {
       if (cudBillingRecordId) {
-        // Eliminar documentos anteriores
+        // Si hay edición y se modifican los archivos a cargar se borran los archivos anteriores
         if (
           formFiles.documentofacturamensual !== formData.documentofacturamensual
         )
@@ -182,7 +187,8 @@ export const CreateEditCudBillingRecordContainer = () => {
           deleteCudBillingDocument(formFiles.imgasistenciamensual);
       }
 
-      // Subir factura mensual
+      // Si se modifican los archivos a cargar se borran los archivos anteriores
+      halfDocumentName = `facturaMensual_${formData.nrofactura}`;
       if (
         formFiles.documentofacturamensual !== formData.documentofacturamensual
       ) {
@@ -194,16 +200,16 @@ export const CreateEditCudBillingRecordContainer = () => {
         );
 
         console.log(facturaMensualUrl);
-        setFormData({
-          ...formData,
+        updatedFormData = {
+          ...updatedFormData,
           documentofacturamensual: facturaMensualUrl,
-        });
+        };
       }
 
       halfDocumentName = `asistenciaMensual_${formData.nrofactura}`;
 
+      // Si se modifican los archivos a cargar se borran los archivos anteriores
       if (formFiles.imgasistenciamensual !== formData.imgasistenciamensual) {
-        // Subir asistencia mensual
         const asistenciaMensualUrl = await uploadCudBillingDocument(
           formData.imgasistenciamensual,
           documentationCudBillingFolder,
@@ -212,23 +218,28 @@ export const CreateEditCudBillingRecordContainer = () => {
         );
 
         console.log(asistenciaMensualUrl);
-        setFormData({
-          ...formData,
-          documentofacturamensual: asistenciaMensualUrl,
-        });
+        updatedFormData = {
+          ...updatedFormData,
+          imgasistenciamensual: asistenciaMensualUrl,
+        };
+      }
 
-        // Solo crear registro si no existe
-        if (!cudBillingRecordId) {
-          const createResponse = await createCudBillingRecord(formData);
-          console.log(createResponse);
-          handleGoBack();
-        } else {
-          const updateResponse = await updateCudBillingRecord(formData);
-          console.log(updateResponse);
-          handleGoBack();
-        }
+      //Estandarizo el formato de la fecha mensual
+      updatedFormData = {
+        ...updatedFormData,
+        periodofacturado: `${formData.periodofacturado}-01`,
+      };
+
+      // Si no hay edición se llama a la función create
+      if (!cudBillingRecordId) {
+        const createResponse = await createCudBillingRecord(updatedFormData);
+        console.log(createResponse);
+        handleGoBack();
       } else {
-        console.error("Error al cargar uno o ambos documentos.");
+        // Si no hay edición se llama a la función de update
+        const updateResponse = await updateCudBillingRecord(updatedFormData);
+        console.log(updateResponse);
+        handleGoBack();
       }
     } catch (error) {
       console.error("Error al subir los documentos:", error);

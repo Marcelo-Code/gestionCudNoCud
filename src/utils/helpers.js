@@ -47,3 +47,10 @@ export const extractPath = (url, folder) => {
   const start = url.indexOf(folder);
   return start !== -1 ? url.substring(start) : null;
 };
+
+//Función para formatear fechas YYYY-MM
+export const formatToInputMonth = (value) => {
+  if (!value) return "";
+  const [year, month, day] = value.split("-");
+  return `${year}-${month}`; // "01-04-2025" → "2025-04"
+};

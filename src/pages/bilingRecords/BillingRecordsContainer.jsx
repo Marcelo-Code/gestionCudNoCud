@@ -8,7 +8,6 @@ import {
   getNoCudBillingRecordsByProfessional,
 } from "../../services/api/noCudBillingRecords";
 import { LoadingContainer } from "../loading/LoadingContainer";
-import { BillingRecords } from "./BillingRecords";
 import { CudBillingRecordsListContainer } from "./cudBillingRecords/cudBillingRecordsList/CudBillingRecordsListContainer";
 import {
   deleteCudBillingRecord,
@@ -16,6 +15,8 @@ import {
   getCudBillingRecordsByPatient,
   getCudBillingRecordsByProfessional,
 } from "../../services/api/cudBillingRecords";
+import { NoCudBillingRecordsListContainer } from "./cudBillingRecords/noCudBillingRecordsList/NoCudBillingRecordsListContainer";
+import { BillingRecords } from "./BillingRecords";
 
 export const BillingRecordsContainer = () => {
   //hook para el edit mode
@@ -41,7 +42,7 @@ export const BillingRecordsContainer = () => {
     console.log(deleteResponse);
   };
 
-  const handleDeleteNoCudBillingRecord = async (noCudBillingRecordId) => {};
+  const handleDeleteNoCudBillingRecord = async () => {};
 
   useEffect(() => {
     const fetchData = async () => {
@@ -90,7 +91,7 @@ export const BillingRecordsContainer = () => {
 
   if (isLoading) return <LoadingContainer />;
 
-  const CudBillingRecordsListContainerProps = {
+  const cudBillingRecordsListContainerProps = {
     cudBillingRecords,
     editMode,
     setEditMode,
@@ -110,11 +111,18 @@ export const BillingRecordsContainer = () => {
       label: "Cud",
       content: (
         <CudBillingRecordsListContainer
-          {...CudBillingRecordsListContainerProps}
+          {...cudBillingRecordsListContainerProps}
         />
       ),
     },
-    { label: "No Cud", content: "sadsd" },
+    {
+      label: "No Cud",
+      content: (
+        <NoCudBillingRecordsListContainer
+          {...noCudBillingRecordsListContainerProps}
+        />
+      ),
+    },
   ];
 
   const billingRecordsProps = {
@@ -123,6 +131,8 @@ export const BillingRecordsContainer = () => {
     patient,
     tabs,
   };
+
+  console.log(noCudBillingRecords);
 
   return <BillingRecords {...billingRecordsProps} />;
 };
