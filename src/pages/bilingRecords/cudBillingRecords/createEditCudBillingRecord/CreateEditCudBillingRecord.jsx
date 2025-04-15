@@ -7,6 +7,8 @@ import { FormButtonGroupContainer } from "../../../../components/common/formButt
 import { Icons } from "../../../../assets/Icons";
 import { billingOptions } from "../../../../data/DocumentData";
 import { TrafficLightStatus } from "../../../../components/common/trafficLightStatus/TrafficLight";
+import { extractPath } from "../../../../utils/helpers";
+import { documentationCudBillingFolder } from "../../../../services/config/config";
 
 export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
   const elementStyle = {
@@ -28,6 +30,7 @@ export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
     facturaMensualFileInputRef,
     asistenciaMensualFileInputRef,
     handleRemoveFile,
+    existingCudBillingNumber,
   } = createEditCudBillingProps;
 
   const formButtonGroupProps = {
@@ -76,7 +79,8 @@ export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
                 name="prestacion"
                 onChange={handleChange}
                 required
-                value={formData.prestacion}
+                value={formData.prestacion || "Selecc. profesional"}
+                disabled={true}
               />
             </Box>
             <Box className="createEditPatientElement">
@@ -137,6 +141,10 @@ export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
                 onChange={handleChange}
                 required
                 value={formData.nrofactura}
+                error={existingCudBillingNumber}
+                helperText={
+                  existingCudBillingNumber && "El número de factura ya existe"
+                }
               />
             </Box>
             <Box className="createEditPatientElement">
@@ -206,9 +214,14 @@ export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
                 variant="outlined"
                 required
                 value={
-                  formData.documentofacturamensual?.name || "No seleccionado"
+                  !formData.documentofacturamensual
+                    ? "No seleccionado"
+                    : typeof formData.documentofacturamensual === "object"
+                    ? formData.documentofacturamensual.name
+                    : "Doc. factura mensual"
                 }
                 disabled={true}
+                InputLabelProps={{ shrink: true }} // 👈 Esto mantiene el label flotante
                 sx={{
                   "& .MuiOutlinedInput-root.Mui-disabled": {
                     color: "black", // texto
@@ -256,10 +269,16 @@ export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
               <TextField
                 style={elementStyle}
                 id="outlined-basic"
-                label="Doc. Asistencia mensual"
+                label="Doc. asistencia mensual"
                 variant="outlined"
                 required
-                value={formData.imgasistenciamensual?.name || "No seleccionado"}
+                value={
+                  !formData.imgasistenciamensual
+                    ? "No seleccionado"
+                    : typeof formData.imgasistenciamensual === "object"
+                    ? formData.imgasistenciamensual.name
+                    : "Doc. asistencia mensual"
+                }
                 disabled={true}
                 sx={{
                   "& .MuiOutlinedInput-root.Mui-disabled": {

@@ -146,7 +146,7 @@ export const downloadDocument = async (documentName, formData) => {
   }
 };
 
-export const uploadDocument2 = async (
+export const uploadCudBillingDocument = async (
   file,
   folder,
   documentName,
@@ -183,7 +183,7 @@ export const uploadDocument2 = async (
 
     const decodedUrl = decodeURIComponent(publicData.publicUrl);
 
-    // ✅ Se devuelve directamente la URL para manejarla desde afuera
+    //Se devuelve directamente la URL para manejarla desde afuera
     return decodedUrl;
   } catch (error) {
     console.error("Error al cargar archivo:", error);

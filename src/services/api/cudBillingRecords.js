@@ -3,6 +3,7 @@ import {
   errorAlert,
   successAlert,
 } from "../../components/common/alerts/alerts";
+import { extractPath } from "../../utils/helpers";
 import {
   bucketName,
   documentationCudBillingFolder,
@@ -124,6 +125,7 @@ export const getCudBillingRecordsByPatient = async (patientId) => {
   }
 };
 
+//Borrar registro de facturación
 export const deleteCudBillingRecord = async (
   cudBillingRecordId,
   setUpdateList
@@ -140,15 +142,12 @@ export const deleteCudBillingRecord = async (
     if (!record) throw new Error("Registro no encontrado");
 
     // Extrae ruta relativa a partir de un nombre de carpeta conocido
-    const extractPath = (url) => {
-      if (!url) return null;
-      const start = url.indexOf(documentationCudBillingFolder);
-      return start !== -1 ? url.substring(start) : null;
-    };
-
     const filesToDelete = [
-      extractPath(record.documentofacturamensual),
-      extractPath(record.imgasistenciamensual),
+      extractPath(
+        record.documentofacturamensual,
+        documentationCudBillingFolder
+      ),
+      extractPath(record.imgasistenciamensual, documentationCudBillingFolder),
     ].filter(Boolean); // Saca nulls o undefined
 
     if (filesToDelete.length > 0) {
@@ -179,6 +178,36 @@ export const deleteCudBillingRecord = async (
     return {
       status: 400,
       message: "Error al eliminar registro",
+      error: error.message,
+    };
+  }
+};
+
+export const updateCudBillingRecord = async (updatedCudBillingRecord) => {
+  const { id, ...fieldsToUpdate } = updatedCudBillingRecord;
+
+  try {
+    const { data, error } = await supabaseClient
+      .from("facturacioncud")
+      .update(fieldsToUpdate)
+      .eq("id", id);
+
+    if (error) {
+      throw error;
+    }
+
+    successAlert("Facturación actualizada con éxito");
+
+    return {
+      status: 200,
+      message: "Registro actualizado con éxito",
+      data,
+    };
+  } catch (error) {
+    errorAlert("Error al actualizar facturación");
+    return {
+      status: 400,
+      message: "Error al actualizar el registro",
       error: error.message,
     };
   }

@@ -161,9 +161,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                             <Link
                               to={`/billingRecords/cudBillingRecords/edit/${record.id}`}
                             >
-                              <IconButton>
-                                <Icons.EditIcon sx={iconStyle} />
-                              </IconButton>
+                              <Icons.EditIcon sx={iconStyle} />
                             </Link>
                           </Tooltip>
                         </div>

@@ -41,6 +41,8 @@ export const BillingRecordsContainer = () => {
     console.log(deleteResponse);
   };
 
+  const handleDeleteNoCudBillingRecord = async (noCudBillingRecordId) => {};
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -93,6 +95,13 @@ export const BillingRecordsContainer = () => {
     editMode,
     setEditMode,
     handleDeleteCudBillingRecord,
+  };
+
+  const noCudBillingRecordsListContainerProps = {
+    noCudBillingRecords,
+    editMode,
+    setEditMode,
+    handleDeleteNoCudBillingRecord,
   };
 
   //Lista de pestañas para el tab

@@ -5,25 +5,16 @@ import { getProfessionals } from "../../../../services/api/professionals";
 import {
   createCudBillingRecord,
   getCudBillingRecords,
+  updateCudBillingRecord,
 } from "../../../../services/api/cudBillingRecords";
 import { LoadingContainer } from "../../../loading/LoadingContainer";
 import { GeneralContext } from "../../../../context/GeneralContext";
 import { CreateEditCudBillingRecord } from "./CreateEditCudBillingRecord";
-import {
-  allowedFileTypes,
-  cudDocumentData,
-} from "../../../../data/DocumentData";
+import { allowedFileTypes } from "../../../../data/DocumentData";
 import { cudBillingRecordInitialState } from "../../../../data/models";
-import { createMedicalRecord } from "../../../../services/api/medicalRecords";
 import { errorAlert } from "../../../../components/common/alerts/alerts";
-import {
-  uploadDocument,
-  uploadDocument2,
-} from "../../../../services/api/documentation";
-import {
-  documentationCudBillingFolder,
-  professionalDocumentationFolder,
-} from "../../../../services/config/config";
+import { uploadCudBillingDocument } from "../../../../services/api/documentation";
+import { documentationCudBillingFolder } from "../../../../services/config/config";
 
 export const CreateEditCudBillingRecordContainer = () => {
   const { handleGoBack } = useContext(GeneralContext);
@@ -31,11 +22,18 @@ export const CreateEditCudBillingRecordContainer = () => {
   //Valores iniciales para el formulario
   const initialState = cudBillingRecordInitialState;
 
-  //hooks para guardar los pacientes
+  //hook para guardar los pacientes
   const [patients, setPatients] = useState([]);
 
-  //hooks para guardar los profesionales
+  //hook para guardar los profesionales
   const [professionals, setProfessionals] = useState([]);
+
+  //hook para guardar las facturas
+  const [cudBillingRecords, setCudBillingRecords] = useState([]);
+
+  //hook para avisar si el número de factura que se está cargando existe
+  const [existingCudBillingNumber, setExistingCudBillingNumber] =
+    useState(false);
 
   //hooks para el loading
   const [isLoading, setIsLoading] = useState(false);
@@ -91,6 +89,16 @@ export const CreateEditCudBillingRecordContainer = () => {
       }
     }
 
+    // Selección automática de la obra especialidad si se cambia el idprofesional
+    if (name === "idprofesional") {
+      const profesional = professionals.find(
+        (profesional) => profesional.id === parseInt(value)
+      );
+      if (profesional) {
+        updatedFormData.prestacion = profesional.especialidadprofesional;
+      }
+    }
+
     // Cálculo de retención y monto final si se cambia el monto percibido
     if (name === "montopercibido") {
       const witholdingTaxValue = value * witholdingTax;
@@ -112,9 +120,19 @@ export const CreateEditCudBillingRecordContainer = () => {
       };
     }
 
+    if (name === "nrofactura") {
+      const exist = cudBillingRecords.some(
+        (cudBillingRecord) => cudBillingRecord.nrofactura === value
+      );
+      if (exist) {
+        setExistingCudBillingNumber(true);
+      } else {
+        setExistingCudBillingNumber(false);
+      }
+    }
+
     setFormData(updatedFormData);
     console.log(updatedFormData);
-
     if (!modifiedFlag) setModifiedFlag(true);
   };
 
@@ -122,7 +140,7 @@ export const CreateEditCudBillingRecordContainer = () => {
   const handleRemoveFile = (fieldName) => {
     const updatedFormData = {
       ...formData,
-      [fieldName]: null,
+      [fieldName]: "",
     };
     setFormData(updatedFormData);
   };
@@ -131,6 +149,13 @@ export const CreateEditCudBillingRecordContainer = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (existingCudBillingNumber) {
+      errorAlert(
+        "El número de factura ya existe. Por favor, ingresá uno diferente."
+      );
+      return;
+    }
+
     if (!formData.documentofacturamensual || !formData.imgasistenciamensual) {
       console.error("Faltan archivos por seleccionar.");
       return;
@@ -138,23 +163,29 @@ export const CreateEditCudBillingRecordContainer = () => {
 
     setIsLoadingButton(true);
 
+    let halfDocumentName = "";
+
+    halfDocumentName = `facturaMensual_${formData.nrofactura}`;
+
     try {
       // Subir factura mensual
-      const facturaMensualUrl = await uploadDocument2(
+      const facturaMensualUrl = await uploadCudBillingDocument(
         formData.documentofacturamensual,
         documentationCudBillingFolder,
         "documentofacturamensual",
-        "facturaMensual"
+        halfDocumentName
       );
 
       console.log(facturaMensualUrl);
 
+      halfDocumentName = `asistenciaMensual_${formData.nrofactura}`;
+
       // Subir asistencia mensual
-      const asistenciaMensualUrl = await uploadDocument2(
+      const asistenciaMensualUrl = await uploadCudBillingDocument(
         formData.imgasistenciamensual,
         documentationCudBillingFolder,
         "imgasistenciamensual",
-        "asistenciaMensual"
+        halfDocumentName
       );
 
       console.log(asistenciaMensualUrl);
@@ -174,6 +205,10 @@ export const CreateEditCudBillingRecordContainer = () => {
         if (!cudBillingRecordId) {
           const createResponse = await createCudBillingRecord(updatedFormData);
           console.log(createResponse);
+          handleGoBack();
+        } else {
+          const updateResponse = await updateCudBillingRecord(updatedFormData);
+          console.log(updateResponse);
           handleGoBack();
         }
       } else {
@@ -198,6 +233,7 @@ export const CreateEditCudBillingRecordContainer = () => {
 
         setPatients(patientsData);
         setProfessionals(professionalsData);
+        setCudBillingRecords(cudBillingData);
 
         if (cudBillingRecordId) {
           const cudBillingRecordToEdit = cudBillingData.find(
@@ -231,6 +267,7 @@ export const CreateEditCudBillingRecordContainer = () => {
     facturaMensualFileInputRef,
     asistenciaMensualFileInputRef,
     handleRemoveFile,
+    existingCudBillingNumber,
   };
   return <CreateEditCudBillingRecord {...createEditCudBillingProps} />;
 };

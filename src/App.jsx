@@ -93,15 +93,28 @@ function App() {
               path="/medicalRecords/edit/:medicalRecordId"
               element={<CreateEditMedicalRecordContainer />}
             />
-            {/* ---------- Facturación ----------*/}
+            {/* ---------- Facturación  ----------*/}
+
+            <Route
+              path="/billingRecords/list"
+              element={<BillingRecordsContainer />}
+            />
+
+            {/* ---------- Facturación  ----------*/}
 
             <Route
               path="/billingRecords/createCudBillingRecord"
               element={<CreateEditCudBillingRecordContainer />}
             />
+
             <Route
-              path="/billingRecords/list"
-              element={<BillingRecordsContainer />}
+              path="/billingRecords/createCudBillingRecord"
+              element={<CreateEditCudBillingRecordContainer />}
+            />
+
+            <Route
+              path="/billingRecords/cudBillingRecords/edit/:cudBillingRecordId"
+              element={<CreateEditCudBillingRecordContainer />}
             />
 
             {/* ---------- Facturación NO CUD ----------*/}

@@ -40,3 +40,10 @@ export const sanitizeFileName = (name) => {
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^\w.-]/g, "_");
 };
+
+//Función para exptraer la ruta relativa de un archivo a partir de un nombre de carpeta conocido
+export const extractPath = (url, folder) => {
+  if (!url) return null;
+  const start = url.indexOf(folder);
+  return start !== -1 ? url.substring(start) : null;
+};
