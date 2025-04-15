@@ -1,0 +1,18 @@
+.buttonGroup {
+  margin: 10px;
+}
+
+.createEditProfessionalItem {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 700px;
+  gap: 20px;
+}
+
+.createEditProffessionalElement {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 300px;
+}

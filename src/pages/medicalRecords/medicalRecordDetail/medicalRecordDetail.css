@@ -1,0 +1,24 @@
+.medicalRecordDetailContainer {
+  margin-top: 30px;
+  width: 80%;
+  height: auto;
+  min-height: 300px;
+}
+
+.medicalRecordDetailHeaderContainer {
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 1px solid black;
+  padding-bottom: 10px;
+  justify-content: center;
+  gap: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.medicalRecordDetailDescription {
+  margin-top: 10px;
+  height: auto;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-family: Arial;
+}

@@ -1,0 +1,58 @@
+src/
+├── assets/              # Imágenes, fuentes, estilos globales
+│   ├── images/
+│   ├── styles/
+│   ├── fonts/
+│   └── global.css
+│
+├── components/          # Componentes reutilizables (botones, tarjetas, modales)
+│   ├── Button/
+│   │   ├── Button.jsx
+│   │   ├── Button.module.css
+│   │   └── index.js
+│   ├── ProductCard/
+│   │   ├── ProductCard.jsx
+│   │   ├── ProductCard.module.css
+│   │   └── index.js
+│   ├── Modal/
+│   │   ├── Modal.jsx
+│   │   ├── Modal.module.css
+│   │   └── index.js
+│
+├── layout/              # Estructura de la página (NavBar, Footer, Layout)
+│   ├── NavBar.jsx
+│   ├── Footer.jsx
+│   ├── Layout.jsx
+│
+├── pages/               # Páginas principales (Home, Contact, etc.)
+│   ├── Home.jsx
+│   ├── Contact.jsx
+│   ├── About.jsx
+│
+├── containers/          # Componentes que manejan lógica y estado
+│   ├── CartContainer.jsx
+│   ├── ProductListContainer.jsx
+│
+├── context/             # Context API para manejar estados globales
+│   ├── ThemeContext.jsx
+│   ├── CartContext.jsx
+│
+├── hooks/               # Custom hooks
+│   ├── useAuth.js
+│   ├── useFetch.js
+│
+├── services/            # API calls y lógica de negocio
+│   ├── api.js
+│   ├── firebaseConfig.js
+│
+├── utils/               # Funciones reutilizables y helpers
+│   ├── helpers.js       # Funciones genéricas como formateo de fechas, monedas, etc.
+│   ├── validations.js   # Funciones de validación de formularios
+│   ├── mathUtils.js     # Operaciones matemáticas comunes
+│
+├── routes/              # Configuración de rutas con React Router
+│   ├── AppRouter.jsx
+│
+├── App.jsx              # Componente principal
+├── main.jsx             # Punto de entrada (Vite)
+└── index.js             # Punto de entrada (Create React App)

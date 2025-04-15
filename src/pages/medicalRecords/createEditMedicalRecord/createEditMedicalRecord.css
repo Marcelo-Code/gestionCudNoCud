@@ -1,0 +1,34 @@
+.createEditMedicalRecordContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+
+.createEditMedicalRecordMenuContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  box-shadow: 0 0 5px black;
+  padding: 15px;
+}
+
+.createEditMedicalRecordMenuItemContainer {
+  flex: 1 1 250px;
+  max-width: 250px;
+  min-width: 200px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.createEditMedicalRecordTextAreaContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}

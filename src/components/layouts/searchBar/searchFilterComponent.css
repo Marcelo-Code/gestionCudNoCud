@@ -1,0 +1,21 @@
+@font-face {
+  font-family: "horndon";
+  src: url("/fonts/horndonBeckerRegular.ttf") format("truetype");
+}
+
+.searchBarHidden {
+  transform: translateX(-100%);
+  z-index: 1;
+}
+
+.searchBarShowed {
+  transform: translateX(0%);
+  z-index: 2;
+}
+
+.barContainer {
+  display: flex;
+  /* flex-wrap: wrap; */
+  width: 100%;
+  justify-content: space-evenly;
+}

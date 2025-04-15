@@ -1,0 +1,36 @@
+@font-face {
+  font-family: "broughton";
+  src: url("/fonts/broughton.ttf");
+}
+
+@font-face {
+  font-family: "matsury";
+  src: url("/fonts/Matsury.ttf");
+}
+
+.footerContainer {
+  background-color: aqua;
+  bottom: 0px;
+  width: 100%;
+  height: auto;
+  text-align: center;
+  margin-top: 100px;
+}
+
+.footerTitle {
+  padding: 20px;
+  font-family: "broughton";
+  text-shadow: 0 0 20px black;
+  font-size: 20px;
+  text-align: center;
+}
+
+.footerNameDeveloper {
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 100%;
+  text-align: center;
+  font-family: "matsury";
+  font-size: 30px;
+  padding: 5px;
+  margin-top: 30px;
+}

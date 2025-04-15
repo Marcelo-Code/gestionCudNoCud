@@ -1,0 +1,20 @@
+.patientDocumentationItem {
+  width: 300px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+}
+.patientDocumentationItemTitle {
+  width: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  font-style: italic;
+}
+
+.patientDocumentationItemDocumentation {
+  padding: 20px;
+  height: 150px;
+  text-align: center;
+}

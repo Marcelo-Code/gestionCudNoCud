@@ -1,0 +1,40 @@
+@font-face {
+  font-family: "broughton";
+  src: url(/fonts/broughton.ttf);
+}
+
+.generalContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 80vh;
+}
+
+.generalTitle {
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  font-family: "broughton";
+  text-shadow: 0 0 20px white;
+  background-color: rgba(0, 0, 0, 0.3);
+  font-size: 1.5em;
+}
+.generalSubTitle {
+  width: 100%;
+  text-align: center;
+  padding: 5px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-shadow: 0 0 20px white;
+  background-color: rgba(0, 0, 0, 0.3);
+  font-size: 1em;
+}
+
+.listContainer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 20px;
+}

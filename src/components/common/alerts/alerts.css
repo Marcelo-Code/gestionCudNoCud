@@ -1,0 +1,15 @@
+@font-face {
+  font-family: "broughton";
+  src: url("/fonts/broughton.ttf");
+}
+
+.alertTitle,
+.alertText {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+}
+
+.alertPopup {
+  background-color: aqua;
+  color: black;
+}

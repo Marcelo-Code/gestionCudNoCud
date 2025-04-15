@@ -1,0 +1,34 @@
+@font-face {
+  font-family: "broughton";
+  src: url("/fonts/broughton.ttf");
+}
+
+.navBarContainer {
+  background-color: aqua;
+  top: 0;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  align-items: center;
+  z-index: 4;
+  padding: 20px;
+  width: 100%;
+  height: auto;
+  max-height: 170px;
+  gap: 10px;
+}
+
+.navBarLogo {
+  display: flex;
+  align-items: center;
+  width: 200px;
+}
+
+.navBarLogoTitle {
+  color: white;
+  font-family: "broughton";
+  font-size: 20px;
+  text-shadow: 0 0 20px black;
+  width: 100px;
+  text-align: center;
+}

@@ -1,0 +1,25 @@
+.billingRecordsListContainer {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 500px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.billingRecordsTable {
+  width: 100%;
+  min-width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.billingRecordsTableHeader {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background-color: white;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  text-align: center;
+}
