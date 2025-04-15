@@ -184,9 +184,10 @@ export const deleteCudBillingRecord = async (
 };
 
 export const updateCudBillingRecord = async (updatedCudBillingRecord) => {
-  const { id, ...fieldsToUpdate } = updatedCudBillingRecord;
-
   try {
+    const { id, pacientes, profesionales, ...fieldsToUpdate } =
+      updatedCudBillingRecord;
+
     const { data, error } = await supabaseClient
       .from("facturacioncud")
       .update(fieldsToUpdate)

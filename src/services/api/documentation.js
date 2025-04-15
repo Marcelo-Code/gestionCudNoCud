@@ -1,6 +1,10 @@
 import { confirmationAlert } from "../../components/common/alerts/alerts";
-import { sanitizeFileName } from "../../utils/helpers";
-import { bucketName, supabaseClient } from "../config/config";
+import { extractPath, sanitizeFileName } from "../../utils/helpers";
+import {
+  bucketName,
+  documentationCudBillingFolder,
+  supabaseClient,
+} from "../config/config";
 
 //Funcion para subir un archivo
 export const uploadDocument = async (
@@ -188,5 +192,31 @@ export const uploadCudBillingDocument = async (
   } catch (error) {
     console.error("Error al cargar archivo:", error);
     return null; // Para que pueda verificarse fácilmente si falló
+  }
+};
+
+export const deleteCudBillingDocument = async (filePath) => {
+  try {
+    const pathToDelete = extractPath(filePath, documentationCudBillingFolder);
+    const { error } = await supabaseClient.storage
+      .from(bucketName)
+      .remove([pathToDelete]);
+
+    console.log("Archivo eliminado correctamente:", pathToDelete);
+
+    if (error) {
+      throw error;
+    }
+    return {
+      status: 200,
+      message: "Archivo eliminado correctamente",
+    };
+  } catch (error) {
+    console.error("Error al eliminar archivo:", error);
+    return {
+      status: 400,
+      message: "Error al eliminar el archivo",
+      error: error.message,
+    };
   }
 };

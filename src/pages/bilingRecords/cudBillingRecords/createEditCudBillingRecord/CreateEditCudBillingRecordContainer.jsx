@@ -4,6 +4,7 @@ import { getCudPatients } from "../../../../services/api/patients";
 import { getProfessionals } from "../../../../services/api/professionals";
 import {
   createCudBillingRecord,
+  getCudBillingRecord,
   getCudBillingRecords,
   updateCudBillingRecord,
 } from "../../../../services/api/cudBillingRecords";
@@ -13,7 +14,10 @@ import { CreateEditCudBillingRecord } from "./CreateEditCudBillingRecord";
 import { allowedFileTypes } from "../../../../data/DocumentData";
 import { cudBillingRecordInitialState } from "../../../../data/models";
 import { errorAlert } from "../../../../components/common/alerts/alerts";
-import { uploadCudBillingDocument } from "../../../../services/api/documentation";
+import {
+  deleteCudBillingDocument,
+  uploadCudBillingDocument,
+} from "../../../../services/api/documentation";
 import { documentationCudBillingFolder } from "../../../../services/config/config";
 
 export const CreateEditCudBillingRecordContainer = () => {
@@ -44,6 +48,7 @@ export const CreateEditCudBillingRecordContainer = () => {
 
   //hooks para guardar los datos del formulario
   const [formData, setFormData] = useState({});
+  const [formFiles, setFormFiles] = useState({});
 
   //Valor de retención el cálculo del valor final
   const witholdingTax = 0.35;
@@ -157,57 +162,68 @@ export const CreateEditCudBillingRecordContainer = () => {
     }
 
     if (!formData.documentofacturamensual || !formData.imgasistenciamensual) {
-      console.error("Faltan archivos por seleccionar.");
+      errorAlert("Faltan archivos por seleccionar.");
       return;
     }
 
     setIsLoadingButton(true);
 
     let halfDocumentName = "";
-
     halfDocumentName = `facturaMensual_${formData.nrofactura}`;
 
     try {
-      // Subir factura mensual
-      const facturaMensualUrl = await uploadCudBillingDocument(
-        formData.documentofacturamensual,
-        documentationCudBillingFolder,
-        "documentofacturamensual",
-        halfDocumentName
-      );
+      if (cudBillingRecordId) {
+        // Eliminar documentos anteriores
+        if (
+          formFiles.documentofacturamensual !== formData.documentofacturamensual
+        )
+          deleteCudBillingDocument(formFiles.documentofacturamensual);
+        if (formFiles.imgasistenciamensual !== formData.imgasistenciamensual)
+          deleteCudBillingDocument(formFiles.imgasistenciamensual);
+      }
 
-      console.log(facturaMensualUrl);
+      // Subir factura mensual
+      if (
+        formFiles.documentofacturamensual !== formData.documentofacturamensual
+      ) {
+        const facturaMensualUrl = await uploadCudBillingDocument(
+          formData.documentofacturamensual,
+          documentationCudBillingFolder,
+          "documentofacturamensual",
+          halfDocumentName
+        );
+
+        console.log(facturaMensualUrl);
+        setFormData({
+          ...formData,
+          documentofacturamensual: facturaMensualUrl,
+        });
+      }
 
       halfDocumentName = `asistenciaMensual_${formData.nrofactura}`;
 
-      // Subir asistencia mensual
-      const asistenciaMensualUrl = await uploadCudBillingDocument(
-        formData.imgasistenciamensual,
-        documentationCudBillingFolder,
-        "imgasistenciamensual",
-        halfDocumentName
-      );
+      if (formFiles.imgasistenciamensual !== formData.imgasistenciamensual) {
+        // Subir asistencia mensual
+        const asistenciaMensualUrl = await uploadCudBillingDocument(
+          formData.imgasistenciamensual,
+          documentationCudBillingFolder,
+          "imgasistenciamensual",
+          halfDocumentName
+        );
 
-      console.log(asistenciaMensualUrl);
-
-      // Verifica que ambas subidas hayan sido exitosas
-      if (facturaMensualUrl && asistenciaMensualUrl) {
-        // Actualiza el estado formData con ambas URLs
-        const updatedFormData = {
+        console.log(asistenciaMensualUrl);
+        setFormData({
           ...formData,
-          documentofacturamensual: facturaMensualUrl,
-          imgasistenciamensual: asistenciaMensualUrl,
-        };
-
-        setFormData(updatedFormData); // Actualiza el estado
+          documentofacturamensual: asistenciaMensualUrl,
+        });
 
         // Solo crear registro si no existe
         if (!cudBillingRecordId) {
-          const createResponse = await createCudBillingRecord(updatedFormData);
+          const createResponse = await createCudBillingRecord(formData);
           console.log(createResponse);
           handleGoBack();
         } else {
-          const updateResponse = await updateCudBillingRecord(updatedFormData);
+          const updateResponse = await updateCudBillingRecord(formData);
           console.log(updateResponse);
           handleGoBack();
         }
@@ -240,6 +256,7 @@ export const CreateEditCudBillingRecordContainer = () => {
             (record) => record.id === parseInt(cudBillingRecordId)
           );
           setFormData(cudBillingRecordToEdit);
+          setFormFiles(cudBillingRecordToEdit);
         } else {
           setFormData(initialState);
         }
