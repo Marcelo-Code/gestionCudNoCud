@@ -102,6 +102,29 @@ export const getCudPatients = async () => {
   }
 };
 
+export const getNoCudPatients = async () => {
+  try {
+    const { data, error } = await supabaseClient
+      .from("pacientes")
+      .select("*")
+      .eq("activo", true)
+      .eq("cud", false)
+      .order("nombreyapellidopaciente", { ascending: true });
+    if (error) throw error;
+    return {
+      status: 201,
+      message: "Registros obtenidos con éxito",
+      data,
+    };
+  } catch (error) {
+    return {
+      status: 404,
+      message: "Error al obtener registros",
+      error: error.message,
+    };
+  }
+};
+
 //Funcion para obtener un paciente
 export const getPatient = async (patientId) => {
   try {

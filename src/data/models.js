@@ -101,3 +101,18 @@ export const cudBillingRecordInitialState = {
   retencion: 0,
   montofinalprofesional: 0,
 };
+
+export const noCudBillingRecordInitialState = {
+  idprofesional: "",
+  prestacion: "",
+  idpaciente: "",
+  fechasesion: null,
+  estadopago: "pendiente",
+  fechadepago: null,
+  mediopago: "",
+  montosesion: 0,
+  retencion: 0,
+  montofinalprofesional: 0,
+  documentofactura: "",
+  documentocomprobantepagoretencion: "",
+};

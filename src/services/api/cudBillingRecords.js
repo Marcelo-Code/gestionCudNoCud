@@ -42,7 +42,8 @@ export const getCudBillingRecords = async () => {
       .from("facturacioncud")
       .select(
         "*, pacientes: idpaciente(nombreyapellidopaciente, obrasocialpaciente), profesionales: idprofesional(nombreyapellidoprofesional, matriculaprofesional, cuitprofesional, especialidadprofesional)"
-      );
+      )
+      .order("periodofacturado", { ascending: false });
 
     return {
       status: 201,

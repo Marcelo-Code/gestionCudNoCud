@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { getPatient } from "../../services/api/patients";
 import { getProfessional } from "../../services/api/professionals";
 import {
+  deleteNoCudBillingRecord,
   getNoCudBillingRecords,
   getNoCudBillingRecordsByPatient,
   getNoCudBillingRecordsByProfessional,
@@ -15,8 +16,8 @@ import {
   getCudBillingRecordsByPatient,
   getCudBillingRecordsByProfessional,
 } from "../../services/api/cudBillingRecords";
-import { NoCudBillingRecordsListContainer } from "./cudBillingRecords/noCudBillingRecordsList/NoCudBillingRecordsListContainer";
 import { BillingRecords } from "./BillingRecords";
+import { NoCudBillingRecordsListContainer } from "./noCudBillingRecords/noCudBillingRecordsList/NoCudBillingRecordsListContainer";
 
 export const BillingRecordsContainer = () => {
   //hook para el edit mode
@@ -42,7 +43,13 @@ export const BillingRecordsContainer = () => {
     console.log(deleteResponse);
   };
 
-  const handleDeleteNoCudBillingRecord = async () => {};
+  const handleDeleteNoCudBillingRecord = async (noCudBillingRecordId) => {
+    const deleteResponse = await deleteNoCudBillingRecord(
+      noCudBillingRecordId,
+      setUpdateList
+    );
+    console.log(deleteResponse);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -91,6 +98,8 @@ export const BillingRecordsContainer = () => {
 
   if (isLoading) return <LoadingContainer />;
 
+  console.log(noCudBillingRecords);
+
   const cudBillingRecordsListContainerProps = {
     cudBillingRecords,
     editMode,
@@ -131,8 +140,6 @@ export const BillingRecordsContainer = () => {
     patient,
     tabs,
   };
-
-  console.log(noCudBillingRecords);
 
   return <BillingRecords {...billingRecordsProps} />;
 };

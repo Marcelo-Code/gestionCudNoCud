@@ -9,3 +9,4 @@ export const bucketName = "ImagesPatientAdministration";
 export const patientDocumentationFolder = "testFolder";
 export const professionalDocumentationFolder = "testFolder1";
 export const documentationCudBillingFolder = "testFolderCudBilling";
+export const documentationNoCudBillingFolder = "testFolderNoCudBilling";

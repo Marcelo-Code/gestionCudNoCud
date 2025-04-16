@@ -16,6 +16,7 @@ import { MedicalRecordsListContainer } from "./pages/medicalRecords/medicalRecor
 import { MedicalRecordDetailContainer } from "./pages/medicalRecords/medicalRecordDetail/MedicalRecordDetailContainer";
 import { BillingRecordsContainer } from "./pages/bilingRecords/BillingRecordsContainer";
 import { CreateEditCudBillingRecordContainer } from "./pages/bilingRecords/cudBillingRecords/createEditCudBillingRecord/CreateEditCudBillingRecordContainer";
+import { CreateEditNoCudBillingRecordContainer } from "./pages/bilingRecords/noCudBillingRecords/createEditNoCudBillingRecord/CreateEditNoCudBillingRecordContainer";
 function App() {
   return (
     <>
@@ -118,6 +119,11 @@ function App() {
             />
 
             {/* ---------- Facturación NO CUD ----------*/}
+
+            <Route
+              path="/billingRecords/noCudBillingRecords/createNoCudBillingRecord"
+              element={<CreateEditNoCudBillingRecordContainer />}
+            />
           </Routes>
           <FooterContainer />
         </GeneralContextProvider>

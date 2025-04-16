@@ -1,19 +1,12 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  IconButton,
-  Tooltip,
-} from "@mui/material";
+import { Box, Card, CardContent, IconButton, Tooltip } from "@mui/material";
 import "../../../../assets/css/globalFormat.css";
-import "./cudBillingRecordsList.css";
+import "./noCudBillingRecordsList.css";
 import { GeneralBarContainer } from "../../../../components/layouts/generalBar/GeneralBarContainer";
 import { Icons } from "../../../../assets/Icons";
 import {
   currencyFormat,
   dateFormat,
-  monthFormat,
+  getExtension,
 } from "../../../../utils/helpers";
 import { Link } from "react-router-dom";
 import { TrafficLightStatus } from "../../../../components/common/trafficLightStatus/TrafficLight";
@@ -34,7 +27,7 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
     buttonIcon: <Icons.AddIcon />,
     enableReportBar: false,
     setEditMode,
-    to: "/billingRecords/createNoCudBillingRecord",
+    to: "/billingRecords/noCudBillingRecords/createNoCudBillingRecord",
   };
 
   const iconStyle = { color: "blue", fontSize: "1.2em", margin: "5px" };
@@ -54,6 +47,12 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
     whiteSpace: "normal",
     maxWidth: "300px",
     minWidth: "200px",
+  };
+
+  const iconDocumentStyle = {
+    margin: "10px",
+    fontSize: "2em",
+    verticalAlign: "middle",
   };
 
   return (
@@ -88,18 +87,15 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
                     "Profesional",
                     "Prestación",
                     "Paciente",
-                    "Modo Pago",
+                    "Fecha Sesión",
+                    "Estado Pago",
+                    "Fecha de Pago",
                     "Medio de Pago",
-                    "Destinatario",
                     "Monto Sesión",
                     "35% Retención",
                     "Monto Final Profesional",
-                    "Fecha de Pago",
-                    "Destinatario",
-                    "Paciente Adeuda",
-                    "Fecha Deuda",
-                    "Pago Monto Adeudado",
-                    "Fecha Pago",
+                    "Factura Familia",
+                    "Comprobante Retención",
                   ].map((label, index) => (
                     <th
                       key={index}
@@ -144,9 +140,9 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
                         <div style={{ display: "flex", gap: "8px" }}>
                           <Tooltip title="Eliminar" placement="top-end" arrow>
                             <IconButton
-                            // onClick={() =>
-                            //   handleDeleteCudBillingRecord(record.id)
-                            // }
+                              onClick={() =>
+                                handleDeleteNoCudBillingRecord(record.id)
+                              }
                             >
                               <Icons.DeleteIcon sx={iconStyle} />
                             </IconButton>
@@ -172,9 +168,23 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
                     <td style={colStyle}>
                       {record.pacientes.nombreyapellidopaciente}
                     </td>
-                    <td style={{ padding: "16px" }}>{record.modopago}</td>
+                    <td style={colStyle}>
+                      {record.fechasesion
+                        ? dateFormat(record.fechasesion)
+                        : "Sin fecha"}
+                    </td>
+                    <td style={colStyle}>
+                      <span style={inLineStyle}>
+                        <TrafficLightStatus status={record.estadopago} />
+                        {record.estadopago}
+                      </span>
+                    </td>
+                    <td style={{ padding: "16px" }}>
+                      {record.fechadepago
+                        ? dateFormat(record.fechadepago)
+                        : "Sin fecha"}
+                    </td>
                     <td style={{ padding: "16px" }}>{record.mediopago}</td>
-                    <td style={{ padding: "16px" }}>{record.destinatario}</td>
                     <td style={{ padding: "16px" }}>
                       {currencyFormat(record.montosesion)}
                     </td>
@@ -184,28 +194,69 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
                     <td style={{ padding: "16px" }}>
                       {currencyFormat(record.montofinalprofesional)}
                     </td>
-                    <td style={{ padding: "16px" }}>
-                      {record.fechadepago
-                        ? dateFormat(record.fechadepago)
-                        : "Sin fecha"}
+                    <td style={colStyle}>
+                      {record.documentofactura ? (
+                        <>
+                          <Link
+                            to={record.documentofactura}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Documento Pago Retención
+                          </Link>
+                          {["jpg", "png", "jpeg"].includes(
+                            getExtension(record.documentofactura)
+                          ) && <Icons.ImageIcon sx={iconDocumentStyle} />}
+                          {["doc", "docx"].includes(
+                            getExtension(record.documentofactura)
+                          ) && <Icons.ArticleIcon sx={iconDocumentStyle} />}
+                          {["pdf"].includes(
+                            getExtension(record.documentofactura)
+                          ) && (
+                            <Icons.PictureAsPdfIcon sx={iconDocumentStyle} />
+                          )}
+                          {getExtension(record.documentofactura).toUpperCase()}
+                        </>
+                      ) : (
+                        "Sin documento"
+                      )}
                     </td>
-                    <td style={{ padding: "16px" }}>{record.destinatario}</td>
-                    <td style={{ padding: "16px" }}>
-                      {record.pacienteadeuda ? "Si" : "No"}
+                    <td style={colStyle}>
+                      {record.documentocomprobantepagoretencion ? (
+                        <>
+                          <Link
+                            to={record.documentocomprobantepagoretencion}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Documento Pago Retención
+                          </Link>
+                          {["jpg", "png", "jpeg"].includes(
+                            getExtension(
+                              record.documentocomprobantepagoretencion
+                            )
+                          ) && <Icons.ImageIcon sx={iconDocumentStyle} />}
+                          {["doc", "docx"].includes(
+                            getExtension(
+                              record.documentocomprobantepagoretencion
+                            )
+                          ) && <Icons.ArticleIcon sx={iconDocumentStyle} />}
+                          {["pdf"].includes(
+                            getExtension(
+                              record.documentocomprobantepagoretencion
+                            )
+                          ) && (
+                            <Icons.PictureAsPdfIcon sx={iconDocumentStyle} />
+                          )}
+                          {getExtension(
+                            record.documentocomprobantepagoretencion
+                          ).toUpperCase()}
+                        </>
+                      ) : (
+                        "Sin documento"
+                      )}
                     </td>
-                    <td style={{ padding: "16px" }}>
-                      {record.fechadeuda
-                        ? dateFormat(record.fechadeuda)
-                        : "Sin fecha"}
-                    </td>
-                    <td style={{ padding: "16px" }}>
-                      {record.pagomontoadeudado}
-                    </td>
-                    <td style={{ padding: "16px" }}>
-                      {record.fechadeuda
-                        ? dateFormat(record.fechapagomontoadeudado)
-                        : "Sin fecha"}
-                    </td>
+                    <td style={{ padding: "16px" }}></td>
                   </tr>
                 ))}
               </tbody>
@@ -220,7 +271,7 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
                   }}
                 >
                   <td
-                    colSpan={editMode ? 7 : 6}
+                    colSpan={editMode ? 8 : 7}
                     style={{
                       padding: "16px",
                       fontWeight: "bold",

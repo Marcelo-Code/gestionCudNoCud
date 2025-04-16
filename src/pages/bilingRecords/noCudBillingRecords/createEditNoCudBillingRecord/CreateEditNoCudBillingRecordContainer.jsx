@@ -1,30 +1,33 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getCudPatients } from "../../../../services/api/patients";
+import { getNoCudPatients } from "../../../../services/api/patients";
 import { getProfessionals } from "../../../../services/api/professionals";
-import {
-  createCudBillingRecord,
-  getCudBillingRecords,
-  updateCudBillingRecord,
-} from "../../../../services/api/cudBillingRecords";
 import { LoadingContainer } from "../../../loading/LoadingContainer";
 import { GeneralContext } from "../../../../context/GeneralContext";
-import { CreateEditCudBillingRecord } from "./CreateEditCudBillingRecord";
+import { CreateEditNoCudBillingRecord } from "./CreateEditNoCudBillingRecord";
 import { allowedFileTypes } from "../../../../data/DocumentData";
-import { cudBillingRecordInitialState } from "../../../../data/models";
+import { noCudBillingRecordInitialState } from "../../../../data/models";
 import { errorAlert } from "../../../../components/common/alerts/alerts";
 import {
   deleteCudBillingDocument,
   uploadCudBillingDocument,
 } from "../../../../services/api/documentation";
-import { documentationCudBillingFolder } from "../../../../services/config/config";
+import {
+  documentationCudBillingFolder,
+  documentationNoCudBillingFolder,
+} from "../../../../services/config/config";
 import dayjs from "dayjs";
+import {
+  createNoCudBillingRecord,
+  getNoCudBillingRecords,
+  uploadNoCudBillingDocument,
+} from "../../../../services/api/noCudBillingRecords";
 
-export const CreateEditCudBillingRecordContainer = () => {
+export const CreateEditNoCudBillingRecordContainer = () => {
   const { handleGoBack } = useContext(GeneralContext);
 
   //Valores iniciales para el formulario
-  const initialState = cudBillingRecordInitialState;
+  const initialState = noCudBillingRecordInitialState;
 
   //hook para guardar los pacientes
   const [patients, setPatients] = useState([]);
@@ -33,11 +36,7 @@ export const CreateEditCudBillingRecordContainer = () => {
   const [professionals, setProfessionals] = useState([]);
 
   //hook para guardar las facturas
-  const [cudBillingRecords, setCudBillingRecords] = useState([]);
-
-  //hook para avisar si el número de factura que se está cargando existe
-  const [existingCudBillingNumber, setExistingCudBillingNumber] =
-    useState(false);
+  const [noCudBillingRecords, setNoCudBillingRecords] = useState([]);
 
   //hooks para el loading
   const [isLoading, setIsLoading] = useState(false);
@@ -57,11 +56,11 @@ export const CreateEditCudBillingRecordContainer = () => {
   const {
     patientId = null,
     professionalId = null,
-    cudBillingRecordId = null,
+    noCudBillingRecordId = null,
   } = useParams();
 
-  const facturaMensualFileInputRef = useRef(null);
-  const asistenciaMensualFileInputRef = useRef(null);
+  const documentoFacturaFileInputRef = useRef(null);
+  const comprobanteRetencionFileInputRef = useRef(null);
 
   //Función para guardar los cambios en el registro
   const handleChange = (e) => {
@@ -84,16 +83,6 @@ export const CreateEditCudBillingRecordContainer = () => {
       updatedFormData[name] = value;
     }
 
-    // Selección automática de la obra social si se cambia el idpaciente
-    if (name === "idpaciente") {
-      const patient = patients.find(
-        (patient) => patient.id === parseInt(value)
-      );
-      if (patient) {
-        updatedFormData.obrasocialpaciente = patient.obrasocialpaciente;
-      }
-    }
-
     // Selección automática de la obra especialidad si se cambia el idprofesional
     if (name === "idprofesional") {
       const profesional = professionals.find(
@@ -105,35 +94,24 @@ export const CreateEditCudBillingRecordContainer = () => {
     }
 
     // Cálculo de retención y monto final si se cambia el monto percibido
-    if (name === "montopercibido") {
+    if (name === "montosesion") {
       const witholdingTaxValue = value * witholdingTax;
       updatedFormData.retencion = witholdingTaxValue;
       updatedFormData.montofinalprofesional = value - witholdingTaxValue;
     }
 
     // Limpieza de campos si el estado de la factura no es 'cobrado'
-    if (
-      name === "estadofacturacion" &&
-      (value === "pendiente" || value === "recibido")
-    ) {
+    if (name === "estadopago" && value === "pendiente") {
       updatedFormData = {
         ...updatedFormData,
-        fechacobro: "",
-        montopercibido: 0,
+        fechadepago: "",
+        mediopago: "",
+        montosesion: 0,
         retencion: 0,
         montofinalprofesional: 0,
+        documentofactura: "",
+        documentocomprobantepagoretencion: "",
       };
-    }
-
-    if (name === "nrofactura") {
-      const exist = cudBillingRecords.some(
-        (cudBillingRecord) => cudBillingRecord.nrofactura === value
-      );
-      if (exist) {
-        setExistingCudBillingNumber(true);
-      } else {
-        setExistingCudBillingNumber(false);
-      }
     }
 
     setFormData(updatedFormData);
@@ -156,88 +134,85 @@ export const CreateEditCudBillingRecordContainer = () => {
 
     let updatedFormData = { ...formData };
 
-    // Eliminar campos que no van a la base de datos
-    delete updatedFormData.pacientes;
-    delete updatedFormData.profesionales;
-
-    if (existingCudBillingNumber) {
-      errorAlert(
-        "El número de factura ya existe. Por favor, ingresá uno diferente."
-      );
+    if (formData.montosesion === 0 && formData.estadopago === "pagado") {
+      errorAlert("Debe ingresarse el monto de la sesión");
       return;
     }
-
-    if (!formData.documentofacturamensual || !formData.imgasistenciamensual) {
+    if (
+      formData.estadopago === "pagado" &&
+      (!formData.documentofactura ||
+        !formData.documentocomprobantepagoretencion)
+    ) {
       errorAlert("Faltan archivos por seleccionar.");
       return;
     }
+
+    // Eliminar campos que no van a la base de datos
+    delete updatedFormData.pacientes;
+    delete updatedFormData.profesionales;
 
     setIsLoadingButton(true);
 
     let halfDocumentName = "";
 
     try {
-      if (cudBillingRecordId) {
+      if (noCudBillingRecordId) {
         // Si hay edición y se modifican los archivos a cargar se borran los archivos anteriores
+        if (formFiles.documentofactura !== formData.documentofactura)
+          deleteCudBillingDocument(formFiles.documentofactura);
         if (
-          formFiles.documentofacturamensual !== formData.documentofacturamensual
+          formFiles.documentocomprobantepagoretencion !==
+          formData.documentocomprobantepagoretencion
         )
-          deleteCudBillingDocument(formFiles.documentofacturamensual);
-        if (formFiles.imgasistenciamensual !== formData.imgasistenciamensual)
-          deleteCudBillingDocument(formFiles.imgasistenciamensual);
+          deleteCudBillingDocument(formFiles.documentocomprobantepagoretencion);
       }
 
       // Si se modifican los archivos a cargar se borran los archivos anteriores
-      halfDocumentName = `facturaMensual_${formData.nrofactura}`;
-      if (
-        formFiles.documentofacturamensual !== formData.documentofacturamensual
-      ) {
-        const facturaMensualUrl = await uploadCudBillingDocument(
-          formData.documentofacturamensual,
-          documentationCudBillingFolder,
-          "documentofacturamensual",
+      halfDocumentName = `factura_${formData.fechasesion}_${formData.idprofesional}_${formData.idpaciente}`;
+
+      if (formData.estadopago === "pagado") {
+        const documentoFacturaUrl = await uploadNoCudBillingDocument(
+          formData.documentofactura,
+          documentationNoCudBillingFolder,
+          "documentofactura",
           halfDocumentName
         );
 
-        console.log(facturaMensualUrl);
+        console.log(documentoFacturaUrl);
         updatedFormData = {
           ...updatedFormData,
-          documentofacturamensual: facturaMensualUrl,
+          documentofactura: documentoFacturaUrl,
         };
       }
 
-      halfDocumentName = `asistenciaMensual_${formData.nrofactura}`;
+      halfDocumentName = `comprobantePagoRetencion_${formData.fechasesion}_${formData.idprofesional}_${formData.idpaciente}`;
 
       // Si se modifican los archivos a cargar se borran los archivos anteriores
-      if (formFiles.imgasistenciamensual !== formData.imgasistenciamensual) {
-        const asistenciaMensualUrl = await uploadCudBillingDocument(
-          formData.imgasistenciamensual,
-          documentationCudBillingFolder,
-          "imgasistenciamensual",
-          halfDocumentName
-        );
+      if (formData.estadopago === "pagado") {
+        const documentoComprobantePagoRetencionUrl =
+          await uploadNoCudBillingDocument(
+            formData.documentocomprobantepagoretencion,
+            documentationNoCudBillingFolder,
+            "documentocomprobantepagoretencion",
+            halfDocumentName
+          );
 
-        console.log(asistenciaMensualUrl);
+        console.log(documentoComprobantePagoRetencionUrl);
         updatedFormData = {
           ...updatedFormData,
-          imgasistenciamensual: asistenciaMensualUrl,
+          documentocomprobantepagoretencion:
+            documentoComprobantePagoRetencionUrl,
         };
       }
-
-      //Estandarizo el formato de la fecha mensual
-      updatedFormData = {
-        ...updatedFormData,
-        periodofacturado: `${formData.periodofacturado}-01`,
-      };
 
       // Si no hay edición se llama a la función create
-      if (!cudBillingRecordId) {
-        const createResponse = await createCudBillingRecord(updatedFormData);
+      if (!noCudBillingRecordId) {
+        const createResponse = await createNoCudBillingRecord(updatedFormData);
         console.log(createResponse);
         handleGoBack();
       } else {
         // Si no hay edición se llama a la función de update
-        const updateResponse = await updateCudBillingRecord(updatedFormData);
+        const updateResponse = await updateNoCudBillingRecord(updatedFormData);
         console.log(updateResponse);
         handleGoBack();
       }
@@ -256,36 +231,42 @@ export const CreateEditCudBillingRecordContainer = () => {
   useEffect(() => {
     setIsLoading(true);
 
-    Promise.all([getCudPatients(), getProfessionals(), getCudBillingRecords()])
-      .then(([patientsResponse, professionalsResponse, cudBillingResponse]) => {
-        const patientsData = patientsResponse.data;
-        const professionalsData = professionalsResponse.data;
-        const cudBillingData = cudBillingResponse.data;
+    Promise.all([
+      getNoCudPatients(),
+      getProfessionals(),
+      getNoCudBillingRecords(),
+    ])
+      .then(
+        ([patientsResponse, professionalsResponse, noCudBillingResponse]) => {
+          const patientsData = patientsResponse.data;
+          const professionalsData = professionalsResponse.data;
+          const noCudBillingData = noCudBillingResponse.data;
 
-        setPatients(patientsData);
-        setProfessionals(professionalsData);
-        setCudBillingRecords(cudBillingData);
+          setPatients(patientsData);
+          setProfessionals(professionalsData);
+          setNoCudBillingRecords(noCudBillingData);
 
-        if (cudBillingRecordId) {
-          const cudBillingRecordToEdit = cudBillingData.find(
-            (record) => record.id === parseInt(cudBillingRecordId)
-          );
-          setFormData(cudBillingRecordToEdit);
-          setFormFiles(cudBillingRecordToEdit);
-        } else {
-          setFormData(initialState);
+          if (noCudBillingRecordId) {
+            const noCudBillingRecordToEdit = noCudBillingData.find(
+              (record) => record.id === parseInt(noCudBillingRecordId)
+            );
+            setFormData(noCudBillingRecordToEdit);
+            setFormFiles(noCudBillingRecordToEdit);
+          } else {
+            setFormData(initialState);
+          }
+
+          console.log("Pacientes:", patientsData);
+          console.log("Profesionales:", professionalsData);
         }
-
-        console.log("Pacientes:", patientsData);
-        console.log("Profesionales:", professionalsData);
-      })
+      )
       .catch((error) => console.error(error))
       .finally(() => setIsLoading(false));
   }, []);
 
   if (isLoading) return <LoadingContainer />;
 
-  const createEditCudBillingProps = {
+  const createEditNoCudBillingProps = {
     handleSubmit,
     handleChange,
     isLoadingButton,
@@ -293,14 +274,13 @@ export const CreateEditCudBillingRecordContainer = () => {
     formData,
     handleGoBack,
     professionalId,
-    cudBillingRecordId,
+    noCudBillingRecordId,
     patients,
     professionals,
-    facturaMensualFileInputRef,
-    asistenciaMensualFileInputRef,
+    documentoFacturaFileInputRef,
+    comprobanteRetencionFileInputRef,
     handleRemoveFile,
-    existingCudBillingNumber,
     currentMonth,
   };
-  return <CreateEditCudBillingRecord {...createEditCudBillingProps} />;
+  return <CreateEditNoCudBillingRecord {...createEditNoCudBillingProps} />;
 };

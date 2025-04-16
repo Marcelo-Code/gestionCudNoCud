@@ -194,6 +194,19 @@ export const billingOptions = [
   },
 ];
 
+export const noCudBillingOptions = [
+  {
+    id: "pendiente",
+    value: "pendiente",
+    name: "Pendiente",
+  },
+  {
+    id: "pagado",
+    value: "pagado",
+    name: "Pagado",
+  },
+];
+
 export const allowedFileTypes = [
   "application/pdf",
   "image/jpeg",

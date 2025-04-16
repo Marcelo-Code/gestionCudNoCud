@@ -7,8 +7,7 @@ import { FormButtonGroupContainer } from "../../../../components/common/formButt
 import { Icons } from "../../../../assets/Icons";
 import { billingOptions } from "../../../../data/DocumentData";
 import { TrafficLightStatus } from "../../../../components/common/trafficLightStatus/TrafficLight";
-import { extractPath, formatToInputMonth } from "../../../../utils/helpers";
-import { documentationCudBillingFolder } from "../../../../services/config/config";
+import { formatToInputMonth } from "../../../../utils/helpers";
 
 export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
   const elementStyle = {
@@ -31,6 +30,7 @@ export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
     asistenciaMensualFileInputRef,
     handleRemoveFile,
     existingCudBillingNumber,
+    currentMonth,
   } = createEditCudBillingProps;
 
   const formButtonGroupProps = {
@@ -47,7 +47,7 @@ export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
       <span className="generalTitle">
         {cudBillingRecordId
           ? "Editar facturación CUD"
-          : "Crear nuevo facturación CUD"}
+          : "Crear nueva facturación CUD"}
       </span>
       <form onSubmit={handleSubmit}>
         <FormGroup>
@@ -126,6 +126,9 @@ export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
                 type="month"
                 InputLabelProps={{
                   shrink: true,
+                }}
+                inputProps={{
+                  max: currentMonth, // limita al mes actual
                 }}
                 value={formatToInputMonth(formData.periodofacturado)}
               />
