@@ -75,14 +75,21 @@ export const CreateEditCudBillingRecordContainer = () => {
     const { name, value, files } = e.target;
     const file = files?.[0];
 
+    let updatedFormData = { ...formData, [name]: value };
+
+    if (name === "periodofacturado") {
+      updatedFormData = {
+        ...updatedFormData,
+        periodofacturado: `${value}-01`,
+      };
+    }
+
     // Validación de tipo de archivo
     if (file && !allowedFileTypes.includes(file.type)) {
       errorAlert("Formato de archivo no permitido");
       console.error("Formato no permitido");
       return;
     }
-
-    let updatedFormData = { ...formData };
 
     // Si es un archivo, se actualiza el formData con el archivo
     if (file) {
@@ -241,14 +248,6 @@ export const CreateEditCudBillingRecordContainer = () => {
         updatedFormData = {
           ...updatedFormData,
           imgasistenciamensual: asistenciaMensualUrl,
-        };
-      }
-
-      //Estandarizo el formato de la fecha mensual
-      if (formFiles.periodofacturado !== formData.periodofacturado) {
-        updatedFormData = {
-          ...updatedFormData,
-          periodofacturado: `${formData.periodofacturado}-01`,
         };
       }
 
