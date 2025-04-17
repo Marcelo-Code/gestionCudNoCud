@@ -267,14 +267,16 @@ export const PatientDetail = (patientDetailProps) => {
               </Link>
             </Box>
             <Box sx={{ flex: 1, minWidth: "200px" }}>
-              <Button
-                size="small"
-                fullWidth
-                variant="contained"
-                startIcon={<Icons.ReceiptIcon />}
-              >
-                Facturación
-              </Button>
+              <Link to={`/billingRecords/list/patient/${formData.id}`}>
+                <Button
+                  size="small"
+                  fullWidth
+                  variant="contained"
+                  startIcon={<Icons.ReceiptIcon />}
+                >
+                  Facturación
+                </Button>
+              </Link>
             </Box>
             <Box sx={{ flex: 1, minWidth: "200px" }}>
               <Link to={`/medicalRecords/list/patient/${formData.id}`}>

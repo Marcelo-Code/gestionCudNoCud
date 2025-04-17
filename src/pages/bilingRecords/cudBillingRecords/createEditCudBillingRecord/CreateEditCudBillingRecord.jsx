@@ -22,6 +22,7 @@ export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
     isLoadingButton,
     modifiedFlag,
     formData,
+    patientId,
     professionalId,
     cudBillingRecordId,
     patients,
@@ -31,6 +32,8 @@ export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
     handleRemoveFile,
     existingCudBillingNumber,
     currentMonth,
+    patient,
+    professional,
   } = createEditCudBillingProps;
 
   const formButtonGroupProps = {
@@ -42,13 +45,39 @@ export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
 
   const iconsUploadStyle = { color: "blue", fontSize: "1.2em" };
 
+  let title = "Facturación CUD";
+
+  if (!cudBillingRecordId) {
+    if (patientId) {
+      title = `Crear nueva facturación CUD paciente ${
+        patient?.nombreyapellidopaciente || ""
+      }`;
+    } else if (professionalId) {
+      title = `Crear nueva facturación CUD profesional ${
+        professional?.nombreyapellidoprofesional || ""
+      }`;
+    } else {
+      title = "Crear nueva facturación CUD";
+    }
+  } else {
+    if (patientId) {
+      title = `Editar facturación CUD paciente ${
+        patient?.nombreyapellidopaciente || ""
+      }`;
+    } else if (professionalId) {
+      title = `Editar facturación CUD profesional ${
+        professional?.nombreyapellidoprofesional || ""
+      }`;
+    } else {
+      title = "Editar facturación CUD";
+    }
+  }
+
+  console.log(formData.idpaciente);
+
   return (
     <div className="generalContainer">
-      <span className="generalTitle">
-        {cudBillingRecordId
-          ? "Editar facturación CUD"
-          : "Crear nueva facturación CUD"}
-      </span>
+      <span className="generalTitle">{title}</span>
       <form onSubmit={handleSubmit}>
         <FormGroup>
           <Box className="createEditPatientItem">
@@ -66,6 +95,7 @@ export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
                   onChange={handleChange}
                   label={"Profesional"}
                   required
+                  disabled={professionalId ? true : false}
                 />
               </Box>
             </Box>
@@ -97,6 +127,7 @@ export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
                   onChange={handleChange}
                   label={"Paciente"}
                   required
+                  disabled={patientId ? true : false}
                 />
               </Box>
             </Box>
@@ -314,87 +345,94 @@ export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
               </Box>
             </Box>
 
-            <Box className="createEditPatientElement">
-              <Icons.CalendarMonthIcon />
-              <TextField
-                sx={elementStyle}
-                label="Recepción O.S."
-                name="fecharecepcionos"
-                onChange={handleChange}
-                required={formData.estadofacturacion === "recibido"}
-                variant="outlined"
-                type="date"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                value={formData.fecharecepcionos}
-                disabled={formData.estadofacturacion !== "recibido"}
-              />
-            </Box>
+            {formData.estadofacturacion === "recibido" && (
+              <Box className="createEditPatientElement">
+                <Icons.CalendarMonthIcon />
+                <TextField
+                  sx={elementStyle}
+                  label="Recepción O.S."
+                  name="fecharecepcionos"
+                  onChange={handleChange}
+                  required={formData.estadofacturacion === "recibido"}
+                  variant="outlined"
+                  type="date"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  value={formData.fecharecepcionos}
+                  disabled={formData.estadofacturacion !== "recibido"}
+                />
+              </Box>
+            )}
+            {formData.estadofacturacion === "pagado" && (
+              <>
+                <Box className="createEditPatientElement">
+                  <Icons.CalendarMonthIcon />
+                  <TextField
+                    sx={elementStyle}
+                    label="Fecha cobro"
+                    name="fechacobro"
+                    onChange={handleChange}
+                    required={formData.estadofacturacion === "pagado"}
+                    variant="outlined"
+                    type="date"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    value={formData.fechacobro}
+                    disabled={formData.estadofacturacion !== "pagado"}
+                  />
+                </Box>
 
-            <Box className="createEditPatientElement">
-              <Icons.CalendarMonthIcon />
-              <TextField
-                sx={elementStyle}
-                label="Fecha cobro"
-                name="fechacobro"
-                onChange={handleChange}
-                required={formData.estadofacturacion === "pagado"}
-                variant="outlined"
-                type="date"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                value={formData.fechacobro}
-                disabled={formData.estadofacturacion !== "pagado"}
-              />
-            </Box>
-
-            <Box className="createEditPatientElement">
-              <Icons.MonetizationOnIcon />
-              <TextField
-                style={elementStyle}
-                id="outlined-basic"
-                label="Monto percibido"
-                variant="outlined"
-                name="montopercibido"
-                onChange={handleChange}
-                required={formData.estadofacturacion === "pagado"}
-                value={formData.montopercibido}
-                disabled={formData.estadofacturacion !== "pagado"}
-                type="number"
-              />
-            </Box>
-            <Box className="createEditPatientElement">
-              <Icons.MonetizationOnIcon />
-              <TextField
-                style={elementStyle}
-                id="outlined-basic"
-                label="Retención 35%"
-                variant="outlined"
-                name="retención"
-                onChange={handleChange}
-                required={formData.estadofacturacion === "pagado"}
-                value={parseFloat(formData.retencion).toFixed(2)}
-                disabled={true}
-                type="number"
-              />
-            </Box>
-            <Box className="createEditPatientElement">
-              <Icons.MonetizationOnIcon />
-              <TextField
-                style={elementStyle}
-                id="outlined-basic"
-                label="Monto Final"
-                variant="outlined"
-                name="montofinalprofesional"
-                onChange={handleChange}
-                required={formData.estadofacturacion === "pagado"}
-                value={parseFloat(formData.montofinalprofesional).toFixed(2)}
-                disabled={true}
-                type="number"
-              />
-            </Box>
+                <Box className="createEditPatientElement">
+                  <Icons.MonetizationOnIcon />
+                  <TextField
+                    style={elementStyle}
+                    id="outlined-basic"
+                    label="Monto percibido"
+                    variant="outlined"
+                    name="montopercibido"
+                    onChange={handleChange}
+                    required={formData.estadofacturacion === "pagado"}
+                    value={formData.montopercibido}
+                    disabled={formData.estadofacturacion !== "pagado"}
+                    type="number"
+                  />
+                </Box>
+                <Box className="createEditPatientElement">
+                  <Icons.MonetizationOnIcon />
+                  <TextField
+                    style={elementStyle}
+                    id="outlined-basic"
+                    label="Retención 35%"
+                    variant="outlined"
+                    name="retención"
+                    onChange={handleChange}
+                    required={formData.estadofacturacion === "pagado"}
+                    value={parseFloat(formData.retencion).toFixed(2)}
+                    disabled={true}
+                    type="number"
+                  />
+                </Box>
+                <Box className="createEditPatientElement">
+                  <Icons.MonetizationOnIcon />
+                  <TextField
+                    style={elementStyle}
+                    id="outlined-basic"
+                    label="Monto Final"
+                    variant="outlined"
+                    name="montofinalprofesional"
+                    onChange={handleChange}
+                    required={formData.estadofacturacion === "pagado"}
+                    value={parseFloat(formData.montofinalprofesional).toFixed(
+                      2
+                    )}
+                    disabled={true}
+                    type="number"
+                  />
+                </Box>
+              </>
+            )}
           </Box>
           <FormButtonGroupContainer {...formButtonGroupProps} />
         </FormGroup>

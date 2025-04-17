@@ -20,9 +20,6 @@ import { BillingRecords } from "./BillingRecords";
 import { NoCudBillingRecordsListContainer } from "./noCudBillingRecords/noCudBillingRecordsList/NoCudBillingRecordsListContainer";
 
 export const BillingRecordsContainer = () => {
-  //hook para el edit mode
-  const [editMode, setEditMode] = useState(false);
-
   //hook para el loading
   const [isLoading, setIsLoading] = useState(false);
 
@@ -98,19 +95,17 @@ export const BillingRecordsContainer = () => {
 
   if (isLoading) return <LoadingContainer />;
 
-  console.log(noCudBillingRecords);
-
   const cudBillingRecordsListContainerProps = {
+    patientId,
+    professionalId,
     cudBillingRecords,
-    editMode,
-    setEditMode,
     handleDeleteCudBillingRecord,
   };
 
   const noCudBillingRecordsListContainerProps = {
+    patientId,
+    professionalId,
     noCudBillingRecords,
-    editMode,
-    setEditMode,
     handleDeleteNoCudBillingRecord,
   };
 
@@ -135,7 +130,8 @@ export const BillingRecordsContainer = () => {
   ];
 
   const billingRecordsProps = {
-    noCudBillingRecords,
+    patientId,
+    professionalId,
     professional,
     patient,
     tabs,

@@ -22,15 +22,17 @@ export const CreateEditNoCudBillingRecord = (createEditCudBillingProps) => {
     isLoadingButton,
     modifiedFlag,
     formData,
-    handleGoBack,
-    professionalId,
-    noCudBillingRecordId,
     patients,
     professionals,
     documentoFacturaFileInputRef,
     comprobanteRetencionFileInputRef,
     handleRemoveFile,
     currentMonth,
+    patient,
+    professional,
+    patientId,
+    professionalId,
+    noCudBillingRecordId,
   } = createEditCudBillingProps;
 
   const formButtonGroupProps = {
@@ -43,13 +45,37 @@ export const CreateEditNoCudBillingRecord = (createEditCudBillingProps) => {
   const iconsUploadStyle = { color: "blue", fontSize: "1.2em" };
   const iconsUploadStyleDisabled = { color: "gray", fontSize: "1.2em" };
 
+  let title = "Facturación no CUD";
+
+  if (!noCudBillingRecordId) {
+    if (patientId) {
+      title = `Crear nueva facturación no CUD paciente ${
+        patient?.nombreyapellidopaciente || ""
+      }`;
+    } else if (professionalId) {
+      title = `Crear nueva facturación no CUD profesional ${
+        professional?.nombreyapellidoprofesional || ""
+      }`;
+    } else {
+      title = "Crear nueva facturación no CUD";
+    }
+  } else {
+    if (patientId) {
+      title = `Editar facturación no CUD paciente ${
+        patient?.nombreyapellidopaciente || ""
+      }`;
+    } else if (professionalId) {
+      title = `Editar facturación no CUD profesional ${
+        professional?.nombreyapellidoprofesional || ""
+      }`;
+    } else {
+      title = "Editar facturación no CUD";
+    }
+  }
+
   return (
     <div className="generalContainer">
-      <span className="generalTitle">
-        {noCudBillingRecordId
-          ? "Editar facturación No CUD"
-          : "Crear nueva facturación No CUD"}
-      </span>
+      <span className="generalTitle">{title}</span>
       <form onSubmit={handleSubmit}>
         <FormGroup>
           <Box className="createEditPatientItem">
@@ -67,6 +93,7 @@ export const CreateEditNoCudBillingRecord = (createEditCudBillingProps) => {
                   onChange={handleChange}
                   label={"Profesional"}
                   required
+                  disabled={professionalId ? true : false}
                 />
               </Box>
             </Box>
@@ -98,6 +125,7 @@ export const CreateEditNoCudBillingRecord = (createEditCudBillingProps) => {
                   onChange={handleChange}
                   label={"Paciente"}
                   required
+                  disabled={patientId ? true : false}
                 />
               </Box>
             </Box>
@@ -114,7 +142,7 @@ export const CreateEditNoCudBillingRecord = (createEditCudBillingProps) => {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                value={formData.fechasesion}
+                value={formData.fechasesion || ""}
               />
             </Box>
             <Box className="createBillingSelect">
@@ -194,7 +222,7 @@ export const CreateEditNoCudBillingRecord = (createEditCudBillingProps) => {
                     required={formData.estadopago === "pagado"}
                     value={parseFloat(formData.retencion).toFixed(2)}
                     type="number"
-                    disabled={formData.estadopago !== "pagado"}
+                    disabled={true}
                   />
                 </Box>
                 <Box className="createEditPatientElement">
@@ -211,7 +239,7 @@ export const CreateEditNoCudBillingRecord = (createEditCudBillingProps) => {
                       2
                     )}
                     type="number"
-                    disabled={formData.estadopago !== "pagado"}
+                    disabled={true}
                   />
                 </Box>
 

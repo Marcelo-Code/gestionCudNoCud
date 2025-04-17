@@ -63,7 +63,9 @@ export const getNoCudBillingRecord = async (noCudBillingRecordId) => {
   try {
     const { data, error } = await supabaseClient
       .from("facturacionnocud")
-      .select("*")
+      .select(
+        "*, pacientes: idpaciente(nombreyapellidopaciente, obrasocialpaciente), profesionales: idprofesional(nombreyapellidoprofesional, matriculaprofesional, cuitprofesional, especialidadprofesional)"
+      )
       .eq("id", noCudBillingRecordId);
     if (error) throw error;
     return {
@@ -84,7 +86,9 @@ export const getNoCudBillingRecordsByProfessional = async (professionalId) => {
   try {
     const { data, error } = await supabaseClient
       .from("facturacionnocud")
-      .select("*")
+      .select(
+        "*, pacientes: idpaciente(nombreyapellidopaciente, obrasocialpaciente), profesionales: idprofesional(nombreyapellidoprofesional, matriculaprofesional, cuitprofesional, especialidadprofesional)"
+      )
       .eq("idprofesional", professionalId);
 
     if (error) throw error;
@@ -107,7 +111,9 @@ export const getNoCudBillingRecordsByPatient = async (patientId) => {
   try {
     const { data, error } = await supabaseClient
       .from("facturacionnocud")
-      .select("*")
+      .select(
+        "*, pacientes: idpaciente(nombreyapellidopaciente, obrasocialpaciente), profesionales: idprofesional(nombreyapellidoprofesional, matriculaprofesional, cuitprofesional, especialidadprofesional)"
+      )
       .eq("idpaciente", patientId);
 
     if (error) throw error;
@@ -198,7 +204,6 @@ export const uploadNoCudBillingDocument = async (
     const cleanHalfFileName = sanitizeFileName(halfFileName);
 
     const fileName = `${folder}/${documentName}_${cleanHalfFileName}.${extension}`;
-    console.log(fileName);
 
     // Subida del archivo
     const { error: uploadError } = await supabaseClient.storage
@@ -225,5 +230,35 @@ export const uploadNoCudBillingDocument = async (
   } catch (error) {
     console.error("Error al cargar archivo:", error);
     return null; // Para que pueda verificarse fácilmente si falló
+  }
+};
+
+export const updateNoCudBillingRecord = async (updatedNoCudBillingRecord) => {
+  try {
+    const { id, ...fieldsToUpdate } = updatedNoCudBillingRecord;
+
+    const { data, error } = await supabaseClient
+      .from("facturacionnocud")
+      .update(fieldsToUpdate)
+      .eq("id", id);
+
+    if (error) {
+      throw error;
+    }
+
+    successAlert("Registro actualizado con éxito");
+
+    return {
+      status: 200,
+      message: "Registro actualizado con éxito",
+      data,
+    };
+  } catch (error) {
+    errorAlert("Error al actualizar registro");
+    return {
+      status: 400,
+      message: "Error al actualizar el registro",
+      error: error.message,
+    };
   }
 };

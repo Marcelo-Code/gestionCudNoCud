@@ -29,14 +29,28 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     totalMontoPercibido,
     totalProfesional,
     totalRetencion,
+    patientId,
+    professionalId,
   } = cudBillingRecordsListProps;
+
+  let createRoute = "/billingRecords/createCudBillingRecord";
+  let editRoute = "/billingRecords/cudBillingRecords/edit";
+
+  if (professionalId) {
+    createRoute += `/professional/${professionalId}`;
+    editRoute += `/professional/${professionalId}`;
+  }
+  if (patientId) {
+    createRoute += `/patient/${patientId}`;
+    editRoute += `/patient/${patientId}`;
+  }
 
   const generalBarContainerProps = {
     buttonText: "Factura CUD",
     buttonIcon: <Icons.AddIcon />,
     enableReportBar: false,
     setEditMode,
-    to: "/billingRecords/createCudBillingRecord",
+    to: `${createRoute}`,
   };
 
   const iconStyle = { color: "blue", fontSize: "1.2em", margin: "5px" };
@@ -167,9 +181,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                             </IconButton>
                           </Tooltip>
                           <Tooltip title="Editar" placement="top-end" arrow>
-                            <Link
-                              to={`/billingRecords/cudBillingRecords/edit/${record.id}`}
-                            >
+                            <Link to={`${editRoute}/${record.id}`}>
                               <IconButton>
                                 <Icons.EditIcon sx={iconStyle} />
                               </IconButton>
@@ -280,7 +292,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                     <td>{currencyFormat(record.montofacturado)}</td>
                     <td style={{ padding: "16px" }}>{record.nrofactura}</td>
                     <td style={colStyle}>
-                      {record.pacientes.obrasocialpaciente}
+                      {record.pacientes?.obrasocialpaciente}
                     </td>
                     <td style={{ padding: "16px" }}>
                       {record.fecharecepcionos

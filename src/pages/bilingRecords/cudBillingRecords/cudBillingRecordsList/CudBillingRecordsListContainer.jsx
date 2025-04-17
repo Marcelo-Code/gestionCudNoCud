@@ -1,14 +1,17 @@
+import { useState } from "react";
 import { CudBillingRecordsList } from "./CudBillingRecordsList";
 
 export const CudBillingRecordsListContainer = (
-  CudBillingRecordsListContainerProps
+  cudBillingRecordsListContainerProps
 ) => {
   const {
     cudBillingRecords,
-    editMode,
-    setEditMode,
     handleDeleteCudBillingRecord,
-  } = CudBillingRecordsListContainerProps;
+    patientId,
+    professionalId,
+  } = cudBillingRecordsListContainerProps;
+
+  const [editMode, setEditMode] = useState(false);
 
   const totalProfesional = cudBillingRecords.reduce((acc, record) => {
     return acc + Number.parseFloat(record.montofinalprofesional);
@@ -32,6 +35,8 @@ export const CudBillingRecordsListContainer = (
     totalRetencion,
     totalMontoPercibido,
     totalMontoFacturado,
+    patientId,
+    professionalId,
   };
 
   return <CudBillingRecordsList {...cudBillingRecordsListProps} />;

@@ -3,6 +3,7 @@ import { extractPath, sanitizeFileName } from "../../utils/helpers";
 import {
   bucketName,
   documentationCudBillingFolder,
+  documentationNoCudBillingFolder,
   supabaseClient,
 } from "../config/config";
 
@@ -165,7 +166,6 @@ export const uploadCudBillingDocument = async (
     const cleanHalfFileName = sanitizeFileName(halfFileName);
 
     const fileName = `${folder}/${documentName}_${cleanHalfFileName}.${extension}`;
-    console.log(fileName);
 
     // Subida del archivo
     const { error: uploadError } = await supabaseClient.storage
@@ -198,6 +198,33 @@ export const uploadCudBillingDocument = async (
 export const deleteCudBillingDocument = async (filePath) => {
   try {
     const pathToDelete = extractPath(filePath, documentationCudBillingFolder);
+    const { error } = await supabaseClient.storage
+      .from(bucketName)
+      .remove([pathToDelete]);
+
+    console.log("Archivo eliminado correctamente:", pathToDelete);
+
+    if (error) {
+      throw error;
+    }
+    return {
+      status: 200,
+      message: "Archivo eliminado correctamente",
+    };
+  } catch (error) {
+    console.error("Error al eliminar archivo:", error);
+    return {
+      status: 400,
+      message: "Error al eliminar el archivo",
+      error: error.message,
+    };
+  }
+};
+
+export const deleteNoCudBillingDocument = async (filePath) => {
+  try {
+    console.log(filePath);
+    const pathToDelete = extractPath(filePath, documentationNoCudBillingFolder);
     const { error } = await supabaseClient.storage
       .from(bucketName)
       .remove([pathToDelete]);

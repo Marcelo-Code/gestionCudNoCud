@@ -20,14 +20,28 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
     totalMontoSesion,
     totalProfesional,
     totalRetencion,
+    patientId,
+    professionalId,
   } = cudBillingRecordsListProps;
+
+  let createRoute = "/billingRecords/createNoCudBillingRecord";
+  let editRoute = "/billingRecords/noCudBillingRecords/edit";
+
+  if (professionalId) {
+    createRoute += `/professional/${professionalId}`;
+    editRoute += `/professional/${professionalId}`;
+  }
+  if (patientId) {
+    createRoute += `/patient/${patientId}`;
+    editRoute += `/patient/${patientId}`;
+  }
 
   const generalBarContainerProps = {
     buttonText: "Factura No CUD",
     buttonIcon: <Icons.AddIcon />,
     enableReportBar: false,
     setEditMode,
-    to: "/billingRecords/noCudBillingRecords/createNoCudBillingRecord",
+    to: `${createRoute}`,
   };
 
   const iconStyle = { color: "blue", fontSize: "1.2em", margin: "5px" };
@@ -148,13 +162,11 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
                             </IconButton>
                           </Tooltip>
                           <Tooltip title="Editar" placement="top-end" arrow>
-                            {/* <Link
-                              to={`/billingRecords/cudBillingRecords/edit/${record.id}`}
-                              > */}
-                            <IconButton>
-                              <Icons.EditIcon sx={iconStyle} />
-                            </IconButton>
-                            {/* </Link> */}
+                            <Link to={`${editRoute}/${record.id}`}>
+                              <IconButton>
+                                <Icons.EditIcon sx={iconStyle} />
+                              </IconButton>
+                            </Link>
                           </Tooltip>
                         </div>
                       </td>

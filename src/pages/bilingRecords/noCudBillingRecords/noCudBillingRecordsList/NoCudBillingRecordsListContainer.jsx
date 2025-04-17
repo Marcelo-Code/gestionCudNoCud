@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { NoCudBillingRecordsList } from "./NoCudBillingRecordsList";
 
 export const NoCudBillingRecordsListContainer = (
@@ -5,10 +6,12 @@ export const NoCudBillingRecordsListContainer = (
 ) => {
   const {
     noCudBillingRecords,
-    editMode,
-    setEditMode,
     handleDeleteNoCudBillingRecord,
+    patientId,
+    professionalId,
   } = noCudBillingRecordsListContainerProps;
+
+  const [editMode, setEditMode] = useState(false);
 
   const totalMontoSesion = noCudBillingRecords.reduce((acc, record) => {
     return acc + Number.parseFloat(record.montosesion);
@@ -28,6 +31,8 @@ export const NoCudBillingRecordsListContainer = (
     totalMontoSesion,
     totalProfesional,
     totalRetencion,
+    patientId,
+    professionalId,
   };
 
   return <NoCudBillingRecordsList {...noCudBillingRecordsListProps} />;

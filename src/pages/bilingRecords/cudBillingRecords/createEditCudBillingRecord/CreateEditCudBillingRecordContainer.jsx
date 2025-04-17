@@ -1,9 +1,13 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getCudPatients } from "../../../../services/api/patients";
-import { getProfessionals } from "../../../../services/api/professionals";
+import { getCudPatients, getPatient } from "../../../../services/api/patients";
+import {
+  getProfessional,
+  getProfessionals,
+} from "../../../../services/api/professionals";
 import {
   createCudBillingRecord,
+  getCudBillingRecord,
   getCudBillingRecords,
   updateCudBillingRecord,
 } from "../../../../services/api/cudBillingRecords";
@@ -19,6 +23,7 @@ import {
 } from "../../../../services/api/documentation";
 import { documentationCudBillingFolder } from "../../../../services/config/config";
 import dayjs from "dayjs";
+import { getCurrentDateTimeString } from "../../../../utils/helpers";
 
 export const CreateEditCudBillingRecordContainer = () => {
   const { handleGoBack } = useContext(GeneralContext);
@@ -28,9 +33,11 @@ export const CreateEditCudBillingRecordContainer = () => {
 
   //hook para guardar los pacientes
   const [patients, setPatients] = useState([]);
+  const [patient, setPatient] = useState({});
 
   //hook para guardar los profesionales
   const [professionals, setProfessionals] = useState([]);
+  const [professional, setProfessional] = useState({});
 
   //hook para guardar las facturas
   const [cudBillingRecords, setCudBillingRecords] = useState([]);
@@ -118,7 +125,7 @@ export const CreateEditCudBillingRecordContainer = () => {
     ) {
       updatedFormData = {
         ...updatedFormData,
-        fechacobro: "",
+        fechacobro: null,
         montopercibido: 0,
         retencion: 0,
         montofinalprofesional: 0,
@@ -167,6 +174,11 @@ export const CreateEditCudBillingRecordContainer = () => {
       return;
     }
 
+    if (formData.montofacturado === 0) {
+      errorAlert("Ingresar un valor diferente a 0 para el monto facturado.");
+      return;
+    }
+
     if (!formData.documentofacturamensual || !formData.imgasistenciamensual) {
       errorAlert("Faltan archivos por seleccionar.");
       return;
@@ -187,8 +199,18 @@ export const CreateEditCudBillingRecordContainer = () => {
           deleteCudBillingDocument(formFiles.imgasistenciamensual);
       }
 
+      // Construcción del nombre base para los archivos
+      const patient = patients.find(
+        (patient) => patient.id === formData.idpaciente
+      );
+      const professional = professionals.find(
+        (professional) => professional.id === formData.idprofesional
+      );
+      halfDocumentName = `${patient.nombreyapellidopaciente}_${
+        professional.nombreyapellidoprofesional
+      }_${getCurrentDateTimeString()}`;
+
       // Si se modifican los archivos a cargar se borran los archivos anteriores
-      halfDocumentName = `facturaMensual_${formData.nrofactura}`;
       if (
         formFiles.documentofacturamensual !== formData.documentofacturamensual
       ) {
@@ -205,8 +227,6 @@ export const CreateEditCudBillingRecordContainer = () => {
           documentofacturamensual: facturaMensualUrl,
         };
       }
-
-      halfDocumentName = `asistenciaMensual_${formData.nrofactura}`;
 
       // Si se modifican los archivos a cargar se borran los archivos anteriores
       if (formFiles.imgasistenciamensual !== formData.imgasistenciamensual) {
@@ -225,10 +245,12 @@ export const CreateEditCudBillingRecordContainer = () => {
       }
 
       //Estandarizo el formato de la fecha mensual
-      updatedFormData = {
-        ...updatedFormData,
-        periodofacturado: `${formData.periodofacturado}-01`,
-      };
+      if (formFiles.periodofacturado !== formData.periodofacturado) {
+        updatedFormData = {
+          ...updatedFormData,
+          periodofacturado: `${formData.periodofacturado}-01`,
+        };
+      }
 
       // Si no hay edición se llama a la función create
       if (!cudBillingRecordId) {
@@ -256,34 +278,60 @@ export const CreateEditCudBillingRecordContainer = () => {
   useEffect(() => {
     setIsLoading(true);
 
-    Promise.all([getCudPatients(), getProfessionals(), getCudBillingRecords()])
-      .then(([patientsResponse, professionalsResponse, cudBillingResponse]) => {
-        const patientsData = patientsResponse.data;
-        const professionalsData = professionalsResponse.data;
-        const cudBillingData = cudBillingResponse.data;
+    Promise.all([
+      getCudPatients(),
+      getProfessionals(),
+      getCudBillingRecords(),
+      cudBillingRecordId
+        ? getCudBillingRecord(cudBillingRecordId)
+        : Promise.resolve({ data: [null] }),
+      professionalId
+        ? getProfessional(professionalId)
+        : Promise.resolve({ data: [null] }),
+      patientId ? getPatient(patientId) : Promise.resolve({ data: [null] }),
+    ])
+      .then(
+        ([
+          patientsResponse,
+          professionalsResponse,
+          cudBillingRecordsResponse,
+          cudBillingRecordResponse,
+          professionalResponse,
+          patientResponse,
+        ]) => {
+          const patientsData = patientsResponse.data;
+          const professionalsData = professionalsResponse.data;
+          const cudBillingData = cudBillingRecordsResponse.data;
+          const cudBillingRecordResponseData = cudBillingRecordResponse.data[0];
+          const professional = professionalResponse.data[0];
+          const patient = patientResponse.data[0];
 
-        setPatients(patientsData);
-        setProfessionals(professionalsData);
-        setCudBillingRecords(cudBillingData);
+          setPatients(patientsData);
+          setProfessionals(professionalsData);
+          setCudBillingRecords(cudBillingData);
+          setProfessional(professional);
+          setPatient(patient);
 
-        if (cudBillingRecordId) {
-          const cudBillingRecordToEdit = cudBillingData.find(
-            (record) => record.id === parseInt(cudBillingRecordId)
-          );
-          setFormData(cudBillingRecordToEdit);
-          setFormFiles(cudBillingRecordToEdit);
-        } else {
-          setFormData(initialState);
+          // baseData será el objeto que se va a cargar en el form
+          let baseData = cudBillingRecordResponseData || { ...initialState };
+
+          // Si hay patientId y/o professionalId, lo agregamos al formData
+          if (patientId)
+            baseData = { ...baseData, idpaciente: parseInt(patientId) };
+          if (professionalId)
+            baseData = { ...baseData, idprofesional: parseInt(professionalId) };
+
+          setFormData(baseData);
+          setFormFiles(baseData);
         }
-
-        console.log("Pacientes:", patientsData);
-        console.log("Profesionales:", professionalsData);
-      })
+      )
       .catch((error) => console.error(error))
       .finally(() => setIsLoading(false));
   }, []);
 
   if (isLoading) return <LoadingContainer />;
+
+  //Obtiene el paciente y profesional
 
   const createEditCudBillingProps = {
     handleSubmit,
@@ -292,6 +340,7 @@ export const CreateEditCudBillingRecordContainer = () => {
     modifiedFlag,
     formData,
     handleGoBack,
+    patientId,
     professionalId,
     cudBillingRecordId,
     patients,
@@ -301,6 +350,8 @@ export const CreateEditCudBillingRecordContainer = () => {
     handleRemoveFile,
     existingCudBillingNumber,
     currentMonth,
+    patient,
+    professional,
   };
   return <CreateEditCudBillingRecord {...createEditCudBillingProps} />;
 };

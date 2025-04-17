@@ -101,12 +101,30 @@ function App() {
               element={<BillingRecordsContainer />}
             />
 
+            <Route
+              path="/billingRecords/list/patient/:patientId"
+              element={<BillingRecordsContainer />}
+            />
+
+            <Route
+              path="/billingRecords/list/professional/:professionalId"
+              element={<BillingRecordsContainer />}
+            />
+
             {/* ---------- Facturación  ----------*/}
 
             <Route
               path="/billingRecords/createCudBillingRecord"
               element={<CreateEditCudBillingRecordContainer />}
             />
+            <Route
+              path="/billingRecords/createCudBillingRecord/professional/:professionalId"
+              element={<CreateEditCudBillingRecordContainer />}
+            />
+            <Route
+              path="/billingRecords/createCudBillingRecord/patient/:patientId"
+              element={<CreateEditCudBillingRecordContainer />}
+            />
 
             <Route
               path="/billingRecords/createCudBillingRecord"
@@ -114,7 +132,11 @@ function App() {
             />
 
             <Route
-              path="/billingRecords/cudBillingRecords/edit/:cudBillingRecordId"
+              path="/billingRecords/cudBillingRecords/edit/patient/:patientId/:cudBillingRecordId"
+              element={<CreateEditCudBillingRecordContainer />}
+            />
+            <Route
+              path="/billingRecords/cudBillingRecords/edit/profesional/:professionalId/:cudBillingRecordId"
               element={<CreateEditCudBillingRecordContainer />}
             />
 
@@ -122,6 +144,30 @@ function App() {
 
             <Route
               path="/billingRecords/noCudBillingRecords/createNoCudBillingRecord"
+              element={<CreateEditNoCudBillingRecordContainer />}
+            />
+
+            <Route
+              path="/billingRecords/createNoCudBillingRecord/patient/:patientId"
+              element={<CreateEditNoCudBillingRecordContainer />}
+            />
+
+            <Route
+              path="/billingRecords/noCudBillingRecords/createNoCudBillingRecord/professional/:professionalId"
+              element={<CreateEditNoCudBillingRecordContainer />}
+            />
+
+            <Route
+              path="/billingRecords/noCudBillingRecords/edit/:noCudBillingRecordId"
+              element={<CreateEditNoCudBillingRecordContainer />}
+            />
+
+            <Route
+              path="/billingRecords/noCudBillingRecords/edit/professional/:professionalId/:noCudBillingRecordId"
+              element={<CreateEditNoCudBillingRecordContainer />}
+            />
+            <Route
+              path="/billingRecords/noCudBillingRecords/edit/patient/:patientId/:noCudBillingRecordId"
               element={<CreateEditNoCudBillingRecordContainer />}
             />
           </Routes>

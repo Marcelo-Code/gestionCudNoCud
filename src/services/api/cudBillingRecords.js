@@ -63,7 +63,9 @@ export const getCudBillingRecord = async (cudBillingRecordId) => {
   try {
     const { data, error } = await supabaseClient
       .from("facturacioncud")
-      .select("*")
+      .select(
+        "*, pacientes: idpaciente(nombreyapellidopaciente, obrasocialpaciente), profesionales: idprofesional(nombreyapellidoprofesional, matriculaprofesional, cuitprofesional, especialidadprofesional)"
+      )
       .eq("id", cudBillingRecordId);
     if (error) throw error;
     return {
@@ -84,7 +86,9 @@ export const getCudBillingRecordsByProfessional = async (professionalId) => {
   try {
     const { data, error } = await supabaseClient
       .from("facturacioncud")
-      .select("*")
+      .select(
+        "*, pacientes: idpaciente(nombreyapellidopaciente, obrasocialpaciente), profesionales: idprofesional(nombreyapellidoprofesional, matriculaprofesional, cuitprofesional, especialidadprofesional)"
+      )
       .eq("idprofesional", professionalId);
 
     if (error) throw error;
@@ -107,7 +111,9 @@ export const getCudBillingRecordsByPatient = async (patientId) => {
   try {
     const { data, error } = await supabaseClient
       .from("facturacioncud")
-      .select("*")
+      .select(
+        "*, pacientes: idpaciente(nombreyapellidopaciente, obrasocialpaciente), profesionales: idprofesional(nombreyapellidoprofesional, matriculaprofesional, cuitprofesional, especialidadprofesional)"
+      )
       .eq("idpaciente", patientId);
 
     if (error) throw error;

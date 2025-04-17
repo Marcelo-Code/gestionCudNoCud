@@ -147,14 +147,16 @@ export const ProfessionalDetail = (professionalDetailProps) => {
               </Link>
             </Box>
             <Box sx={{ flex: 1, minWidth: "200px" }}>
-              <Button
-                size="small"
-                fullWidth
-                variant="contained"
-                startIcon={<Icons.ReceiptIcon />}
-              >
-                Facturación
-              </Button>
+              <Link to={`/billingRecords/list/professional/${formData.id}`}>
+                <Button
+                  size="small"
+                  fullWidth
+                  variant="contained"
+                  startIcon={<Icons.ReceiptIcon />}
+                >
+                  Facturación
+                </Button>
+              </Link>
             </Box>
             <Box sx={{ flex: 1, minWidth: "200px" }}>
               <Link to={`/medicalRecords/list/professional/${formData.id}`}>
