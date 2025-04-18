@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { GeneralBar } from "./GeneralBar";
 
@@ -10,6 +9,9 @@ export const GeneralBarContainer = (generalBarContainerProps) => {
     enableSearchFilterBar = true,
     disableEditionBarButton = false,
     tooltipMessage,
+    selectedRecords,
+    patient,
+    professionals,
   } = generalBarContainerProps;
   const [activeBar, setActiveBar] = useState("editionBar");
 
@@ -33,6 +35,9 @@ export const GeneralBarContainer = (generalBarContainerProps) => {
     enableSearchFilterBar,
     disableEditionBarButton,
     tooltipMessage,
+    selectedRecords,
+    patient,
+    professionals,
   };
   return <GeneralBar {...generalBarProps} />;
 };

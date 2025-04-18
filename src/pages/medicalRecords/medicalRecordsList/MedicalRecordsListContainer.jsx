@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MedicalRecordsList } from "./MedicalRecordsList";
 import { useParams } from "react-router-dom";
 import {
@@ -9,14 +9,24 @@ import {
 } from "../../../services/api/medicalRecords";
 import { LoadingContainer } from "../../loading/LoadingContainer";
 import { getPatient } from "../../../services/api/patients";
-import { getProfessional } from "../../../services/api/professionals";
+import {
+  getProfessional,
+  getProfessionals,
+} from "../../../services/api/professionals";
+import { GeneralContext } from "../../../context/GeneralContext";
 
 export const MedicalRecordsListContainer = () => {
   //hook para obtener el id del paciente o profesional
   const { patientId = null, professionalId = null } = useParams();
 
+  //hook para guardar los profesionales
+  const [professionals, setProfessionals] = useState([]);
+
   //hook para mostrar datos de la persona referenciada, paciente o profesional
   const [referencedPerson, setReferencedPerson] = useState({});
+
+  //hook para guardar el paciente en caso de exista
+  const [patient, setPatient] = useState({});
 
   //hook para actualizar la lista luego de una acción
   const [updateList, setUpdateList] = useState(false);
@@ -30,14 +40,7 @@ export const MedicalRecordsListContainer = () => {
   //hook para el array de consultas
   const [medicalRecords, setMedicalRecords] = useState([]);
 
-  //Hook para seleccionar registros para el informe
-  const [reportTitle, setReportTitle] = useState({
-    tipoconsulta: "",
-    nombreyapellidoprofesional: "",
-    matriculaprofesional: "",
-    especialidadprofesional: "",
-    periodoabordaje: "",
-  });
+  const { handleCheckboxChange, selectedRecords } = useContext(GeneralContext);
 
   //Función para eliminar una consulta
   const handleDeleteMedicalRecord = (medicalRecordId) => {
@@ -48,26 +51,45 @@ export const MedicalRecordsListContainer = () => {
       .catch((error) => console.log(error));
   };
 
+  console.log(patientId);
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        let response;
+        const professionalsResponse = await getProfessionals();
+        setProfessionals(professionalsResponse.data);
+
+        let medicalRecordsResponseData;
         let personData;
+
         if (patientId) {
-          response = await getMedicalRecordsByPatient(patientId);
-          const res = await getPatient(patientId);
-          personData = res.data[0];
+          const [medicalRecordsResponse, patientResponse] = await Promise.all([
+            getMedicalRecordsByPatient(patientId),
+            getPatient(patientId),
+          ]);
+
+          console.log(medicalRecordsResponse);
+          medicalRecordsResponseData = medicalRecordsResponse.data;
+          personData = patientResponse.data[0];
+          setPatient(personData);
         } else if (professionalId) {
-          response = await getMedicalRecordsByProfessional(professionalId);
-          const res = await getProfessional(professionalId);
-          personData = res.data[0];
+          const [medicalRecordsResponse, professionalResponse] =
+            await Promise.all([
+              getMedicalRecordsByProfessional(professionalId),
+              getProfessional(professionalId),
+            ]);
+
+          console.log(medicalRecordsResponse),
+            (medicalRecordsResponseData = medicalRecordsResponse.data);
+          personData = professionalResponse.data[0];
         } else {
-          response = await getMedicalRecords();
+          const medicalRecordsResponse = await getMedicalRecords();
+          medicalRecordsResponseData = medicalRecordsResponse.data;
+          console.log(medicalRecordsResponse);
         }
-        setMedicalRecords(response.data);
+        setMedicalRecords(medicalRecordsResponseData);
         setReferencedPerson(personData);
-        console.log(response);
       } catch (error) {
         console.log(error);
       } finally {
@@ -95,14 +117,16 @@ export const MedicalRecordsListContainer = () => {
         idprofesional,
         {
           id: idprofesional,
-          name: profesionales.nombreyapellidoprofesional,
-          value: profesionales.matriculaprofesional,
+          nombreyapellidoprofesional: profesionales.nombreyapellidoprofesional,
+          matriculaprofesional: profesionales.matriculaprofesional,
           cuitprofesional: profesionales.cuitprofesional,
           especialidadprofesional: profesionales.especialidadprofesional,
         },
       ])
     ).values()
-  ).sort((a, b) => a.name.localeCompare(b.name));
+  ).sort((a, b) =>
+    a.nombreyapellidoprofesional.localeCompare(b.nombreyapellidoprofesional)
+  );
 
   const medicalRecordsListProps = {
     medicalRecords,
@@ -113,6 +137,10 @@ export const MedicalRecordsListContainer = () => {
     patientId,
     professionalId,
     titleName,
+    handleCheckboxChange,
+    selectedRecords,
+    patient,
+    professionals,
   };
   return <MedicalRecordsList {...medicalRecordsListProps} />;
 };

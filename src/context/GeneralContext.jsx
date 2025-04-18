@@ -74,15 +74,18 @@ export const GeneralContextProvider = ({ children }) => {
     return formattedDateCapitalized;
   };
 
-  //Función para quitar caracteres especiales de un string
-  //------------------------------------------------------
+  // Dentro de tu componente:
+  const [selectedRecords, setSelectedRecords] = useState([]);
 
-  const removeAccentsAndSpecialChars = (str) => {
-    const normalizedStr = str.normalize("NFD");
-    const cleanedStr = normalizedStr
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-zA-Z0-9\s]/g, "");
-    return cleanedStr;
+  const handleCheckboxChange = (record) => {
+    setSelectedRecords((prevSelected) => {
+      const alreadySelected = prevSelected.find((r) => r.id === record.id);
+      if (alreadySelected) {
+        return prevSelected.filter((r) => r.id !== record.id); // lo deselecciona
+      } else {
+        return [...prevSelected, record]; // lo selecciona
+      }
+    });
   };
 
   const data = {
@@ -90,6 +93,8 @@ export const GeneralContextProvider = ({ children }) => {
     cancelAction,
     textSize,
     setTextSize,
+    handleCheckboxChange,
+    selectedRecords,
   };
 
   return (

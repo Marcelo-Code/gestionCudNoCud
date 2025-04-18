@@ -14,9 +14,9 @@ export const NavBar = () => {
         <Tooltip title="Home" placement="top-end" arrow>
           <Link to="/">
             <img
-              src="/images/elReinoDelReves.png"
+              src="/images/Imagen1.png"
               alt=""
-              style={{ width: "80px", height: "80px" }}
+              style={{ width: "90px", height: "90px" }}
             />
           </Link>
         </Tooltip>
@@ -32,11 +32,6 @@ export const NavBar = () => {
       </Box>
 
       <Box style={{ padding: "10px" }}>
-        {/* <Tooltip title="Alertas" placement="top-end" arrow>
-          <IconButton>
-            <Icons.NotificationsActiveIcon sx={{ color: "white" }} />
-          </IconButton>
-        </Tooltip> */}
         <AlertsContainer />
       </Box>
     </Box>

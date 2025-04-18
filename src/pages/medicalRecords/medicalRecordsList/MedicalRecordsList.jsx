@@ -29,6 +29,10 @@ export const MedicalRecordsList = ({
   patientId,
   professionalId,
   titleName,
+  handleCheckboxChange,
+  selectedRecords,
+  patient,
+  professionals,
 }) => {
   const [reportMode, setReportMode] = useState(false);
 
@@ -55,6 +59,9 @@ export const MedicalRecordsList = ({
 
     //Barra reporte
     professionalsList,
+    selectedRecords,
+    patient,
+    professionals,
 
     //General
     reportMode,
@@ -78,7 +85,14 @@ export const MedicalRecordsList = ({
                   <CardContent>
                     {reportMode && (
                       <FormControlLabel
-                        control={<Checkbox defaultChecked />}
+                        control={
+                          <Checkbox
+                            onChange={() => handleCheckboxChange(medicalRecord)}
+                            checked={selectedRecords.some(
+                              (r) => r.id === medicalRecord.id
+                            )}
+                          />
+                        }
                         label="Seleccionar para informe"
                       />
                     )}

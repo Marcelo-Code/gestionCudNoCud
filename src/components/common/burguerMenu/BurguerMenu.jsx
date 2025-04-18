@@ -44,7 +44,7 @@ export const BurguerMenu = (burguerMenuProps) => {
               </IconButton>
             </Tooltip>
           </Box>
-          <Box sx={{ paddingTop: "80px" }}>
+          <Box>
             <List>
               {options.map(({ icon, option, link }) => (
                 <ListItem key={option}>

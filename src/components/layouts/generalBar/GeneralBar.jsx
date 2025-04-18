@@ -17,6 +17,9 @@ export const GeneralBar = (generalBarProps) => {
     enableSearchFilterBar,
     disableEditionBarButton,
     tooltipMessage,
+    selectedRecords,
+    patient,
+    professionals,
   } = generalBarProps;
 
   const searchFilterBarProps = {
@@ -44,6 +47,9 @@ export const GeneralBar = (generalBarProps) => {
     setActiveBar,
     professionalsList,
     enableSearchFilterBar,
+    selectedRecords,
+    patient,
+    professionals,
   };
 
   return (

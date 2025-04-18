@@ -27,6 +27,11 @@ export const BurguerMenuContainer = () => {
       link: "/billingRecords/list",
     },
     {
+      icon: <Icons.ErrorIcon />,
+      option: "Reclamos",
+      link: "",
+    },
+    {
       icon: <Icons.PersonIcon />,
       option: "Pacientes Inactivos",
       link: "/patients/list/inactive",
