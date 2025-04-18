@@ -5,7 +5,7 @@ import { OptionSelect } from "../../../../components/common/optionSelect/OptionS
 import { FormButtonGroupContainer } from "../../../../components/common/formButtonGroup/FormButtonGroupContainer";
 
 import { Icons } from "../../../../assets/Icons";
-import { noCudBillingOptions } from "../../../../data/DocumentData";
+import { noCudBillingOptions } from "../../../../data/documentsData";
 import { TrafficLightStatus } from "../../../../components/common/trafficLightStatus/TrafficLight";
 
 export const CreateEditNoCudBillingRecord = (createEditCudBillingProps) => {
