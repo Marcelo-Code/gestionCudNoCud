@@ -2,7 +2,7 @@ import { Box, FormGroup, TextField } from "@mui/material";
 import { Icons } from "../../../assets/Icons";
 import "./createEditProfessional.css";
 import "../../../assets/css/globalFormat.css";
-import { FormButtonGroupContainer } from "../../../components/common/formButtonGroup/formButtonGroupContainer";
+import { FormButtonGroupContainer } from "../../../components/common/formButtonGroup/FormButtonGroupContainer";
 import { NumericFormat } from "react-number-format";
 
 export const CreateEditProfessional = ({
