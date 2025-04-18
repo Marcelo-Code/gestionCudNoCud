@@ -2,7 +2,7 @@ import { SearchFilterBar } from "./bars/SearchFilterBar";
 import { Box } from "@mui/material";
 import { EditionBar } from "./bars/EditionBar";
 import "./generalBar.css";
-import { ReportBar } from "./bars/reportBar";
+import { ReportBar } from "./bars/ReportBar";
 export const GeneralBar = (generalBarProps) => {
   const {
     editMode,
