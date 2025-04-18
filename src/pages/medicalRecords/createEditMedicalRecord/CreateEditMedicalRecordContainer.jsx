@@ -7,13 +7,11 @@ import {
   getProfessionals,
 } from "../../../services/api/professionals";
 import { LoadingContainer } from "../../loading/LoadingContainer";
-import { meetings } from "../../../data/documentData";
+import { meetings } from "../../../data/documentsData";
 import {
   createMedicalRecord,
   getMedicalRecord,
   getMedicalRecords,
-  getMedicalRecordsByPatient,
-  getMedicalRecordsByProfessional,
 } from "../../../services/api/medicalRecords";
 import { CreateEditMedicalRecord } from "./CreateEditMedicalRecord";
 import { GeneralContext } from "../../../context/GeneralContext";
