@@ -21,7 +21,7 @@ import { Documentation } from "./Documentation";
 import {
   patientDocumentData,
   professionalDocumentData,
-} from "../../data/documentsData";
+} from "../../data/documentsData.js";
 
 export const DocumentationContainer = () => {
   //hooks para los datos del formulario
