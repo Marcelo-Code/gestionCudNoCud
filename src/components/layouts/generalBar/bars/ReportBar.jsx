@@ -3,7 +3,7 @@ import { Edit as EditIcon } from "@mui/icons-material";
 import "../generalBar.css";
 import { Icons } from "../../../../assets/Icons";
 import { OptionSelect } from "../../../common/optionSelect/OptionSelect";
-import { meetings } from "../../../../data/DocumentData";
+import { meetings } from "../../../../data/documentsData";
 
 export const ReportBar = (reportBarProps) => {
   const { activeBar, setActiveBar, professionalsList, enableSearchFilterBar } =
