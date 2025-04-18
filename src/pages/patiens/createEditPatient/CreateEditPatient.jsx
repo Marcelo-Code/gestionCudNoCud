@@ -9,7 +9,7 @@ import {
 import { Icons } from "../../../assets/Icons";
 import "./createEditPatient.css";
 import "../../../assets/css/globalFormat.css";
-import { FormButtonGroupContainer } from "../../../components/common/formButtonGroup/formButtonGroupContainer";
+import { FormButtonGroupContainer } from "../../../components/common/formButtonGroup/FormButtonGroupContainer";
 import { NumericFormat } from "react-number-format";
 
 export const CreateEditPatient = ({
