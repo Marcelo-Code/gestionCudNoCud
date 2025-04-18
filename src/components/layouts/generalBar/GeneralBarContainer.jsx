@@ -8,6 +8,8 @@ export const GeneralBarContainer = (generalBarContainerProps) => {
     setEditMode,
     enableReportBar = true,
     enableSearchFilterBar = true,
+    disableEditionBarButton = false,
+    tooltipMessage,
   } = generalBarContainerProps;
   const [activeBar, setActiveBar] = useState("editionBar");
 
@@ -29,6 +31,8 @@ export const GeneralBarContainer = (generalBarContainerProps) => {
     setActiveBar,
     enableReportBar,
     enableSearchFilterBar,
+    disableEditionBarButton,
+    tooltipMessage,
   };
   return <GeneralBar {...generalBarProps} />;
 };

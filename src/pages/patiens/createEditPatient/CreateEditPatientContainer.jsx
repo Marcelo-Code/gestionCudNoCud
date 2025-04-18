@@ -41,7 +41,7 @@ export const CreateEditPatientContainer = () => {
   const handleChange = (e) => {
     const { value, name } = e.target;
     if (name == "cud" && !value) {
-      formData.fechavencimientocud = "";
+      formData.fechavencimientocud = null;
     }
     if (name === "dnipaciente") {
       if (patients.some((patient) => patient.dnipaciente === value)) {

@@ -15,6 +15,8 @@ export const GeneralBar = (generalBarProps) => {
     professionalsList = [],
     enableReportBar,
     enableSearchFilterBar,
+    disableEditionBarButton,
+    tooltipMessage,
   } = generalBarProps;
 
   const searchFilterBarProps = {
@@ -33,6 +35,8 @@ export const GeneralBar = (generalBarProps) => {
     to,
     enableReportBar,
     enableSearchFilterBar,
+    disableEditionBarButton,
+    tooltipMessage,
   };
 
   const reportBarProps = {

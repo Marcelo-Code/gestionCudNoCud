@@ -89,7 +89,8 @@ export const getNoCudBillingRecordsByProfessional = async (professionalId) => {
       .select(
         "*, pacientes: idpaciente(nombreyapellidopaciente, obrasocialpaciente), profesionales: idprofesional(nombreyapellidoprofesional, matriculaprofesional, cuitprofesional, especialidadprofesional)"
       )
-      .eq("idprofesional", professionalId);
+      .eq("idprofesional", professionalId)
+      .order("fechasesion", { ascending: false });
 
     if (error) throw error;
 
@@ -114,7 +115,8 @@ export const getNoCudBillingRecordsByPatient = async (patientId) => {
       .select(
         "*, pacientes: idpaciente(nombreyapellidopaciente, obrasocialpaciente), profesionales: idprofesional(nombreyapellidoprofesional, matriculaprofesional, cuitprofesional, especialidadprofesional)"
       )
-      .eq("idpaciente", patientId);
+      .eq("idpaciente", patientId)
+      .order("fechasesion", { ascending: false });
 
     if (error) throw error;
 

@@ -17,6 +17,8 @@ export const EditionBar = (editionBarProps) => {
     to,
     enableReportBar,
     enableSearchFilterBar,
+    disableEditionBarButton,
+    tooltipMessage,
   } = editionBarProps;
 
   return (
@@ -26,16 +28,19 @@ export const EditionBar = (editionBarProps) => {
       }`}
     >
       {buttonText && buttonIcon && (
-        <Link to={to}>
-          <Button
-            aria-label="fingerprint"
-            size="small"
-            variant="contained"
-            startIcon={buttonIcon}
-          >
-            {buttonText}
-          </Button>
-        </Link>
+        <Tooltip title={tooltipMessage} placement="top-end" arrow>
+          <Link to={disableEditionBarButton ? "#" : to}>
+            <Button
+              aria-label="fingerprint"
+              size="small"
+              variant="contained"
+              startIcon={buttonIcon}
+              disabled={disableEditionBarButton}
+            >
+              {buttonText}
+            </Button>
+          </Link>
+        </Tooltip>
       )}
       <Box
         style={{

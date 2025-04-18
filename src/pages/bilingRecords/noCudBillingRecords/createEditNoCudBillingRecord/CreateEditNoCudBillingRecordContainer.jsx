@@ -151,20 +151,16 @@ export const CreateEditNoCudBillingRecordContainer = () => {
     }
 
     // Validación: si está pagado, deben existir ambos documentos
-    if (
-      isPago &&
-      (!formData.documentofactura ||
-        !formData.documentocomprobantepagoretencion)
-    ) {
-      errorAlert("Faltan archivos por seleccionar.");
+    if (isPago && !formData.documentocomprobantepagoretencion) {
+      errorAlert("Subir documento comprobante retención");
       return;
     }
 
     setIsLoadingButton(true); // Se activa indicador de carga
 
-    try {
-      let updatedFormData = { ...formData };
+    let updatedFormData = { ...formData };
 
+    try {
       // Construcción del nombre base para los archivos
       const professional = professionals.find(
         (profesional) => profesional.id === parseInt(formData.idprofesional)
@@ -209,28 +205,37 @@ export const CreateEditNoCudBillingRecordContainer = () => {
       // Si está pagado, subimos los nuevos documentos
       if (isPago) {
         try {
-          // Subida de ambos documentos en paralelo
-          const [facturaUrl, comprobanteUrl] = await Promise.all([
-            uploadNoCudBillingDocument(
+          //Si documentofactura cambia se sube el nuevo
+          if (formData.documentofactura !== formFiles.documentofactura) {
+            const facturaUrl = await uploadNoCudBillingDocument(
               formData.documentofactura,
               documentationNoCudBillingFolder,
               "documentofactura",
               halfDocumentName
-            ),
-            uploadNoCudBillingDocument(
+            );
+            //se actualiza url en el formData
+            updatedFormData = {
+              ...updatedFormData,
+              documentofactura: facturaUrl,
+            };
+          }
+          //Si documentocomprobantepagoretencion cambia se sube el nuevo
+          if (
+            formData.documentocomprobantepagoretencion !==
+            formFiles.documentocomprobantepagoretencion
+          ) {
+            const comprobanteUrl = await uploadNoCudBillingDocument(
               formData.documentocomprobantepagoretencion,
               documentationNoCudBillingFolder,
               "documentocomprobantepagoretencion",
               halfDocumentName
-            ),
-          ]);
-
-          // Se agregan las URLs a los datos finales que se van a guardar
-          updatedFormData = {
-            ...updatedFormData,
-            documentofactura: facturaUrl,
-            documentocomprobantepagoretencion: comprobanteUrl,
-          };
+            );
+            //Se actualiza url en el formData
+            updatedFormData = {
+              ...updatedFormData,
+              documentocomprobantepagoretencion: comprobanteUrl,
+            };
+          }
         } catch (uploadError) {
           // Manejo de error en subida de documentos
           console.error("Error al subir los documentos:", uploadError);
@@ -317,9 +322,16 @@ export const CreateEditNoCudBillingRecordContainer = () => {
 
           // Si hay patientId y/o professionalId, lo agregamos al formData
           if (patientId)
-            baseData = { ...baseData, idpaciente: parseInt(patientId) };
+            baseData = {
+              ...baseData,
+              idpaciente: parseInt(patientId),
+            };
           if (professionalId)
-            baseData = { ...baseData, idprofesional: parseInt(professionalId) };
+            baseData = {
+              ...baseData,
+              idprofesional: parseInt(professionalId),
+              prestacion: professionalData.especialidadprofesional,
+            };
 
           setFormData(baseData);
           setFormFiles(baseData);

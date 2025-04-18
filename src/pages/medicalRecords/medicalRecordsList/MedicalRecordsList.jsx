@@ -32,13 +32,26 @@ export const MedicalRecordsList = ({
 }) => {
   const [reportMode, setReportMode] = useState(false);
 
+  let createRoute = "/medicalRecords/createMedicalRecord";
+  let editRoute = "/medicalRecords/edit";
+
+  if (professionalId) {
+    createRoute += `/professional/${professionalId}`;
+    editRoute += `/professional/${professionalId}`;
+  }
+  if (patientId) {
+    createRoute += `/patient/${patientId}`;
+    editRoute += `/patient/${patientId}`;
+  }
+
   const generalBarContainerProps = {
     //Barra edicion
     editMode,
     setEditMode,
     buttonText: "Consulta",
     buttonIcon: <Icons.AddIcon />,
-    to: "/medicalRecords/createMedicalRecord",
+    to: `${createRoute}`,
+    tooltipMessage: "Crear consulta",
 
     //Barra reporte
     professionalsList,
@@ -95,7 +108,7 @@ export const MedicalRecordsList = ({
                         deleteFunction={() =>
                           handleDeleteMedicalRecord(medicalRecord.id)
                         }
-                        editLink={`/medicalRecords/edit/${medicalRecord.id}`}
+                        editLink={`${editRoute}/${medicalRecord.id}`}
                       />
                     ) : (
                       <Link to={`/medicalRecords/detail/${medicalRecord.id}`}>

@@ -70,102 +70,143 @@ function App() {
               element={<CreateEditProfessionalContainer />}
             />
             {/* ---------- Consultas Médicas ----------*/}
+
+            {/* Crear consulta */}
             <Route
               path="/medicalRecords/createMedicalRecord"
               element={<CreateEditMedicalRecordContainer />}
             />
+
+            {/* Crear consulta con profesional */}
+            <Route
+              path="/medicalRecords/createMedicalRecord/professional/:professionalId"
+              element={<CreateEditMedicalRecordContainer />}
+            />
+
+            {/* Crear consulta con paciente */}
+            <Route
+              path="/medicalRecords/createMedicalRecord/patient/:patientId"
+              element={<CreateEditMedicalRecordContainer />}
+            />
+
+            {/* Lista de consultas */}
             <Route
               path="/medicalRecords/list"
               element={<MedicalRecordsListContainer />}
             />
+
+            {/* Lista de consultas por profesional */}
             <Route
               path="/medicalRecords/list/professional/:professionalId"
               element={<MedicalRecordsListContainer />}
             />
+
+            {/* Lista de consultas por paciente */}
             <Route
               path="/medicalRecords/list/patient/:patientId"
               element={<MedicalRecordsListContainer />}
             />
+
+            {/* Detalle consulta */}
             <Route
               path="/medicalRecords/detail/:medicalRecordId"
               element={<MedicalRecordDetailContainer />}
             />
+
+            {/* Editar consulta */}
             <Route
               path="/medicalRecords/edit/:medicalRecordId"
               element={<CreateEditMedicalRecordContainer />}
             />
-            {/* ---------- Facturación  ----------*/}
 
+            {/* Editar consulta con paciente*/}
+            <Route
+              path="/medicalRecords/edit/patient/:patientId/:medicalRecordId"
+              element={<CreateEditMedicalRecordContainer />}
+            />
+            {/* Editar consulta con profesional */}
+            <Route
+              path="/medicalRecords/edit/professional/:professionalId/:medicalRecordId"
+              element={<CreateEditMedicalRecordContainer />}
+            />
+
+            {/* ---------- Facturación  ----------*/}
             <Route
               path="/billingRecords/list"
               element={<BillingRecordsContainer />}
             />
-
             <Route
               path="/billingRecords/list/patient/:patientId"
               element={<BillingRecordsContainer />}
             />
-
             <Route
               path="/billingRecords/list/professional/:professionalId"
               element={<BillingRecordsContainer />}
             />
-
-            {/* ---------- Facturación  ----------*/}
-
+            {/* ---------- Facturación CUD  ----------*/}
+            {/* Crear facturación CUD */}
             <Route
               path="/billingRecords/createCudBillingRecord"
               element={<CreateEditCudBillingRecordContainer />}
             />
+            {/* Crear facturación CUD con profesional */}
             <Route
               path="/billingRecords/createCudBillingRecord/professional/:professionalId"
               element={<CreateEditCudBillingRecordContainer />}
             />
+            {/* Crear facturación CUD con paciente */}
             <Route
               path="/billingRecords/createCudBillingRecord/patient/:patientId"
               element={<CreateEditCudBillingRecordContainer />}
             />
-
+            {/* Editar facturación CUD */}
             <Route
-              path="/billingRecords/createCudBillingRecord"
+              path="/billingRecords/cudBillingRecords/edit/:cudBillingRecordId"
               element={<CreateEditCudBillingRecordContainer />}
             />
-
+            {/* Editar facturación CUD con paciente*/}
             <Route
               path="/billingRecords/cudBillingRecords/edit/patient/:patientId/:cudBillingRecordId"
               element={<CreateEditCudBillingRecordContainer />}
             />
+            {/* Editar facturación CUD con profesional */}
             <Route
-              path="/billingRecords/cudBillingRecords/edit/profesional/:professionalId/:cudBillingRecordId"
+              path="/billingRecords/cudBillingRecords/edit/professional/:professionalId/:cudBillingRecordId"
               element={<CreateEditCudBillingRecordContainer />}
             />
-
             {/* ---------- Facturación NO CUD ----------*/}
 
+            {/* Crear factura no CUD */}
             <Route
               path="/billingRecords/noCudBillingRecords/createNoCudBillingRecord"
               element={<CreateEditNoCudBillingRecordContainer />}
             />
 
+            {/* Crear factura no CUD con paciente */}
             <Route
-              path="/billingRecords/createNoCudBillingRecord/patient/:patientId"
+              path="/billingRecords/noCudBillingRecords/createNoCudBillingRecord/patient/:patientId"
               element={<CreateEditNoCudBillingRecordContainer />}
             />
 
+            {/* Crear factura no CUD con profesional */}
             <Route
               path="/billingRecords/noCudBillingRecords/createNoCudBillingRecord/professional/:professionalId"
               element={<CreateEditNoCudBillingRecordContainer />}
             />
 
+            {/* Editar factura no CUD */}
             <Route
               path="/billingRecords/noCudBillingRecords/edit/:noCudBillingRecordId"
               element={<CreateEditNoCudBillingRecordContainer />}
             />
 
+            {/* Editar factura no CUD con profesional */}
             <Route
               path="/billingRecords/noCudBillingRecords/edit/professional/:professionalId/:noCudBillingRecordId"
               element={<CreateEditNoCudBillingRecordContainer />}
             />
+
+            {/* Editar factura no CUD con paciente */}
             <Route
               path="/billingRecords/noCudBillingRecords/edit/patient/:patientId/:noCudBillingRecordId"
               element={<CreateEditNoCudBillingRecordContainer />}

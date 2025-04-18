@@ -19,6 +19,10 @@ export const CreateEditMedicalRecord = ({
   setTextSize,
   textSize,
   medicalRecordId,
+  patientId,
+  professionalId,
+  professional,
+  patient,
 }) => {
   const formButtonGroupProps = {
     modifiedFlag,
@@ -36,10 +40,18 @@ export const CreateEditMedicalRecord = ({
 
   const iconsStyle = { marginRight: "5px" };
 
+  console.log(professional);
+
   return (
     <Box className="generalContainer">
       <Box className="generalTitle">
-        {medicalRecordId ? "Editar Consulta" : "Crear Nueva Consulta"}{" "}
+        {medicalRecordId
+          ? professionalId
+            ? `Editar consulta profesional ${professional.nombreyapellidoprofesional}`
+            : patientId
+            ? `Editar consulta paciente ${patient.nombreyapellidopaciente}`
+            : "Editar Consulta"
+          : "Crear Nueva Consulta"}
       </Box>
       <Box className="createEditMedicalRecordContainer">
         <form onSubmit={handleSubmit}>
@@ -81,6 +93,7 @@ export const CreateEditMedicalRecord = ({
                   onChange={handleChange}
                   label={"Paciente"}
                   required
+                  disabled={patientId ? true : false}
                 />
               </Box>
 
@@ -96,6 +109,7 @@ export const CreateEditMedicalRecord = ({
                   value={formData.idprofesional}
                   onChange={handleChange}
                   label={"Profesional"}
+                  disabled={professionalId ? true : false}
                   required
                 />
               </Box>

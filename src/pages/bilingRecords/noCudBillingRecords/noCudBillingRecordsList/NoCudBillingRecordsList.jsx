@@ -10,6 +10,7 @@ import {
 } from "../../../../utils/helpers";
 import { Link } from "react-router-dom";
 import { TrafficLightStatus } from "../../../../components/common/trafficLightStatus/TrafficLight";
+import { BackButtonContainer } from "../../../../components/common/backButton/BackButtonContainer";
 
 export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
   const {
@@ -22,9 +23,12 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
     totalRetencion,
     patientId,
     professionalId,
+    patient,
+    professional,
   } = cudBillingRecordsListProps;
 
-  let createRoute = "/billingRecords/createNoCudBillingRecord";
+  let createRoute =
+    "/billingRecords/noCudBillingRecords/createNoCudBillingRecord";
   let editRoute = "/billingRecords/noCudBillingRecords/edit";
 
   if (professionalId) {
@@ -36,12 +40,18 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
     editRoute += `/patient/${patientId}`;
   }
 
+  const disableEditionBarButton = !!(patientId && patient.cud);
+
   const generalBarContainerProps = {
     buttonText: "Factura No CUD",
     buttonIcon: <Icons.AddIcon />,
     enableReportBar: false,
     setEditMode,
     to: `${createRoute}`,
+    disableEditionBarButton: disableEditionBarButton,
+    tooltipMessage: disableEditionBarButton
+      ? "El paciente no es CUD"
+      : "Crear factura no CUD",
   };
 
   const iconStyle = { color: "blue", fontSize: "1.2em", margin: "5px" };
@@ -306,6 +316,7 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
           </Box>
         </CardContent>
       </Card>
+      <BackButtonContainer />
     </Box>
   );
 };

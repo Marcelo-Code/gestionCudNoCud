@@ -1,13 +1,19 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { medicalRecordInitialState } from "../../../data/models";
-import { getPatients } from "../../../services/api/patients";
-import { getProfessionals } from "../../../services/api/professionals";
+import { getPatient, getPatients } from "../../../services/api/patients";
+import {
+  getProfessional,
+  getProfessionals,
+} from "../../../services/api/professionals";
 import { LoadingContainer } from "../../loading/LoadingContainer";
 import { meetings } from "../../../data/documentData";
 import {
   createMedicalRecord,
+  getMedicalRecord,
   getMedicalRecords,
+  getMedicalRecordsByPatient,
+  getMedicalRecordsByProfessional,
 } from "../../../services/api/medicalRecords";
 import { CreateEditMedicalRecord } from "./CreateEditMedicalRecord";
 import { GeneralContext } from "../../../context/GeneralContext";
@@ -15,7 +21,10 @@ import { GeneralContext } from "../../../context/GeneralContext";
 export const CreateEditMedicalRecordContainer = () => {
   //hooks para cargar pacientes, profesionales y consultas
   const [patients, setPatients] = useState([]);
+  const [patient, setPatient] = useState({});
   const [professionals, setProfessionals] = useState([]);
+  const [professional, setProfessional] = useState({});
+
   const [medicalRecords, setMedicalRecords] = useState([]);
 
   //hook para el loading
@@ -26,7 +35,11 @@ export const CreateEditMedicalRecordContainer = () => {
   const { handleGoBack, textSize, setTextSize } = useContext(GeneralContext);
 
   //hook para obtener el id de la consulta
-  const { medicalRecordId = null } = useParams();
+  const {
+    medicalRecordId = null,
+    patientId = null,
+    professionalId = null,
+  } = useParams();
 
   //hook para detectar los cambios
   const [modifiedFlag, setModifiedFlag] = useState(false);
@@ -66,29 +79,66 @@ export const CreateEditMedicalRecordContainer = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    Promise.all([getPatients(), getProfessionals(), getMedicalRecords()])
+    Promise.all([
+      getPatients(),
+      getProfessionals(),
+      getMedicalRecords(),
+      medicalRecordId
+        ? getMedicalRecord(medicalRecordId)
+        : Promise.resolve({ data: [null] }),
+      patientId ? getPatient(patientId) : Promise.resolve({ data: [null] }),
+      professionalId
+        ? getProfessional(professionalId)
+        : Promise.resolve({ data: [null] }),
+    ])
       .then(
-        ([patientsResponse, professionalsResponse, medicalRecordsResponse]) => {
-          setPatients(patientsResponse.data);
-          setProfessionals(professionalsResponse.data);
-          setMedicalRecords(medicalRecordsResponse.data);
+        ([
+          patientsResponse,
+          professionalsResponse,
+          medicalRecordsResponse,
+          medicalRecordResponse,
+          patientResponse,
+          professionalResponse,
+        ]) => {
+          const patientsResponseData = patientsResponse.data;
+          const professionalsResponseData = professionalsResponse.data;
+          const medicalRecordsResponseData = medicalRecordsResponse.data;
+          const medicalRecordResponseData = medicalRecordResponse.data[0];
+          const patientResponseData = patientResponse.data[0];
+          const professionalResponseData = professionalResponse.data[0];
 
-          if (medicalRecordId) {
-            const medicalRecordToEdit = medicalRecordsResponse.data.find(
-              (medicalRecord) => medicalRecord.id === parseInt(medicalRecordId)
-            );
-            console.log(medicalRecordToEdit);
-            setFormData(medicalRecordToEdit);
-          } else {
-            setFormData(medicalRecordInitialState);
-          }
+          setPatients(patientsResponseData);
+          setProfessionals(professionalsResponseData);
+          setPatients(patientsResponseData);
+          setMedicalRecords(medicalRecordsResponseData);
+          setProfessional(professionalResponseData);
+          setPatient(patientResponseData);
+
+          // baseData será el objeto que se va a cargar en el form
+          let baseData = medicalRecordResponseData || {
+            ...medicalRecordInitialState,
+          };
+
+          // Si hay patientId y/o professionalId, lo agregamos al formData
+          if (patientId)
+            baseData = {
+              ...baseData,
+              idpaciente: parseInt(patientId),
+            };
+          if (professionalId)
+            baseData = {
+              ...baseData,
+              idprofesional: parseInt(professionalId),
+            };
+
+          setFormData(baseData);
         }
       )
       .catch((error) => console.log(error))
       .finally(() => {
         setIsLoading(false);
       });
-  }, [medicalRecordId]);
+  }, [medicalRecordId, patientId, professionalId]);
 
   if (isLoading) return <LoadingContainer />;
 
@@ -104,6 +154,12 @@ export const CreateEditMedicalRecordContainer = () => {
     textSize,
     setTextSize,
     medicalRecordId,
+    patientId,
+    professionalId,
+    professional,
+    patient,
   };
+  console.log(patients);
   return <CreateEditMedicalRecord {...createMedicalRecordProps} />;
+  // return <h1>hola</h1>;
 };

@@ -100,6 +100,8 @@ export const BillingRecordsContainer = () => {
     professionalId,
     cudBillingRecords,
     handleDeleteCudBillingRecord,
+    patient,
+    professional,
   };
 
   const noCudBillingRecordsListContainerProps = {
@@ -107,6 +109,8 @@ export const BillingRecordsContainer = () => {
     professionalId,
     noCudBillingRecords,
     handleDeleteNoCudBillingRecord,
+    patient,
+    professional,
   };
 
   //Lista de pestañas para el tab

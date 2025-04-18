@@ -10,12 +10,6 @@ import { TrafficLightStatus } from "../../../../components/common/trafficLightSt
 import { formatToInputMonth } from "../../../../utils/helpers";
 
 export const CreateEditNoCudBillingRecord = (createEditCudBillingProps) => {
-  const elementStyle = {
-    margin: "10px",
-    width: "200px",
-    backgroundColor: "white",
-  };
-
   const {
     handleSubmit,
     handleChange,
@@ -35,6 +29,12 @@ export const CreateEditNoCudBillingRecord = (createEditCudBillingProps) => {
     noCudBillingRecordId,
   } = createEditCudBillingProps;
 
+  const elementStyle = {
+    margin: "10px",
+    width: "200px",
+    backgroundColor: "white",
+  };
+
   const formButtonGroupProps = {
     modifiedFlag,
     isLoadingButton,
@@ -44,6 +44,8 @@ export const CreateEditNoCudBillingRecord = (createEditCudBillingProps) => {
 
   const iconsUploadStyle = { color: "blue", fontSize: "1.2em" };
   const iconsUploadStyleDisabled = { color: "gray", fontSize: "1.2em" };
+
+  console.log(formData.idpaciente);
 
   let title = "Facturación no CUD";
 

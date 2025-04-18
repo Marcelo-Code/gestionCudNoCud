@@ -5,9 +5,10 @@ import { OptionSelect } from "../../../../components/common/optionSelect/OptionS
 import { FormButtonGroupContainer } from "../../../../components/common/formButtonGroup/formButtonGroupContainer";
 
 import { Icons } from "../../../../assets/Icons";
-import { billingOptions } from "../../../../data/DocumentData";
+import { billingOptions } from "../../../../data/documentsData";
 import { TrafficLightStatus } from "../../../../components/common/trafficLightStatus/TrafficLight";
 import { formatToInputMonth } from "../../../../utils/helpers";
+import { convertFieldResponseIntoMuiTextFieldProps } from "@mui/x-date-pickers/internals";
 
 export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
   const elementStyle = {
@@ -72,8 +73,6 @@ export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
       title = "Editar facturación CUD";
     }
   }
-
-  console.log(formData.idpaciente);
 
   return (
     <div className="generalContainer">

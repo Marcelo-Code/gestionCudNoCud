@@ -14,7 +14,7 @@ import {
 import { LoadingContainer } from "../../../loading/LoadingContainer";
 import { GeneralContext } from "../../../../context/GeneralContext";
 import { CreateEditCudBillingRecord } from "./CreateEditCudBillingRecord";
-import { allowedFileTypes } from "../../../../data/DocumentData";
+import { allowedFileTypes } from "../../../../data/documentsData";
 import { cudBillingRecordInitialState } from "../../../../data/models";
 import { errorAlert } from "../../../../components/common/alerts/alerts";
 import {
@@ -75,27 +75,23 @@ export const CreateEditCudBillingRecordContainer = () => {
     const { name, value, files } = e.target;
     const file = files?.[0];
 
-    let updatedFormData = { ...formData, [name]: value };
+    let updatedFormData = { ...formData };
 
+    // Actualización de campos según el nombre
     if (name === "periodofacturado") {
-      updatedFormData = {
-        ...updatedFormData,
-        periodofacturado: `${value}-01`,
-      };
+      updatedFormData = { ...updatedFormData, periodofacturado: `${value}-01` };
+    } else {
+      updatedFormData[name] = value;
     }
 
     // Validación de tipo de archivo
-    if (file && !allowedFileTypes.includes(file.type)) {
-      errorAlert("Formato de archivo no permitido");
-      console.error("Formato no permitido");
-      return;
-    }
-
-    // Si es un archivo, se actualiza el formData con el archivo
     if (file) {
-      updatedFormData[name] = file;
-    } else {
-      updatedFormData[name] = value;
+      if (!allowedFileTypes.includes(file.type)) {
+        errorAlert("Formato de archivo no permitido");
+        console.error("Formato no permitido");
+        return; // Sale si el archivo no es válido
+      }
+      updatedFormData[name] = file; // Si el archivo es válido, se guarda
     }
 
     // Selección automática de la obra social si se cambia el idpaciente
@@ -139,15 +135,12 @@ export const CreateEditCudBillingRecordContainer = () => {
       };
     }
 
+    // Verificar existencia de número de factura
     if (name === "nrofactura") {
       const exist = cudBillingRecords.some(
         (cudBillingRecord) => cudBillingRecord.nrofactura === value
       );
-      if (exist) {
-        setExistingCudBillingNumber(true);
-      } else {
-        setExistingCudBillingNumber(false);
-      }
+      setExistingCudBillingNumber(exist);
     }
 
     setFormData(updatedFormData);
@@ -302,23 +295,31 @@ export const CreateEditCudBillingRecordContainer = () => {
           const professionalsData = professionalsResponse.data;
           const cudBillingData = cudBillingRecordsResponse.data;
           const cudBillingRecordResponseData = cudBillingRecordResponse.data[0];
-          const professional = professionalResponse.data[0];
-          const patient = patientResponse.data[0];
+          const professionalData = professionalResponse.data[0];
+          const patientData = patientResponse.data[0];
 
           setPatients(patientsData);
           setProfessionals(professionalsData);
           setCudBillingRecords(cudBillingData);
-          setProfessional(professional);
-          setPatient(patient);
+          setProfessional(professionalData);
+          setPatient(patientData);
 
           // baseData será el objeto que se va a cargar en el form
           let baseData = cudBillingRecordResponseData || { ...initialState };
 
           // Si hay patientId y/o professionalId, lo agregamos al formData
           if (patientId)
-            baseData = { ...baseData, idpaciente: parseInt(patientId) };
+            baseData = {
+              ...baseData,
+              idpaciente: parseInt(patientId),
+              obrasocialpaciente: patientData.obrasocialpaciente,
+            };
           if (professionalId)
-            baseData = { ...baseData, idprofesional: parseInt(professionalId) };
+            baseData = {
+              ...baseData,
+              idprofesional: parseInt(professionalId),
+              prestacion: professionalData.especialidadprofesional,
+            };
 
           setFormData(baseData);
           setFormFiles(baseData);

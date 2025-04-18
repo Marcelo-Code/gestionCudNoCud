@@ -9,6 +9,8 @@ export const CudBillingRecordsListContainer = (
     handleDeleteCudBillingRecord,
     patientId,
     professionalId,
+    patient,
+    professional,
   } = cudBillingRecordsListContainerProps;
 
   const [editMode, setEditMode] = useState(false);
@@ -37,6 +39,8 @@ export const CudBillingRecordsListContainer = (
     totalMontoFacturado,
     patientId,
     professionalId,
+    patient,
+    professional,
   };
 
   return <CudBillingRecordsList {...cudBillingRecordsListProps} />;
