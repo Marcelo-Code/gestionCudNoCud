@@ -92,15 +92,28 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
             <table className="billingRecordsTable">
               <thead className="billingRecordsTableHeader">
                 <tr>
+                  <th
+                    style={{
+                      position: "sticky",
+                      left: 0,
+                      zIndex: 3,
+                      backgroundColor: "#fff",
+                      width: "60px",
+                      textAlign: "center",
+                      padding: "2px",
+                    }}
+                  >
+                    #
+                  </th>
                   {editMode && (
                     <th
                       style={{
                         position: "sticky",
-                        left: 0,
+                        left: "20px",
                         zIndex: 3,
                         backgroundColor: "#fff",
                         padding: "16px",
-                        width: "120px",
+                        width: "70px",
                         textAlign: "center",
                       }}
                     >
@@ -136,7 +149,7 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
                 </tr>
               </thead>
               <tbody>
-                {noCudBillingRecords.map((record) => (
+                {noCudBillingRecords.map((record, index) => (
                   <tr
                     key={record.id}
                     style={{
@@ -151,14 +164,27 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
                       (e.currentTarget.style.backgroundColor = "inherit")
                     }
                   >
+                    <td
+                      style={{
+                        position: "sticky",
+                        left: 0,
+                        margin: 0,
+                        backgroundColor: "#fff",
+                        zIndex: 2,
+                        padding: "2px",
+                        textAlign: "center",
+                      }}
+                    >
+                      {index + 1}
+                    </td>
                     {editMode && (
                       <td
                         style={{
                           position: "sticky",
-                          left: 0,
+                          left: "20px",
                           zIndex: 2,
                           backgroundColor: "#fff",
-                          padding: "16px",
+                          padding: "10px",
                         }}
                       >
                         <div style={{ display: "flex", gap: "8px" }}>

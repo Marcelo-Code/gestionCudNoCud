@@ -29,7 +29,6 @@ export const BurguerMenu = (burguerMenuProps) => {
             paddingTop: "10px",
           }}
           role="presentation"
-          onClick={toggleDrawer(false)}
         >
           <Box
             sx={{
@@ -64,6 +63,7 @@ export const BurguerMenu = (burguerMenuProps) => {
                         fontFamily: "broughton, 'Times New Roman', serif",
                         fontSize: "1.2rem",
                       }}
+                      onClick={toggleDrawer(false)}
                     />
                   </ListItemButton>
                 </ListItem>

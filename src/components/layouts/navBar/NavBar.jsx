@@ -4,6 +4,7 @@ import { BurguerMenuContainer } from "../../common/burguerMenu/BurguerMenuContai
 
 import "./navBar.css";
 import { Link } from "react-router-dom";
+import { AlertsContainer } from "../../../pages/alerts/AlertsContainer";
 
 export const NavBar = () => {
   return (
@@ -31,11 +32,12 @@ export const NavBar = () => {
       </Box>
 
       <Box style={{ padding: "10px" }}>
-        <Tooltip title="Alertas" placement="top-end" arrow>
+        {/* <Tooltip title="Alertas" placement="top-end" arrow>
           <IconButton>
             <Icons.NotificationsActiveIcon sx={{ color: "white" }} />
           </IconButton>
-        </Tooltip>
+        </Tooltip> */}
+        <AlertsContainer />
       </Box>
     </Box>
   );
