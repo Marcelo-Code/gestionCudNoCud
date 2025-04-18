@@ -3,7 +3,7 @@ import { Box, FormGroup, TextareaAutosize, TextField } from "@mui/material";
 import "./createEditMedicalRecord.css";
 import "../../../assets/css/globalFormat.css";
 import { Icons } from "../../../assets/Icons";
-import { FormButtonGroupContainer } from "../../../components/common/formButtonGroup/formButtonGroupContainer";
+import { FormButtonGroupContainer } from "../../../components/common/formButtonGroup/FormButtonGroupContainer";
 import { OptionSelect } from "../../../components/common/optionSelect/OptionSelect";
 import { SizeTextButtonGroupContainer } from "../../../components/common/sizeTextButtonGroup/SizeTextButtonGroupContainer";
 
