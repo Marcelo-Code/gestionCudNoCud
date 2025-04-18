@@ -8,7 +8,7 @@ import {
 import { LoadingContainer } from "../../../loading/LoadingContainer";
 import { GeneralContext } from "../../../../context/GeneralContext";
 import { CreateEditNoCudBillingRecord } from "./CreateEditNoCudBillingRecord";
-import { allowedFileTypes } from "../../../../data/DocumentData";
+import { allowedFileTypes } from "../../../../data/documentsData";
 import { noCudBillingRecordInitialState } from "../../../../data/models";
 import {
   errorAlert,
