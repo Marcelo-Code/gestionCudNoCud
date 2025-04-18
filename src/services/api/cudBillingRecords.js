@@ -43,7 +43,7 @@ export const getCudBillingRecords = async () => {
       .select(
         "*, pacientes: idpaciente(nombreyapellidopaciente, obrasocialpaciente), profesionales: idprofesional(nombreyapellidoprofesional, matriculaprofesional, cuitprofesional, especialidadprofesional)"
       )
-      .order("periodofacturado", { ascending: false });
+      .order("id", { ascending: false });
 
     return {
       status: 201,
@@ -117,7 +117,7 @@ export const getCudBillingRecordsByPatient = async (patientId) => {
         "*, pacientes: idpaciente(nombreyapellidopaciente, obrasocialpaciente), profesionales: idprofesional(nombreyapellidoprofesional, matriculaprofesional, cuitprofesional, especialidadprofesional)"
       )
       .eq("idpaciente", patientId)
-      .order("periodofacturado", { ascending: false });
+      .order("id", { ascending: false });
 
     if (error) throw error;
 
