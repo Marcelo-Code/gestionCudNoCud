@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ReportBar } from "../reportBar";
+import { ReportBar } from "../ReportBar";
 
 export const ReportBarContainer = (reportBarContainerProps) => {
   const {
