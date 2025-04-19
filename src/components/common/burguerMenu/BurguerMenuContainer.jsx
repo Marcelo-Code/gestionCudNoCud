@@ -29,7 +29,7 @@ export const BurguerMenuContainer = () => {
     {
       icon: <Icons.ErrorIcon />,
       option: "Reclamos",
-      link: "",
+      link: "/paymentRequests/list",
     },
     {
       icon: <Icons.PersonIcon />,

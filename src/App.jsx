@@ -17,6 +17,8 @@ import { MedicalRecordDetailContainer } from "./pages/medicalRecords/medicalReco
 import { BillingRecordsContainer } from "./pages/bilingRecords/BillingRecordsContainer";
 import { CreateEditCudBillingRecordContainer } from "./pages/bilingRecords/cudBillingRecords/createEditCudBillingRecord/CreateEditCudBillingRecordContainer";
 import { CreateEditNoCudBillingRecordContainer } from "./pages/bilingRecords/noCudBillingRecords/createEditNoCudBillingRecord/CreateEditNoCudBillingRecordContainer";
+import { CreateEditPaymentRequestContainer } from "./pages/paymentRequests/createEditPaymentRequest/CreateEditPaymentRequestContainer";
+import { PaymentRequestsListContainer } from "./pages/paymentRequests/paymentRequestsList/PaymentRequestsListContainer";
 function App() {
   return (
     <>
@@ -210,6 +212,32 @@ function App() {
             <Route
               path="/billingRecords/noCudBillingRecords/edit/patient/:patientId/:noCudBillingRecordId"
               element={<CreateEditNoCudBillingRecordContainer />}
+            />
+
+            {/*---------- Reclamos ----------*/}
+
+            {/* Crear reclamo */}
+            <Route
+              path="/paymentRequests/createPaymentRequest"
+              element={<CreateEditPaymentRequestContainer />}
+            />
+
+            {/* Editar reclamo */}
+            <Route
+              path="/paymentRequests/edit/:paymentRequestId"
+              element={<CreateEditPaymentRequestContainer />}
+            />
+
+            <Route
+              path="/paymentRequests/createPaymentRequest"
+              element={<CreateEditPaymentRequestContainer />}
+            />
+
+            {/* Lista de reclamos */}
+
+            <Route
+              path="/paymentRequests/list"
+              element={<PaymentRequestsListContainer />}
             />
           </Routes>
           <FooterContainer />

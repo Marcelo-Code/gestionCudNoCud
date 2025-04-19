@@ -116,3 +116,11 @@ export const noCudBillingRecordInitialState = {
   documentofactura: "",
   documentocomprobantepagoretencion: "",
 };
+
+export const paymentRequestInitialState = {
+  fechareclamo: null,
+  idfacturacioncud: "",
+  medioreclamo: "",
+  descripcionreclamo: "",
+  respuestareclamo: "",
+};

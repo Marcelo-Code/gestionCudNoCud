@@ -30,6 +30,18 @@
   font-size: 1em;
 }
 
+.generalSmallTitle {
+  width: 100%;
+  text-align: center;
+  padding: 5px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-shadow: 0 0 20px white;
+  background-color: rgba(0, 0, 0, 0.3);
+  font-size: 1em;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
 .listContainer {
   margin-top: 20px;
   display: flex;

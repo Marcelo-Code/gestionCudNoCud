@@ -1,0 +1,31 @@
+.medicalRecordListItem {
+  width: 80%;
+  min-width: 300px;
+  min-height: 250px;
+  max-height: 500px;
+  height: auto;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.medicalRecordListItemHeader {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  border-bottom: 1px solid black;
+  padding: 10px;
+  width: 100%;
+}
+
+.medicalRecordListItemDescription {
+  margin-top: 10px;
+  height: 100px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.medicalRecordListItemActions {
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 10px;
+  background-color: white;
+}

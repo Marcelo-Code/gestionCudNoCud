@@ -160,7 +160,7 @@ export const CreateEditMedicalRecordContainer = () => {
     professional,
     patient,
   };
-  console.log(patients);
+
   return <CreateEditMedicalRecord {...createMedicalRecordProps} />;
   // return <h1>hola</h1>;
 };
