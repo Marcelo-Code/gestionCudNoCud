@@ -6,22 +6,26 @@ import "./navBar.css";
 import { Link } from "react-router-dom";
 import { AlertsContainer } from "../../../pages/alerts/AlertsContainer";
 
-export const NavBar = () => {
+export const NavBar = (navBarProps) => {
+  const { showLogo } = navBarProps;
   return (
     <Box className="navBarContainer">
       <BurguerMenuContainer />
-      <Box className="navBarLogo">
-        <Tooltip title="Home" placement="top-end" arrow>
-          <Link to="/">
-            <img
-              src="/images/Imagen1.png"
-              alt=""
-              style={{ width: "90px", height: "90px" }}
-            />
-          </Link>
-        </Tooltip>
-        <Box className="navBarLogoTitle">Gestión Cudnocud</Box>
-      </Box>
+      {showLogo && (
+        <Box className="navBarLogo">
+          <Tooltip title="Home" placement="top-end" arrow>
+            <Link to="/">
+              <Box
+                component="img"
+                src="/images/logo.png"
+                alt="Logo"
+                sx={{ width: "90px", height: "90px" }}
+              />
+            </Link>
+          </Tooltip>
+          <Box className="navBarLogoTitle">Gestión Cudnocud</Box>
+        </Box>
+      )}
 
       <Box style={{ padding: "10px" }}>
         <Tooltip title="Logout" placement="top-end" arrow>
