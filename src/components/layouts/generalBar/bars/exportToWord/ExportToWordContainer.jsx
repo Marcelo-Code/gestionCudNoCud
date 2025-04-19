@@ -404,14 +404,8 @@ export const ExportToWordContainer = ({
   const [enableReportButton, setEnableReportButton] = useState(false);
 
   useEffect(() => {
-    if (
-      selectedRecords.length > 0 &&
-      Object.keys(professional).length > 0 &&
-      Object.keys(patient).length > 0
-    ) {
+    if (selectedRecords.length > 0 && !!professional.id) {
       setEnableReportButton(true);
-      console.log("paciente", patient);
-      console.log("profesional", professional);
     } else {
       setEnableReportButton(false);
     }

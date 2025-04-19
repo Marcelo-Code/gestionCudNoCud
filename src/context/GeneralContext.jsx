@@ -38,7 +38,8 @@ export const GeneralContextProvider = ({ children }) => {
   };
   const [pageIsLoading, setPageIsLoading] = useState(false);
 
-  const [updateAlertsList, setUpdateAlertsList] = useState(false);
+  //hook para actualizar la importación de datos
+  const [updateList, setUpdateList] = useState(false);
 
   const trimUrl = (url) => {
     if (url && typeof url === "string") {
@@ -95,6 +96,8 @@ export const GeneralContextProvider = ({ children }) => {
     setTextSize,
     handleCheckboxChange,
     selectedRecords,
+    updateList,
+    setUpdateList,
   };
 
   return (

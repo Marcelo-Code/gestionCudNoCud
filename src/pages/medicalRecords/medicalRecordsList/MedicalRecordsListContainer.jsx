@@ -51,8 +51,6 @@ export const MedicalRecordsListContainer = () => {
       .catch((error) => console.log(error));
   };
 
-  console.log(patientId);
-
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);

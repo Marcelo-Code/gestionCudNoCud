@@ -62,6 +62,7 @@ export const MedicalRecordsList = ({
     selectedRecords,
     patient,
     professionals,
+    enableReportBar: patientId ? true : false, //Solamente se accede a la barra de reporte si se ha seleccionado un paciente
 
     //General
     reportMode,

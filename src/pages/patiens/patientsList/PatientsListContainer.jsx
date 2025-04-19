@@ -25,10 +25,8 @@ export const PatientsListContainer = () => {
   //hook para el edit mode
   const [editMode, setEditMode] = useState(false);
 
-  //hook para actualizar la lista luego de una accion
-  const [updateList, setUpdateList] = useState(false);
-
-  const { handleGoBack } = useContext(GeneralContext);
+  const { handleGoBack, updateList, setUpdateList } =
+    useContext(GeneralContext);
 
   //Función para eliminar un paciente
   const handleDeletePatient = (patientId, patientName) => {

@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Alerts } from "./Alerts";
 import { getPatients } from "../../services/api/patients";
 import { getProfessionals } from "../../services/api/professionals";
 import { LoadingContainer } from "../loading/LoadingContainer";
 import dayjs from "dayjs";
+import { GeneralContext } from "../../context/GeneralContext";
 
 export function AlertsContainer() {
   //hook para los pacientes
@@ -17,6 +18,8 @@ export function AlertsContainer() {
 
   //hook para el drawer
   const [open, setOpen] = useState(false);
+
+  const { updateList } = useContext(GeneralContext);
 
   //Función para abrir y cerrar el drawer
   const toggleDrawer = (newOpen) => () => {
@@ -34,7 +37,7 @@ export function AlertsContainer() {
       })
       .catch((error) => console.log(error))
       .finally(() => setIsLoading(false));
-  }, []);
+  }, [updateList]);
 
   if (isLoading) return <LoadingContainer />;
 

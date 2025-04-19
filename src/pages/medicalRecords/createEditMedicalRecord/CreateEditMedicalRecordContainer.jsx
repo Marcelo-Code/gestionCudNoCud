@@ -101,14 +101,15 @@ export const CreateEditMedicalRecordContainer = () => {
           const patientsResponseData = patientsResponse.data;
           const professionalsResponseData = professionalsResponse.data;
           const medicalRecordsResponseData = medicalRecordsResponse.data;
-          const medicalRecordResponseData = medicalRecordResponse.data[0];
+          const medicalRecordResponseData = medicalRecordResponse.data;
           const patientResponseData = patientResponse.data[0];
           const professionalResponseData = professionalResponse.data[0];
 
           setPatients(patientsResponseData);
           setProfessionals(professionalsResponseData);
-          setPatients(patientsResponseData);
           setMedicalRecords(medicalRecordsResponseData);
+
+          setPatients(patientsResponseData);
           setProfessional(professionalResponseData);
           setPatient(patientResponseData);
 
@@ -118,6 +119,8 @@ export const CreateEditMedicalRecordContainer = () => {
           };
 
           // Si hay patientId y/o professionalId, lo agregamos al formData
+          // En caso de crear una nueva consulta, se agrega el id correspondiente al formulario
+          // quedando fijo el id de la persona referenciada
           if (patientId)
             baseData = {
               ...baseData,

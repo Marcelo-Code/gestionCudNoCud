@@ -13,7 +13,8 @@ import { CreateEditProfessional } from "./CreateEditProfessional";
 import { professionalInitialState } from "../../../data/models";
 
 export const CreateEditProfessionalContainer = () => {
-  const { handleGoBack } = useContext(GeneralContext);
+  const { handleGoBack, updateList, setUpdateList } =
+    useContext(GeneralContext);
 
   //Valores iniciales para el formulario
   const initialState = professionalInitialState;
@@ -73,6 +74,10 @@ export const CreateEditProfessionalContainer = () => {
 
     const today = dayjs().format("YYYY-MM-DD");
     const updatedFormData = { ...formData, fechaultimaactualizacion: today };
+
+    //Actualiza las listas
+    //Hace actualizar también las alertas
+    setUpdateList(!updateList);
 
     //Si el id del profesional no existe se crea el profesional
     if (!professionalId) {

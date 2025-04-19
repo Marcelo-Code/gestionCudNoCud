@@ -37,6 +37,8 @@ export const CreateEditPatientContainer = () => {
   //hook para obtener el id del paciente
   const { patientId = null } = useParams();
 
+  const { updateList, setUpdateList } = useContext(GeneralContext);
+
   //Función para guardar los cambios en el registro
   const handleChange = (e) => {
     const { value, name } = e.target;
@@ -70,6 +72,10 @@ export const CreateEditPatientContainer = () => {
 
     const today = dayjs().format("YYYY-MM-DD");
     const updatedFormData = { ...formData, fechaultimaactualizacion: today };
+
+    //Actualiza las listas
+    //Hace actualizar también las alertas
+    setUpdateList(!updateList);
 
     //Si el id del paciente no existe se crea el paciente
     if (!patientId) {

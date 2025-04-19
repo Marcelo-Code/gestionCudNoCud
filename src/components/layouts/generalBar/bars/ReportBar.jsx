@@ -1,10 +1,9 @@
-import { Box, Button, IconButton, Tooltip } from "@mui/material";
+import { Box, IconButton, Tooltip } from "@mui/material";
 import { Edit as EditIcon } from "@mui/icons-material";
 import "../generalBar.css";
 import { Icons } from "../../../../assets/Icons";
 import { OptionSelect } from "../../../common/optionSelect/OptionSelect";
 import { ExportToWordContainer } from "./exportToWord/ExportToWordContainer";
-import { useState } from "react";
 
 export const ReportBar = (reportBarProps) => {
   const {
@@ -14,39 +13,15 @@ export const ReportBar = (reportBarProps) => {
     enableSearchFilterBar,
     selectedRecords,
     patient,
-    professionals,
+    handleChange,
+    professional,
+    formData,
   } = reportBarProps;
-
-  const [professional, setProfessional] = useState({});
-  const [formData, setFormData] = useState({});
-
-  console.log(professionalsList);
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-
-    if (name === "idprofesional")
-      setProfessional(
-        professionalsList.find((professional) => professional.id === value)
-      );
-
-    console.log(professional);
-
-    setFormData({ ...formData, [name]: value });
-
-    if (name === "professional")
-      setProfessional(
-        professionals.find((professional) => professional.id === value)
-      );
-
-    console.log(name, value);
-  };
 
   const exportToWordContainerProps = {
     selectedRecords,
     patient,
     professional,
-    enableReportButton: true,
   };
 
   return (

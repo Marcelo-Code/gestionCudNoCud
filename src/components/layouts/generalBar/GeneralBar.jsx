@@ -2,7 +2,7 @@ import { SearchFilterBar } from "./bars/SearchFilterBar";
 import { Box } from "@mui/material";
 import { EditionBar } from "./bars/EditionBar";
 import "./generalBar.css";
-import { ReportBar } from "./bars/ReportBar";
+import { ReportBarContainer } from "./bars/reportBar/ReportBarContainer";
 export const GeneralBar = (generalBarProps) => {
   const {
     editMode,
@@ -42,7 +42,7 @@ export const GeneralBar = (generalBarProps) => {
     tooltipMessage,
   };
 
-  const reportBarProps = {
+  const reportBarContainerProps = {
     activeBar,
     setActiveBar,
     professionalsList,
@@ -57,7 +57,7 @@ export const GeneralBar = (generalBarProps) => {
       <Box className="barInner">
         <EditionBar {...editionBarProps} />
         {enableSearchFilterBar && <SearchFilterBar {...searchFilterBarProps} />}
-        {enableReportBar && <ReportBar {...reportBarProps} />}
+        {enableReportBar && <ReportBarContainer {...reportBarContainerProps} />}
       </Box>
     </Box>
   );

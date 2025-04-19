@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ProfessionalsList } from "./ProfessionalsList";
 import { LoadingContainer } from "../../loading/LoadingContainer";
 import {
@@ -8,6 +8,7 @@ import {
   softUndeleteProfessional,
 } from "../../../services/api/professionals";
 import { useParams } from "react-router-dom";
+import { GeneralContext } from "../../../context/GeneralContext";
 
 export const ProfessionalsListContainer = () => {
   //hook para determinar si se piden parámetros activos o inactivos
@@ -22,8 +23,7 @@ export const ProfessionalsListContainer = () => {
   //hook para el edit mode
   const [editMode, setEditMode] = useState(false);
 
-  //hook para actualizar la lista luego de una accion
-  const [updateList, setUpdateList] = useState(false);
+  const { updateList, setUpdateList } = useContext(GeneralContext);
 
   //Función para eliminar un profesional
   const handleDeleteProfessional = (professionalId, professionalName) => {
