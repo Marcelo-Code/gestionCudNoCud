@@ -38,6 +38,9 @@ import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import ErrorIcon from "@mui/icons-material/Error";
 import ClearIcon from "@mui/icons-material/Clear";
+import LoginIcon from "@mui/icons-material/Login";
+import SendIcon from "@mui/icons-material/Send";
+import KeyIcon from "@mui/icons-material/Key";
 
 export const Icons = {
   PersonAddIcon,
@@ -80,4 +83,7 @@ export const Icons = {
   MonetizationOnIcon,
   ErrorIcon,
   ClearIcon,
+  LoginIcon,
+  SendIcon,
+  KeyIcon,
 };

@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { AlertsContainer } from "../../../pages/alerts/AlertsContainer";
 
 export const NavBar = (navBarProps) => {
-  const { showLogo } = navBarProps;
+  const { showLogo, handleLogout } = navBarProps;
   return (
     <Box className="navBarContainer">
       <BurguerMenuContainer />
@@ -29,7 +29,7 @@ export const NavBar = (navBarProps) => {
 
       <Box style={{ padding: "10px" }}>
         <Tooltip title="Logout" placement="top-end" arrow>
-          <IconButton>
+          <IconButton onClick={handleLogout}>
             <Icons.LogoutIcon sx={{ color: "white" }} />
           </IconButton>
         </Tooltip>

@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { confirmationAlert } from "../components/common/alerts/alerts";
 
@@ -89,6 +89,15 @@ export const GeneralContextProvider = ({ children }) => {
     });
   };
 
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const storedIsLoggedIn = localStorage.getItem("isLoggedIn");
+    return storedIsLoggedIn === "true" ? true : false;
+  });
+
+  useEffect(() => {
+    localStorage.setItem("isLoggedIn", isLoggedIn.toString());
+  }, [isLoggedIn]);
+
   const data = {
     handleGoBack,
     cancelAction,
@@ -98,6 +107,8 @@ export const GeneralContextProvider = ({ children }) => {
     selectedRecords,
     updateList,
     setUpdateList,
+    isLoggedIn,
+    setIsLoggedIn,
   };
 
   return (
