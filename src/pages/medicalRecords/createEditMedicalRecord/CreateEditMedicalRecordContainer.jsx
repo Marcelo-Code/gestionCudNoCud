@@ -12,6 +12,7 @@ import {
   createMedicalRecord,
   getMedicalRecord,
   getMedicalRecords,
+  updateMedicalRecord,
 } from "../../../services/api/medicalRecords";
 import { CreateEditMedicalRecord } from "./CreateEditMedicalRecord";
 import { GeneralContext } from "../../../context/GeneralContext";
@@ -53,6 +54,8 @@ export const CreateEditMedicalRecordContainer = () => {
       [name]: value,
     };
 
+    console.log(formData);
+
     setFormData(updatedFormData);
 
     // Activar el flag solo si no se ha activado antes
@@ -66,7 +69,13 @@ export const CreateEditMedicalRecordContainer = () => {
     e.preventDefault();
 
     setIsLoadingButton(true);
-    createMedicalRecord(formData)
+
+    delete formData.pacientes;
+    delete formData.profesionales;
+
+    const action = medicalRecordId ? updateMedicalRecord : createMedicalRecord;
+
+    action(formData)
       .then((response) => {
         console.log(response);
         handleGoBack();
@@ -162,5 +171,4 @@ export const CreateEditMedicalRecordContainer = () => {
   };
 
   return <CreateEditMedicalRecord {...createMedicalRecordProps} />;
-  // return <h1>hola</h1>;
 };

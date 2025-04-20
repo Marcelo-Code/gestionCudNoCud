@@ -6,9 +6,11 @@ import { LoadingContainer } from "../../loading/LoadingContainer";
 import {
   deletePaymentRequestRecord,
   getPaymentRequest,
+  getPaymentRequestByCudBillingRecord,
   getPaymentRequests,
 } from "../../../services/api/paymentRequest";
 import { PaymentRequestsList } from "./PaymentRequestsList";
+import { getCudBillingRecord } from "../../../services/api/cudBillingRecords";
 
 export const PaymentRequestsListContainer = () => {
   //hook para obtener el id de la facturacion CUD
@@ -26,6 +28,9 @@ export const PaymentRequestsListContainer = () => {
   //hook para el array de reclamos
   const [paymentRequests, setPaymentRequests] = useState([]);
 
+  //hook para el el registro de la factura reclamada
+  const [cudBillingRecord, setCudBillingRecord] = useState({});
+
   //Función para eliminar una consulta
   const handleDeletePaymentRequest = (paymentRequestRecordId) => {
     deletePaymentRequestRecord(paymentRequestRecordId, setUpdateList)
@@ -40,8 +45,14 @@ export const PaymentRequestsListContainer = () => {
     const fetchData = async () => {
       try {
         if (cudBillingRecordId) {
-          const response = await getPaymentRequest(cudBillingRecordId);
-          setPaymentRequests(response.data); // lo envolvemos en un array si es un único objeto
+          const responsePaymentRequest =
+            await getPaymentRequestByCudBillingRecord(cudBillingRecordId);
+          const responseCudBillingRecord = await getCudBillingRecord(
+            cudBillingRecordId
+          );
+
+          setPaymentRequests(responsePaymentRequest.data);
+          setCudBillingRecord(responseCudBillingRecord.data[0]);
         } else {
           const response = await getPaymentRequests();
           setPaymentRequests(response.data);
@@ -63,9 +74,8 @@ export const PaymentRequestsListContainer = () => {
     editMode,
     setEditMode,
     cudBillingRecordId,
+    cudBillingRecord,
   };
-
-  console.log(paymentRequests);
 
   return <PaymentRequestsList {...paymentRequestsListProps} />;
 };

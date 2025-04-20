@@ -222,14 +222,21 @@ function App() {
               element={<CreateEditPaymentRequestContainer />}
             />
 
+            {/* Crear reclamo con facturación CUD (con nro factura) */}
+            <Route
+              path="/paymentRequests/createPaymentRequest/cudBillingRecords/:cudBillingRecordId"
+              element={<CreateEditPaymentRequestContainer />}
+            />
+
             {/* Editar reclamo */}
             <Route
               path="/paymentRequests/edit/:paymentRequestId"
               element={<CreateEditPaymentRequestContainer />}
             />
 
+            {/* Editar reclamo con facturación CUD (con nro factura) */}
             <Route
-              path="/paymentRequests/createPaymentRequest"
+              path="/paymentRequests/edit/cudBillingRecords/:cudBillingRecordId/:paymentRequestId"
               element={<CreateEditPaymentRequestContainer />}
             />
 
@@ -237,6 +244,11 @@ function App() {
 
             <Route
               path="/paymentRequests/list"
+              element={<PaymentRequestsListContainer />}
+            />
+
+            <Route
+              path="/paymentRequests/list/cudBillingRecords/:cudBillingRecordId"
               element={<PaymentRequestsListContainer />}
             />
           </Routes>

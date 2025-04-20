@@ -127,6 +127,34 @@ export const createMedicalRecord = async (newRecord) => {
   }
 };
 
+export const updateMedicalRecord = async (updatedMedicalRecord) => {
+  const { id, ...fieldsToUpdate } = updatedMedicalRecord;
+  try {
+    const { data, error } = await supabaseClient
+      .from("consultas")
+      .update(fieldsToUpdate)
+      .eq("id", id);
+
+    if (error) throw error;
+
+    successAlert("Consulta actualizada con éxito");
+
+    return {
+      status: 201,
+      message: "Consulta actualizada con éxito",
+      data,
+    };
+  } catch (error) {
+    errorAlert("Error al actualizar consulta");
+
+    return {
+      status: 400,
+      message: "Error al actualizar consulta",
+      error: error.message,
+    };
+  }
+};
+
 export const deleteMedicalRecord = async (medicalRecordId, setUpdateList) => {
   const confirm = await confirmationAlert(
     "¿Estás seguro de eliminar la consulta?"

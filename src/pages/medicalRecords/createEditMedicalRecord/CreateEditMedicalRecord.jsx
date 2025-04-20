@@ -40,8 +40,6 @@ export const CreateEditMedicalRecord = ({
 
   const iconsStyle = { marginRight: "5px" };
 
-  console.log(professional);
-
   return (
     <Box className="generalContainer">
       <Box className="generalTitle">

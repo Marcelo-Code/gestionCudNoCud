@@ -9,7 +9,7 @@ export const NavBarContainer = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowLogo(true);
-    }, 300);
+    }, 500);
 
     return () => clearTimeout(timer);
   }, []);

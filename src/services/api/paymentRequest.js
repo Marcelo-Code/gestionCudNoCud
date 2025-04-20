@@ -35,7 +35,9 @@ export const getPaymentRequests = async () => {
   try {
     const { data, error } = await supabaseClient
       .from("reclamos")
-      .select("*, facturacioncud: idfacturacioncud(nrofactura)")
+      .select(
+        "*, facturacioncud: idfacturacioncud(nrofactura, profesionales: idprofesional(nombreyapellidoprofesional), pacientes: idpaciente(obrasocialpaciente, nombreyapellidopaciente))"
+      )
       .order("fechareclamo", { ascending: false });
 
     if (error) throw error;
@@ -57,7 +59,9 @@ export const getPaymentRequest = async (paymentRequestId) => {
   try {
     const { data, error } = await supabaseClient
       .from("reclamos")
-      .select("*, facturacioncud: idfacturacioncud(nrofactura)")
+      .select(
+        "*, facturacioncud: idfacturacioncud(nrofactura, pacientes: idpaciente(obrasocialpaciente, nombreyapellidopaciente), profesionales: idprofesional(matriculaprofesional, nombreyapellidoprofesional))"
+      )
       .eq("id", paymentRequestId)
       .order("fechareclamo", { ascending: false });
 
@@ -71,6 +75,61 @@ export const getPaymentRequest = async (paymentRequestId) => {
     return {
       status: 404,
       message: "Error al obtener registro",
+      error: error.message,
+    };
+  }
+};
+
+export const getPaymentRequestByCudBillingRecord = async (
+  cudBillingRecordId
+) => {
+  try {
+    const { data, error } = await supabaseClient
+      .from("reclamos")
+      .select(
+        "*, facturacioncud: idfacturacioncud(nrofactura, pacientes: idpaciente(obrasocialpaciente, nombreyapellidopaciente), profesionales: idprofesional(matriculaprofesional, nombreyapellidoprofesional))"
+      )
+      .eq("idfacturacioncud", cudBillingRecordId)
+      .order("fechareclamo", { ascending: false });
+
+    if (error) throw error;
+    return {
+      status: 201,
+      message: "Registro obtenido con éxito",
+      data,
+    };
+  } catch (error) {
+    return {
+      status: 404,
+      message: "Error al obtener registro",
+      error: error.message,
+    };
+  }
+};
+
+export const updatePaymentRequest = async (updatedPaymentRequest) => {
+  const { id, ...fieldsToUpdate } = updatedPaymentRequest;
+  try {
+    const { data, error } = await supabaseClient
+      .from("reclamos")
+      .update(fieldsToUpdate)
+      .eq("id", id);
+
+    if (error) throw error;
+
+    successAlert("Reclamo actualizado con éxito");
+
+    return {
+      status: 201,
+      message: "Reclamo actualizado con éxito",
+      data,
+    };
+  } catch (error) {
+    errorAlert("Error al actualizar reclamo");
+
+    return {
+      status: 400,
+      message: "Error al actualizar reclamo",
       error: error.message,
     };
   }

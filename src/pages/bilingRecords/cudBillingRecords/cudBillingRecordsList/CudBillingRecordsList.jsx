@@ -335,13 +335,17 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                         : "Sin fecha"}
                     </td>
                     <td style={{ padding: "16px" }}>
-                      <Button
-                        size="small"
-                        startIcon={<Icons.ErrorIcon />}
-                        variant="contained"
+                      <Link
+                        to={`/paymentRequests/list/cudBillingRecords/${record.id}`}
                       >
-                        Reclamos
-                      </Button>
+                        <Button
+                          size="small"
+                          startIcon={<Icons.ErrorIcon />}
+                          variant="contained"
+                        >
+                          Reclamos
+                        </Button>
+                      </Link>
                     </td>
                     <td style={{ padding: "16px" }}>
                       {record.fechacobro

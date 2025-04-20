@@ -4,16 +4,21 @@ import { paymentRequestInitialState } from "../../../data/models";
 import { LoadingContainer } from "../../loading/LoadingContainer";
 
 import { GeneralContext } from "../../../context/GeneralContext";
-import { getCudBillingRecords } from "../../../services/api/cudBillingRecords";
+import {
+  getCudBillingRecord,
+  getCudBillingRecords,
+} from "../../../services/api/cudBillingRecords";
 import { CreateEditPaymentRequest } from "./CreateEditPaymentRequest";
 import {
   createPaymentRequest,
   getPaymentRequest,
+  updatePaymentRequest,
 } from "../../../services/api/paymentRequest";
 
 export const CreateEditPaymentRequestContainer = () => {
   //hooks para cargar los registros de facturas CUD
   const [cudBillingRecords, setCudBillingRecords] = useState([]);
+  const [cudBillingRecord, setCudBillingRecord] = useState({});
 
   //hook para el loading
   const [isLoading, setIsLoading] = useState(false);
@@ -23,7 +28,7 @@ export const CreateEditPaymentRequestContainer = () => {
   const { handleGoBack, textSize, setTextSize } = useContext(GeneralContext);
 
   //hook para obtener el id de la consulta
-  const { paymentRequestId = null, cudBillinRecordId = null } = useParams();
+  const { paymentRequestId = null, cudBillingRecordId = null } = useParams();
 
   //hook para detectar los cambios
   const [modifiedFlag, setModifiedFlag] = useState(false);
@@ -51,8 +56,18 @@ export const CreateEditPaymentRequestContainer = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    //Se borra la columna que no corresponde a la tabla
+    delete formData.facturacioncud;
+
     setIsLoadingButton(true);
-    createPaymentRequest(formData)
+
+    //Si existe el id del reclamo se actualiza
+    //Si no se crea
+    const action = paymentRequestId
+      ? updatePaymentRequest
+      : createPaymentRequest;
+
+    action(formData)
       .then((response) => {
         console.log(response);
         handleGoBack();
@@ -68,27 +83,47 @@ export const CreateEditPaymentRequestContainer = () => {
       paymentRequestId
         ? getPaymentRequest(paymentRequestId)
         : Promise.resolve({ data: [null] }),
+      cudBillingRecordId
+        ? getCudBillingRecord(cudBillingRecordId)
+        : Promise.resolve({ data: [null] }),
     ])
-      .then(([cudBillingRecordsResponse, cudBillingRecordResponse]) => {
-        const cudBillingRecordsResponseData = cudBillingRecordsResponse.data;
-        const cudBillingRecordResponseData = cudBillingRecordResponse.data[0];
+      .then(
+        ([
+          cudBillingRecordsResponse,
+          paymentRequestResponse,
+          cudBillingRecordResponse,
+        ]) => {
+          const cudBillingRecordsResponseData = cudBillingRecordsResponse.data;
+          const paymentRequestResponseData = paymentRequestResponse.data[0];
+          const cudBillingRecordResponseData = cudBillingRecordResponse.data[0];
 
-        setCudBillingRecords(cudBillingRecordsResponseData);
+          setCudBillingRecords(cudBillingRecordsResponseData);
+          setCudBillingRecord(cudBillingRecordResponseData);
 
-        // baseData será el objeto que se va a cargar en el form
-        let baseData = cudBillingRecordResponseData || {
-          ...paymentRequestInitialState,
-        };
+          // baseData será el objeto que se va a cargar en el form
+          let baseData = paymentRequestResponseData || {
+            ...paymentRequestInitialState,
+          };
 
-        setFormData(baseData);
-      })
+          if (cudBillingRecordId) {
+            baseData = {
+              ...baseData,
+              idfacturacioncud: parseInt(cudBillingRecordId),
+            };
+          }
+
+          setFormData(baseData);
+        }
+      )
       .catch((error) => console.log(error))
       .finally(() => {
         setIsLoading(false);
       });
-  }, [paymentRequestId]);
+  }, [paymentRequestId, cudBillingRecordId]);
 
   if (isLoading) return <LoadingContainer />;
+
+  console.log(formData);
 
   const createEditPaymentRequestProps = {
     formData,
@@ -98,9 +133,10 @@ export const CreateEditPaymentRequestContainer = () => {
     textSize,
     setTextSize,
     paymentRequestId,
-    cudBillinRecordId,
+    cudBillingRecordId,
     handleChange,
     handleSubmit,
+    cudBillingRecord,
   };
 
   return <CreateEditPaymentRequest {...createEditPaymentRequestProps} />;

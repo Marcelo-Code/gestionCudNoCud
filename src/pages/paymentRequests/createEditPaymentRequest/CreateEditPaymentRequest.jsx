@@ -15,9 +15,10 @@ export const CreateEditPaymentRequest = ({
   textSize,
   setTextSize,
   paymentRequestId,
-  cudBillinRecordId,
+  cudBillingRecordId,
   handleChange,
   handleSubmit,
+  cudBillingRecord,
 }) => {
   const formButtonGroupProps = {
     modifiedFlag,
@@ -44,8 +45,13 @@ export const CreateEditPaymentRequest = ({
   return (
     <Box className="generalContainer">
       <Box className="generalTitle">
-        {paymentRequestId && "Editar reclamo"}
-        {!paymentRequestId && "Crear nuevo reclamo"}
+        {!paymentRequestId && !cudBillingRecordId && "Crear nuevo reclamo"}
+        {!paymentRequestId &&
+          cudBillingRecordId &&
+          `Crear nuevo reclamo factura ${cudBillingRecord.nrofactura}`}
+        {paymentRequestId &&
+          cudBillingRecordId &&
+          `Editar reclamo factura ${cudBillingRecord.nrofactura}`}
       </Box>
 
       <Box className="createEditPaymentRequestContainer">
@@ -85,7 +91,7 @@ export const CreateEditPaymentRequest = ({
                   onChange={handleChange}
                   label={"Factura"}
                   required
-                  disabled={cudBillinRecordId ? true : false}
+                  disabled={cudBillingRecordId ? true : false}
                 />
               </Box>
 

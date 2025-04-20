@@ -15,9 +15,15 @@ export const PaymentRequestsList = ({
   editMode,
   setEditMode,
   cudBillingRecordId,
+  cudBillingRecord,
 }) => {
   let createRoute = "/paymentRequests/createPaymentRequest";
   let editRoute = "/paymentRequests/edit";
+
+  if (cudBillingRecordId) {
+    createRoute += `/cudBillingRecords/${cudBillingRecordId}`;
+    editRoute += `/cudBillingRecords/${cudBillingRecordId}`;
+  }
 
   const generalBarContainerProps = {
     //Barra edicion
@@ -34,7 +40,7 @@ export const PaymentRequestsList = ({
   let titleName = "Reclamos";
 
   if (cudBillingRecordId) {
-    titleName += `factura ${paymentRequests[0].facturacioncud.nrofactura}`;
+    titleName += ` factura ${cudBillingRecord.nrofactura}`;
   }
 
   return (
@@ -54,6 +60,20 @@ export const PaymentRequestsList = ({
                       <Box>
                         <b>Fecha reclamo: </b>
                         {dateFormat(paymentRequest.fechareclamo)}
+                      </Box>
+                      <Box>
+                        <b>Profesional: </b>
+                        {
+                          paymentRequest.facturacioncud.profesionales
+                            .nombreyapellidoprofesional
+                        }
+                      </Box>
+                      <Box>
+                        <b>Obra social: </b>
+                        {
+                          paymentRequest.facturacioncud.pacientes
+                            .obrasocialpaciente
+                        }
                       </Box>
                       <Box>
                         <b>Factura: </b>
