@@ -241,12 +241,12 @@ function App() {
             />
 
             {/* Lista de reclamos */}
-
             <Route
               path="/paymentRequests/list"
               element={<PaymentRequestsListContainer />}
             />
 
+            {/* Lista de reclamos con facturación CUD (con nro factura) */}
             <Route
               path="/paymentRequests/list/cudBillingRecords/:cudBillingRecordId"
               element={<PaymentRequestsListContainer />}

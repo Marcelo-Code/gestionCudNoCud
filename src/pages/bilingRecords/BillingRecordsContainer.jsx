@@ -18,12 +18,14 @@ import {
 } from "../../services/api/cudBillingRecords";
 import { BillingRecords } from "./BillingRecords";
 import { NoCudBillingRecordsListContainer } from "./noCudBillingRecords/noCudBillingRecordsList/NoCudBillingRecordsListContainer";
+import { getPaymentRequests } from "../../services/api/paymentRequest";
 
 export const BillingRecordsContainer = () => {
   //hook para el loading
   const [isLoading, setIsLoading] = useState(false);
 
   const [cudBillingRecords, setCudBillingRecords] = useState([]);
+  const [paymentRequests, setPaymentRequests] = useState([]);
   const [noCudBillingRecords, setNoCudBillingRecords] = useState([]);
   const [professional, setProfessional] = useState({});
   const [patient, setPatient] = useState({});
@@ -54,6 +56,9 @@ export const BillingRecordsContainer = () => {
       try {
         let cudBillingResponse;
         let noCudBillingResponse;
+
+        const paymentRequestsResponse = await getPaymentRequests();
+        setPaymentRequests(paymentRequestsResponse.data);
 
         if (patientId) {
           const patientResponse = await getPatient(patientId);
@@ -102,6 +107,7 @@ export const BillingRecordsContainer = () => {
     handleDeleteCudBillingRecord,
     patient,
     professional,
+    paymentRequests,
   };
 
   const noCudBillingRecordsListContainerProps = {

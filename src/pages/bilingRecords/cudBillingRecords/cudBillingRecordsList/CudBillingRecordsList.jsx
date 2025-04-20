@@ -34,6 +34,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     professionalId,
     patient,
     professional,
+    paymentRequests,
   } = cudBillingRecordsListProps;
 
   let createRoute = "/billingRecords/createCudBillingRecord";
@@ -167,202 +168,229 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                 </tr>
               </thead>
               <tbody>
-                {cudBillingRecords.map((record, index) => (
-                  <tr
-                    key={record.id}
-                    style={{
-                      borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
-                      backgroundColor: "inherit",
-                    }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.backgroundColor =
-                        "rgba(0,0,0,0.04)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.backgroundColor = "inherit")
-                    }
-                  >
-                    <td
+                {cudBillingRecords.map((record, index) => {
+                  //Cuenta la cantidad de reclamos asociados a la factura
+                  //para mostrarlo en el Tooltip del botón "Reclamo"
+                  const paymentRequestsCount = paymentRequests.filter(
+                    (request) =>
+                      request.idfacturacioncud === parseInt(record.id)
+                  ).length;
+
+                  return (
+                    <tr
+                      key={record.id}
                       style={{
-                        position: "sticky",
-                        left: 0,
-                        margin: 0,
-                        backgroundColor: "#fff",
-                        zIndex: 2,
-                        padding: "2px",
-                        textAlign: "center",
+                        borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
+                        backgroundColor: "inherit",
                       }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.backgroundColor =
+                          "rgba(0,0,0,0.04)")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.backgroundColor = "inherit")
+                      }
                     >
-                      {index + 1}
-                    </td>
-                    {editMode && (
                       <td
                         style={{
                           position: "sticky",
-                          left: "20px",
-                          zIndex: 2,
+                          left: 0,
+                          margin: 0,
                           backgroundColor: "#fff",
-                          padding: "10px",
+                          zIndex: 2,
+                          padding: "2px",
+                          textAlign: "center",
                         }}
                       >
-                        <div style={{ display: "flex", gap: "1px" }}>
-                          <Tooltip title="Eliminar" placement="top-end" arrow>
-                            <IconButton
-                              onClick={() =>
-                                handleDeleteCudBillingRecord(record.id)
-                              }
-                            >
-                              <Icons.DeleteIcon sx={iconStyle} />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip title="Editar" placement="top-end" arrow>
-                            <Link to={`${editRoute}/${record.id}`}>
-                              <IconButton>
-                                <Icons.EditIcon sx={iconStyle} />
-                              </IconButton>
-                            </Link>
-                          </Tooltip>
-                        </div>
+                        {index + 1}
                       </td>
-                    )}
-                    <td style={colStyle}>
-                      <span style={inLineStyle}>
-                        <TrafficLightStatus status={record.estadofacturacion} />
-                        {record.profesionales.nombreyapellidoprofesional}
-                      </span>
-                    </td>
-                    <td style={colStyle}>
-                      <span style={inLineStyle}>
-                        <TrafficLightStatus status={record.estadofacturacion} />
-                        {record.pacientes.nombreyapellidopaciente}
-                      </span>
-                    </td>
-                    <td style={colStyle}>
-                      <span style={inLineStyle}>
-                        <TrafficLightStatus status={record.estadofacturacion} />
-                        {record.profesionales.especialidadprofesional}
-                      </span>
-                    </td>
-                    <td style={colStyle}>
-                      <span style={inLineStyle}>
-                        <TrafficLightStatus status={record.estadofacturacion} />
-                        {record.periodofacturado
-                          ? monthFormat(record.periodofacturado)
-                          : "Sin fecha"}
-                      </span>
-                    </td>
-                    <td style={{ padding: "16px" }}>
-                      <span style={inLineStyle}>
-                        <TrafficLightStatus status={record.estadofacturacion} />
-                        {record.fechapresentacionos
-                          ? dateFormat(record.fechapresentacionos)
-                          : "Sin fecha"}
-                      </span>
-                    </td>
-                    <td style={{ padding: "16px" }}>
-                      <span style={inLineStyle}>
-                        <TrafficLightStatus status={record.estadofacturacion} />
-                        {record.estadofacturacion}
-                      </span>
-                    </td>
-                    <td style={colStyle}>
-                      {record.documentofacturamensual ? (
-                        <>
-                          <Link
-                            to={record.documentofacturamensual}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            Documento Fact. Mensual
-                          </Link>
-                          {["jpg", "png", "jpeg"].includes(
-                            getExtension(record.documentofacturamensual)
-                          ) && <Icons.ImageIcon sx={iconDocumentStyle} />}
-                          {["doc", "docx"].includes(
-                            getExtension(record.documentofacturamensual)
-                          ) && <Icons.ArticleIcon sx={iconDocumentStyle} />}
-                          {["pdf"].includes(
-                            getExtension(record.documentofacturamensual)
-                          ) && (
-                            <Icons.PictureAsPdfIcon sx={iconDocumentStyle} />
-                          )}
-                          {getExtension(
-                            record.documentofacturamensual
-                          ).toUpperCase()}
-                        </>
-                      ) : (
-                        "Sin Documento"
-                      )}
-                    </td>
-                    <td style={colStyle}>
-                      {record.imgasistenciamensual ? (
-                        <>
-                          <Link
-                            to={record.imgasistenciamensual}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            Documento Asist. Mensual
-                          </Link>
-                          {["jpg", "png", "jpeg"].includes(
-                            getExtension(record.imgasistenciamensual)
-                          ) && <Icons.ImageIcon sx={iconDocumentStyle} />}
-                          {["doc", "docx"].includes(
-                            getExtension(record.imgasistenciamensual)
-                          ) && <Icons.ArticleIcon sx={iconDocumentStyle} />}
-                          {["pdf"].includes(
-                            getExtension(record.imgasistenciamensual)
-                          ) && (
-                            <Icons.PictureAsPdfIcon sx={iconDocumentStyle} />
-                          )}
-                          {getExtension(
-                            record.imgasistenciamensual
-                          ).toUpperCase()}
-                        </>
-                      ) : (
-                        "Sin Documento"
-                      )}
-                    </td>
-
-                    <td>{currencyFormat(record.montofacturado)}</td>
-                    <td style={{ padding: "16px" }}>{record.nrofactura}</td>
-                    <td style={colStyle}>
-                      {record.pacientes?.obrasocialpaciente}
-                    </td>
-                    <td style={{ padding: "16px" }}>
-                      {record.fecharecepcionos
-                        ? dateFormat(record.fecharecepcionos)
-                        : "Sin fecha"}
-                    </td>
-                    <td style={{ padding: "16px" }}>
-                      <Link
-                        to={`/paymentRequests/list/cudBillingRecords/${record.id}`}
-                      >
-                        <Button
-                          size="small"
-                          startIcon={<Icons.ErrorIcon />}
-                          variant="contained"
+                      {editMode && (
+                        <td
+                          style={{
+                            position: "sticky",
+                            left: "20px",
+                            zIndex: 2,
+                            backgroundColor: "#fff",
+                            padding: "10px",
+                          }}
                         >
-                          Reclamos
-                        </Button>
-                      </Link>
-                    </td>
-                    <td style={{ padding: "16px" }}>
-                      {record.fechacobro
-                        ? dateFormat(record.fechacobro)
-                        : "Sin fecha"}
-                    </td>
-                    <td style={{ padding: "16px" }}>
-                      {currencyFormat(record.montopercibido)}
-                    </td>
-                    <td style={{ padding: "16px" }}>
-                      {currencyFormat(record.montopercibido * 0.35)}
-                    </td>
-                    <td style={{ padding: "16px" }}>
-                      {currencyFormat(record.montofinalprofesional)}
-                    </td>
-                  </tr>
-                ))}
+                          <div style={{ display: "flex", gap: "1px" }}>
+                            <Tooltip title="Eliminar" placement="top-end" arrow>
+                              <IconButton
+                                onClick={() =>
+                                  handleDeleteCudBillingRecord(record.id)
+                                }
+                              >
+                                <Icons.DeleteIcon sx={iconStyle} />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Editar" placement="top-end" arrow>
+                              <Link to={`${editRoute}/${record.id}`}>
+                                <IconButton>
+                                  <Icons.EditIcon sx={iconStyle} />
+                                </IconButton>
+                              </Link>
+                            </Tooltip>
+                          </div>
+                        </td>
+                      )}
+                      <td style={colStyle}>
+                        <span style={inLineStyle}>
+                          <TrafficLightStatus
+                            status={record.estadofacturacion}
+                          />
+                          {record.profesionales.nombreyapellidoprofesional}
+                        </span>
+                      </td>
+                      <td style={colStyle}>
+                        <span style={inLineStyle}>
+                          <TrafficLightStatus
+                            status={record.estadofacturacion}
+                          />
+                          {record.pacientes.nombreyapellidopaciente}
+                        </span>
+                      </td>
+                      <td style={colStyle}>
+                        <span style={inLineStyle}>
+                          <TrafficLightStatus
+                            status={record.estadofacturacion}
+                          />
+                          {record.profesionales.especialidadprofesional}
+                        </span>
+                      </td>
+                      <td style={colStyle}>
+                        <span style={inLineStyle}>
+                          <TrafficLightStatus
+                            status={record.estadofacturacion}
+                          />
+                          {record.periodofacturado
+                            ? monthFormat(record.periodofacturado)
+                            : "Sin fecha"}
+                        </span>
+                      </td>
+                      <td style={{ padding: "16px" }}>
+                        <span style={inLineStyle}>
+                          <TrafficLightStatus
+                            status={record.estadofacturacion}
+                          />
+                          {record.fechapresentacionos
+                            ? dateFormat(record.fechapresentacionos)
+                            : "Sin fecha"}
+                        </span>
+                      </td>
+                      <td style={{ padding: "16px" }}>
+                        <span style={inLineStyle}>
+                          <TrafficLightStatus
+                            status={record.estadofacturacion}
+                          />
+                          {record.estadofacturacion}
+                        </span>
+                      </td>
+                      <td style={colStyle}>
+                        {record.documentofacturamensual ? (
+                          <>
+                            <Link
+                              to={record.documentofacturamensual}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              Documento Fact. Mensual
+                            </Link>
+                            {["jpg", "png", "jpeg"].includes(
+                              getExtension(record.documentofacturamensual)
+                            ) && <Icons.ImageIcon sx={iconDocumentStyle} />}
+                            {["doc", "docx"].includes(
+                              getExtension(record.documentofacturamensual)
+                            ) && <Icons.ArticleIcon sx={iconDocumentStyle} />}
+                            {["pdf"].includes(
+                              getExtension(record.documentofacturamensual)
+                            ) && (
+                              <Icons.PictureAsPdfIcon sx={iconDocumentStyle} />
+                            )}
+                            {getExtension(
+                              record.documentofacturamensual
+                            ).toUpperCase()}
+                          </>
+                        ) : (
+                          "Sin Documento"
+                        )}
+                      </td>
+                      <td style={colStyle}>
+                        {record.imgasistenciamensual ? (
+                          <>
+                            <Link
+                              to={record.imgasistenciamensual}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              Documento Asist. Mensual
+                            </Link>
+                            {["jpg", "png", "jpeg"].includes(
+                              getExtension(record.imgasistenciamensual)
+                            ) && <Icons.ImageIcon sx={iconDocumentStyle} />}
+                            {["doc", "docx"].includes(
+                              getExtension(record.imgasistenciamensual)
+                            ) && <Icons.ArticleIcon sx={iconDocumentStyle} />}
+                            {["pdf"].includes(
+                              getExtension(record.imgasistenciamensual)
+                            ) && (
+                              <Icons.PictureAsPdfIcon sx={iconDocumentStyle} />
+                            )}
+                            {getExtension(
+                              record.imgasistenciamensual
+                            ).toUpperCase()}
+                          </>
+                        ) : (
+                          "Sin Documento"
+                        )}
+                      </td>
+
+                      <td>{currencyFormat(record.montofacturado)}</td>
+                      <td style={{ padding: "16px" }}>{record.nrofactura}</td>
+                      <td style={colStyle}>
+                        {record.pacientes?.obrasocialpaciente}
+                      </td>
+                      <td style={{ padding: "16px" }}>
+                        {record.fecharecepcionos
+                          ? dateFormat(record.fecharecepcionos)
+                          : "Sin fecha"}
+                      </td>
+                      <td style={{ padding: "16px" }}>
+                        <Tooltip
+                          title={`${paymentRequestsCount} reclamos`}
+                          placement="top-end"
+                          arrow
+                        >
+                          <Link
+                            to={`/paymentRequests/list/cudBillingRecords/${record.id}`}
+                          >
+                            <Button
+                              size="small"
+                              startIcon={<Icons.ErrorIcon />}
+                              variant="contained"
+                            >
+                              Reclamos
+                            </Button>
+                          </Link>
+                        </Tooltip>
+                      </td>
+                      <td style={{ padding: "16px" }}>
+                        {record.fechacobro
+                          ? dateFormat(record.fechacobro)
+                          : "Sin fecha"}
+                      </td>
+                      <td style={{ padding: "16px" }}>
+                        {currencyFormat(record.montopercibido)}
+                      </td>
+                      <td style={{ padding: "16px" }}>
+                        {currencyFormat(record.montopercibido * 0.35)}
+                      </td>
+                      <td style={{ padding: "16px" }}>
+                        {currencyFormat(record.montofinalprofesional)}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
               <tfoot>
                 <tr
