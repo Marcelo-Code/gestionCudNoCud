@@ -30,7 +30,7 @@ export const Alerts = (alertsProps) => {
         backgroundColor: "aqua",
         color: "black",
         px: 2,
-        py: 1,
+        // py: 1,
       }}
       role="presentation"
       onClick={(e) => e.stopPropagation()}

@@ -23,10 +23,9 @@ export const BurguerMenu = (burguerMenuProps) => {
       <Drawer open={open} onClose={toggleDrawer(false)}>
         <Box
           sx={{
-            width: 250,
+            width: 300,
             height: "100%",
             backgroundColor: "aqua",
-            paddingTop: "10px",
           }}
           role="presentation"
         >
@@ -35,7 +34,7 @@ export const BurguerMenu = (burguerMenuProps) => {
               width: "100%",
               display: "flex",
               justifyContent: "flex-end",
-              paddingRight: "10px",
+              px: 2,
             }}
           >
             <Tooltip title="Cerrar" placement="top-end" arrow>
