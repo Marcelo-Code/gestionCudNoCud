@@ -29,6 +29,8 @@ import { LoginContainer } from "./pages/login/LoginContainer";
 import { GeneralContextProvider } from "./context/GeneralContext";
 import { RecoverPasswordContainer } from "./pages/recoverPassword/RecoverPasswordContainer";
 import { UpdatePasswordContainer } from "./pages/updatePassword/UpdatePasswordContainer";
+import { UsersListContainer } from "./pages/users/usersList/UsersListContainer";
+import { CreateEditUserContainer } from "./pages/users/createUser/CreateEditUserContainer";
 
 function App() {
   return (
@@ -285,6 +287,25 @@ const AppContent = () => {
                 <Route
                   path="/paymentRequests/list/cudBillingRecords/:cudBillingRecordId"
                   element={<PaymentRequestsListContainer />}
+                />
+
+                {/*---------- Usuarios ----------*/}
+
+                {/* Crear usuario */}
+                <Route
+                  path="/users/createUser"
+                  element={<CreateEditUserContainer />}
+                />
+
+                {/* Editar usuario */}
+                <Route
+                  path="/users/edit/:userId"
+                  element={<CreateEditUserContainer />}
+                />
+                {/* Lista de usuarios */}
+                <Route
+                  path="/users/list/:active"
+                  element={<UsersListContainer />}
                 />
               </Routes>
             </ProtectedRoute>

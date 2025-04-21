@@ -124,3 +124,12 @@ export const paymentRequestInitialState = {
   descripcionreclamo: "",
   respuestareclamo: "",
 };
+
+export const userInitialState = {
+  perfil: "",
+  nombreyapellidousuario: "",
+  email: "",
+  professionalid: null,
+  password: "marcelo1234",
+  activo: true,
+};

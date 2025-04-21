@@ -3,6 +3,8 @@ import { supabaseClient } from "../../services/config/config";
 import { useNavigate } from "react-router-dom";
 import { Login } from "./Login";
 import { GeneralContext } from "../../context/GeneralContext";
+import { getUserByEmail } from "../../services/api/users";
+import { errorAlert } from "../../components/common/alerts/alerts";
 
 export const LoginContainer = () => {
   const [email, setEmail] = useState("");
@@ -13,6 +15,16 @@ export const LoginContainer = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    const userResponse = await getUserByEmail(email);
+
+    // setIsLoggedIn(true);
+    // navigate("/");
+
+    if (!userResponse || userResponse.length === 0) {
+      errorAlert("El usuario no existe o se encuentra inactivo");
+      return;
+    }
 
     try {
       const { data, error } = await supabaseClient.auth.signInWithPassword({

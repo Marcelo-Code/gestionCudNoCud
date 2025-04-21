@@ -1,0 +1,351 @@
+import {
+  confirmationAlert,
+  errorAlert,
+  successAlert,
+} from "../../components/common/alerts/alerts";
+import { supabaseClient } from "../config/config";
+
+//Funcion para crear un usuario
+export const createUser = async (newUser) => {
+  try {
+    const { data, error } = await supabaseClient
+      .from("usuarios")
+      .insert([newUser]);
+    if (error) throw error;
+
+    successAlert(`Usuario ${newUser.nombreyapellidousuario} creado con éxito`);
+
+    return {
+      status: 201,
+      message: "Registro creado con éxito",
+      data,
+    };
+  } catch (error) {
+    errorAlert("Error al crear usuario");
+
+    return {
+      status: 400,
+      message: "Error al crear registro",
+      error: error.message,
+    };
+  }
+};
+
+export const createAuthUser = async (newUser) => {
+  const {
+    email,
+    password,
+    nombreyapellidousuario,
+    professionalid,
+    perfil,
+    activo,
+  } = newUser;
+
+  console.log(password);
+
+  try {
+    // 1. Crear usuario en Supabase Auth
+    const { data: authData, error: authError } =
+      await supabaseClient.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/updatePassword`, // Added a dummy query parameter
+        },
+      });
+
+    if (authError) throw authError;
+
+    const auth_user_id = authData.user.id;
+
+    // 2. Insertar el perfil del usuario en tu tabla personalizada
+    const { error: insertError } = await supabaseClient
+      .from("usuarios")
+      .insert([
+        {
+          auth_user_id,
+          nombreyapellidousuario,
+          professionalid,
+          perfil,
+          email,
+          activo,
+        },
+      ]);
+
+    if (insertError) throw insertError;
+
+    successAlert(`Usuario ${nombreyapellidousuario} creado con éxito`);
+
+    return {
+      status: 201,
+      message: "Usuario creado correctamente en Auth y en la tabla usuarios",
+    };
+  } catch (error) {
+    console.error("Error al crear usuario:", error);
+    errorAlert("No se pudo crear el usuario");
+    return {
+      status: 400,
+      message: "Error al crear usuario",
+      error: error.message,
+    };
+  }
+};
+
+export const updateAuthUser = async (updatedUser) => {
+  const {
+    auth_user_id,
+    email,
+    nombreyapellidousuario,
+    professionalid,
+    perfil,
+  } = updatedUser;
+
+  try {
+    // 1. Actualizar la información del usuario en la tabla 'usuarios'
+    const { data, error: updateError } = await supabaseClient
+      .from("usuarios")
+      .update({
+        nombreyapellidousuario,
+        professionalid,
+        perfil,
+        email, // si deseas permitir la actualización del email
+      })
+      .eq("auth_user_id", auth_user_id); // Actualiza según el auth_user_id
+
+    if (updateError) throw updateError;
+
+    // 2. Usar RPC para actualizar la tabla auth.users (a través de una función definida en la base de datos)
+    const { error: rpcError } = await supabaseClient.rpc("admin_update_user", {
+      auth_user_id,
+      new_email: email,
+    });
+
+    if (rpcError) {
+      console.error("Error al actualizar usuario en auth:", rpcError);
+      return {
+        status: 400,
+        message: "No se pudo actualizar el usuario en auth",
+        error: rpcError.message,
+      };
+    }
+
+    successAlert(`Usuario ${nombreyapellidousuario} actualizado con éxito`);
+
+    return {
+      status: 200,
+      message:
+        "Usuario actualizado correctamente en Auth y en la tabla usuarios",
+    };
+  } catch (error) {
+    console.error("Error al actualizar usuario:", error);
+    errorAlert("No se pudo actualizar el usuario");
+    return {
+      status: 400,
+      message: "Error al actualizar usuario",
+      error: error.message,
+    };
+  }
+};
+
+export const getAuthUsers = async () => {
+  try {
+    const { data, error } = await supabaseClient
+      .from("public_users")
+      .select("*");
+
+    if (error) throw error;
+    return {
+      status: 201,
+      message: "Registros obtenidos con éxito",
+      data,
+    };
+  } catch (error) {
+    return {
+      status: 404,
+      message: "Error al obtener registros",
+      error: error.message,
+    };
+  }
+};
+
+export const getAuthUser = async (userId) => {
+  try {
+    const { data, error } = await supabaseClient
+      .from("usuarios")
+      .select("*")
+      .eq("id", userId);
+    if (error) throw error;
+    return {
+      status: 201,
+      message: "Registro obtenido con éxito",
+      data,
+    };
+  } catch (error) {
+    return {
+      status: 404,
+      message: "Error al obtener registro",
+      error: error.message,
+    };
+  }
+};
+
+//Funcion para obtener todos los pacientes
+export const getUsers = async () => {
+  try {
+    const { data, error } = await supabaseClient
+      .from("usuarios")
+      .select("*, profesionales:professionalid(nombreyapellidoprofesional)")
+      .eq("activo", true)
+      .order("nombreyapellidousuario", { ascending: true });
+    if (error) throw error;
+    return {
+      status: 201,
+      message: "Registros obtenidos con éxito",
+      data,
+    };
+  } catch (error) {
+    return {
+      status: 404,
+      message: "Error al obtener registros",
+      error: error.message,
+    };
+  }
+};
+
+export const getInactiveUsers = async () => {
+  try {
+    const { data, error } = await supabaseClient
+      .from("usuarios")
+      .select("*, profesionales:professionalid(nombreyapellidoprofesional)")
+      .eq("activo", false)
+      .order("nombreyapellidousuario", { ascending: true });
+    if (error) throw error;
+    return {
+      status: 201,
+      message: "Registros obtenidos con éxito",
+      data,
+    };
+  } catch (error) {
+    return {
+      status: 404,
+      message: "Error al obtener registros",
+      error: error.message,
+    };
+  }
+};
+
+export const getUserByEmail = async (emailUser) => {
+  try {
+    const { data, error } = await supabaseClient
+      .from("usuarios")
+      .select("*")
+      .eq("activo", true)
+      .eq("email", emailUser);
+
+    // Verificación si ocurrió un error en la consulta
+    if (error) {
+      console.error("Error en la consulta:", error);
+      throw new Error("Hubo un problema al obtener el usuario.");
+    }
+
+    // Verificar si 'data' es un array y si está vacío
+    if (Array.isArray(data) && data.length === 0) {
+      console.warn("El usuario no existe o está inactivo.");
+      return false;
+    }
+
+    return data; // Si se encuentran datos, retornarlos
+  } catch (error) {
+    // Capturar cualquier otro error
+    console.error("Error en getUserByEmail:", error.message || error);
+    return false;
+  }
+};
+
+export const updateUser = async (updatedUser) => {
+  try {
+    const { id, ...fieldsToUpdate } = updatedUser;
+
+    const { data, error } = await supabaseClient
+      .from("usuarios")
+      .update(fieldsToUpdate)
+      .eq("id", id);
+
+    if (error) throw error;
+
+    successAlert(
+      `Usuario ${fieldsToUpdate.nombreyapellidousuario} actualizado con éxito`
+    );
+
+    return {
+      status: 200,
+      message: "Registro actualizado con éxito",
+      data,
+    };
+  } catch (error) {
+    errorAlert("Error al actualizar usuario");
+
+    return {
+      status: 400,
+      message: "Error al actualizar registro",
+      error: error.message,
+    };
+  }
+};
+
+//Funcion para eliminar un paciente
+export const softDeleteUser = async (userId, userName, setUpdateList) => {
+  const confirm = await confirmationAlert(
+    `¿Estás seguro de desactivar el usuario ${userName}?`
+  );
+  if (!confirm) return;
+  try {
+    const { error } = await supabaseClient
+      .from("usuarios")
+      .update({ activo: false })
+      .match({ id: userId });
+    if (error) throw error;
+    successAlert("Usiario desactivado con éxito");
+    setUpdateList((prev) => !prev);
+
+    return {
+      status: 201,
+      message: "Registro desactivado con éxito",
+    };
+  } catch (error) {
+    errorAlert("Error al desctivar usuario");
+    return {
+      status: 404,
+      message: "Error al desactivar registro",
+      error: error.message,
+    };
+  }
+};
+
+export const softUnDeleteUser = async (userId, userName, setUpdateList) => {
+  const confirm = await confirmationAlert(
+    `¿Estás seguro de activar el usuario ${userName}?`
+  );
+  if (!confirm) return;
+  try {
+    const { error } = await supabaseClient
+      .from("usuarios")
+      .update({ activo: true })
+      .match({ id: userId });
+    if (error) throw error;
+    successAlert("Usiario activado con éxito");
+    setUpdateList((prev) => !prev);
+
+    return {
+      status: 201,
+      message: "Registro activado con éxito",
+    };
+  } catch (error) {
+    errorAlert("Error al activar usuario");
+    return {
+      status: 404,
+      message: "Error al activar registro",
+      error: error.message,
+    };
+  }
+};

@@ -41,6 +41,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import LoginIcon from "@mui/icons-material/Login";
 import SendIcon from "@mui/icons-material/Send";
 import KeyIcon from "@mui/icons-material/Key";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 
 export const Icons = {
   PersonAddIcon,
@@ -86,4 +87,5 @@ export const Icons = {
   LoginIcon,
   SendIcon,
   KeyIcon,
+  AssignmentIndIcon,
 };

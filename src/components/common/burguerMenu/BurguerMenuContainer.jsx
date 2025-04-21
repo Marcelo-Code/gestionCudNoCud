@@ -17,6 +17,11 @@ export const BurguerMenuContainer = () => {
       link: "/professionals/list/active",
     },
     {
+      icon: <Icons.PersonIcon />,
+      option: "Usuarios",
+      link: "/users/list/active",
+    },
+    {
       icon: <Icons.GroupsIcon />,
       option: "Consultas/Report",
       link: "/medicalRecords/list",
@@ -40,6 +45,11 @@ export const BurguerMenuContainer = () => {
       icon: <Icons.PersonIcon />,
       option: "Profesionales Inactivos",
       link: "/professionals/list/inactive",
+    },
+    {
+      icon: <Icons.PersonIcon />,
+      option: "Usuarios Inactivos",
+      link: "/users/list/inactive",
     },
   ];
 

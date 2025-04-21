@@ -215,3 +215,16 @@ export const allowedFileTypes = [
   "application/msword", // .doc
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .docx
 ];
+
+export const userProfiles = [
+  {
+    id: "profesional",
+    value: "profesional",
+    name: "profesional",
+  },
+  {
+    id: "admin",
+    value: "admin",
+    name: "admin",
+  },
+];
