@@ -6,8 +6,8 @@ import { GeneralContext } from "../../../context/GeneralContext";
 import { userInitialState } from "../../../data/models";
 import {
   createAuthUser,
+  getAllUsers,
   getAuthUser,
-  getUsers,
   updateAuthUser,
 } from "../../../services/api/users";
 import { CreateEditUser } from "./CreateEditUser";
@@ -37,6 +37,7 @@ export const CreateEditUserContainer = () => {
   //hook para detectar si el dni ya existe
   const [emailMatch, setEmailMatch] = useState(false);
   const [foundUser, setFoundUser] = useState({});
+  const [activeEmails, setActiveEmails] = useState([]);
 
   //hooks para detectar los cambios
   const [modifiedFlag, setModifiedFlag] = useState(false);
@@ -52,16 +53,6 @@ export const CreateEditUserContainer = () => {
       ...formData,
       [name]: name === "email" ? value.toLowerCase() : value,
     };
-
-    if (name === "perfil" && value === "admin") {
-      updatedFormData = {
-        ...formData,
-        nombreyapellidousuario: "",
-        email: "",
-        perfil: value,
-        professionalid: null,
-      };
-    }
 
     if (name === "professionalid") {
       const selectedProfessional = professionals.find(
@@ -84,9 +75,12 @@ export const CreateEditUserContainer = () => {
       };
     }
 
+    //Verifica si el email ya está asociado a otro usuario
     if (name === "email") {
       if (
-        users.some((user) => user.email.toLowerCase() === value.toLowerCase())
+        activeEmails.some(
+          (email) => email.toLowerCase() === value.toLowerCase()
+        )
       ) {
         const foundUser = users.find(
           (user) => user.email === value.toLowerCase()
@@ -95,7 +89,6 @@ export const CreateEditUserContainer = () => {
         setEmailMatch(true);
       } else setEmailMatch(false);
     }
-
     setFormData(updatedFormData);
 
     if (!modifiedFlag) setModifiedFlag(true);
@@ -129,7 +122,7 @@ export const CreateEditUserContainer = () => {
     setIsLoading(true);
 
     Promise.all([
-      getUsers(),
+      getAllUsers(),
       getProfessionals(),
       userId ? getAuthUser(userId) : Promise.resolve({ data: [null] }),
     ])
@@ -138,7 +131,21 @@ export const CreateEditUserContainer = () => {
         const professionalsResponseData = professionalsResponse.data;
         const userResponseData = userResponse.data[0];
         setUsers(usersResponseData);
-        setProfessionals(professionalsResponseData);
+
+        //Realiza una lista de los emails de los usuarios activos
+        const activeEmails = usersResponseData
+          .filter((user) => user.auth_user_id !== null)
+          .map((user) => user.email);
+
+        setActiveEmails(activeEmails);
+
+        //Lista los profesionales sin un auth.user asociado
+        const professionalsWithoutUser = professionalsResponseData.filter(
+          (professional) =>
+            !activeEmails.includes(professional.emailprofesional)
+        );
+
+        setProfessionals(professionalsWithoutUser);
         setUser(userResponseData);
 
         let baseData = userResponseData || initialState;

@@ -187,6 +187,28 @@ export const getAuthUser = async (userId) => {
 };
 
 //Funcion para obtener todos los pacientes
+export const getAllUsers = async () => {
+  try {
+    const { data, error } = await supabaseClient
+      .from("usuarios")
+      .select("*, profesionales:professionalid(nombreyapellidoprofesional)")
+      .order("nombreyapellidousuario", { ascending: true });
+
+    if (error) throw error;
+    return {
+      status: 201,
+      message: "Registros obtenidos con éxito",
+      data,
+    };
+  } catch (error) {
+    return {
+      status: 404,
+      message: "Error al obtener registros",
+      error: error.message,
+    };
+  }
+};
+
 export const getUsers = async () => {
   try {
     const { data, error } = await supabaseClient
