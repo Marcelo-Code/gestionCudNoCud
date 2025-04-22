@@ -55,6 +55,7 @@ export const CreateEditUser = (createEditUserProps) => {
                 onChange={handleChange}
                 required
                 value={formData.nombreyapellidousuario}
+                disabled={userId ? true : false}
               />
             </Box>
 
@@ -72,6 +73,7 @@ export const CreateEditUser = (createEditUserProps) => {
                 value={formData.email}
                 error={emailMatch}
                 helperText={helperText}
+                disabled={userId ? true : false}
               />
             </Box>
             <Box className="createEditPatientElement">
@@ -102,6 +104,7 @@ export const CreateEditUser = (createEditUserProps) => {
                   value={formData.professionalid}
                   onChange={handleChange}
                   label={"Profesional"}
+                  disabled={userId ? true : false}
                 />
               </Box>
             </Box>

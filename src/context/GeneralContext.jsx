@@ -102,6 +102,7 @@ export const GeneralContextProvider = ({ children }) => {
   const [userProfile, setUserProfile] = useState("");
   const [userName, setUserName] = useState("");
   const [userProfessionalId, setUserProfessionalId] = useState(null);
+  const [updateUserProfile, setUpdateUserProfile] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("isLoggedIn", isLoggedIn.toString());
@@ -122,7 +123,7 @@ export const GeneralContextProvider = ({ children }) => {
         setUsers(responseUsersData);
       })
       .catch((error) => console.log(error));
-  }, [isLoggedIn]);
+  }, [isLoggedIn, updateUserProfile]);
 
   const data = {
     handleGoBack,
@@ -140,6 +141,7 @@ export const GeneralContextProvider = ({ children }) => {
     userProfile,
     userName,
     userProfessionalId,
+    setUpdateUserProfile,
   };
 
   return (
