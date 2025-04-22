@@ -349,3 +349,13 @@ export const softUnDeleteUser = async (userId, userName, setUpdateList) => {
     };
   }
 };
+
+const handleErrors = (error, defaultMessage = "Error en la operación") => {
+  console.error(defaultMessage, error);
+  errorAlert(defaultMessage);
+  return {
+    status: 400,
+    message: defaultMessage,
+    error: error.message,
+  };
+};

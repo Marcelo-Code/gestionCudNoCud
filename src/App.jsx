@@ -31,6 +31,7 @@ import { RecoverPasswordContainer } from "./pages/recoverPassword/RecoverPasswor
 import { UpdatePasswordContainer } from "./pages/updatePassword/UpdatePasswordContainer";
 import { UsersListContainer } from "./pages/users/usersList/UsersListContainer";
 import { CreateEditUserContainer } from "./pages/users/createUser/CreateEditUserContainer";
+import { PageNotFoundContainer } from "./pages/pageNotFound/PageNotFoundContainer";
 
 function App() {
   return (
@@ -65,6 +66,10 @@ const AppContent = () => {
           element={
             <ProtectedRoute>
               <Routes>
+                {/*---------- Not found page ----------*/}
+                <Route path="*" element={<PageNotFoundContainer />} />
+
+                {/* ---------- Home ----------*/}
                 <Route path="/" element={<HomeContainer />} />
                 {/* ---------- Pacientes ----------*/}
                 <Route
