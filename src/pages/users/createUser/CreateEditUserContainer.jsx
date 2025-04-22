@@ -6,11 +6,9 @@ import { GeneralContext } from "../../../context/GeneralContext";
 import { userInitialState } from "../../../data/models";
 import {
   createAuthUser,
-  createUser,
   getAuthUser,
   getUsers,
   updateAuthUser,
-  updateUser,
 } from "../../../services/api/users";
 import { CreateEditUser } from "./CreateEditUser";
 import { getProfessionals } from "../../../services/api/professionals";
@@ -55,6 +53,16 @@ export const CreateEditUserContainer = () => {
       [name]: name === "email" ? value.toLowerCase() : value,
     };
 
+    if (name === "perfil" && value === "admin") {
+      updatedFormData = {
+        ...formData,
+        nombreyapellidousuario: "",
+        email: "",
+        perfil: value,
+        professionalid: null,
+      };
+    }
+
     if (name === "professionalid") {
       const selectedProfessional = professionals.find(
         (professional) => professional.id === parseInt(value)
@@ -87,8 +95,6 @@ export const CreateEditUserContainer = () => {
         setEmailMatch(true);
       } else setEmailMatch(false);
     }
-
-    // console.log(updatedFormData);
 
     setFormData(updatedFormData);
 

@@ -12,6 +12,7 @@ import { Icons } from "../../../assets/Icons";
 import { BackButtonContainer } from "../../../components/common/backButton/BackButtonContainer";
 import { EditModeButtonGroupContainer } from "../../../components/common/editModeButtonGroup/EditModeButtonGroupContainer";
 import { GeneralBarContainer } from "../../../components/layouts/generalBar/GeneralBarContainer";
+import { normalizeName } from "../../../utils/helpers";
 
 export const UsersList = (usersListProps) => {
   const {
@@ -79,7 +80,7 @@ export const UsersList = (usersListProps) => {
                 </Typography>
                 <Icons.PersonIcon sx={{ fontSize: "4em" }} />
                 <Typography gutterBottom variant="h5">
-                  {user.nombreyapellidousuario}
+                  {normalizeName(user.nombreyapellidousuario)}
                 </Typography>
                 <Typography
                   gutterBottom
@@ -89,15 +90,19 @@ export const UsersList = (usersListProps) => {
                   <Icons.MailIcon sx={{ mr: 1 }} />
                   <b>Email:</b> {user.email}
                 </Typography>
-                <Typography
-                  gutterBottom
-                  variant="body1"
-                  sx={{ display: "flex", alignItems: "center" }}
-                >
-                  <Icons.PersonIcon sx={{ mr: 1 }} />
-                  <b>Profesional:</b>
-                  {user.profesionales?.nombreyapellidoprofesional}
-                </Typography>
+                {user.professionalid && (
+                  <Typography
+                    gutterBottom
+                    variant="body1"
+                    sx={{ display: "flex", alignItems: "center" }}
+                  >
+                    <Icons.PersonIcon sx={{ mr: 1 }} />
+                    <b>Profesional:</b>
+                    {normalizeName(
+                      user.profesionales?.nombreyapellidoprofesional
+                    )}
+                  </Typography>
+                )}
                 <Typography
                   gutterBottom
                   variant="body1"

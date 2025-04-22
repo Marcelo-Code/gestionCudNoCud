@@ -91,6 +91,7 @@ export const GeneralContextProvider = ({ children }) => {
     });
   };
 
+  //Lógica para setear el estado de isLoggedIn, y recuperar datos del usuario autenticado
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     const storedIsLoggedIn = localStorage.getItem("isLoggedIn");
     return storedIsLoggedIn === "true" ? true : false;
@@ -100,6 +101,7 @@ export const GeneralContextProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
   const [userProfile, setUserProfile] = useState("");
   const [userName, setUserName] = useState("");
+  const [userProfessionalId, setUserProfessionalId] = useState(null);
 
   useEffect(() => {
     localStorage.setItem("isLoggedIn", isLoggedIn.toString());
@@ -114,6 +116,7 @@ export const GeneralContextProvider = ({ children }) => {
 
         setUserProfile(user.perfil);
         setUserName(user.nombreyapellidousuario);
+        setUserProfessionalId(user.professionalid);
 
         setAuthUser(responseAuthUserData);
         setUsers(responseUsersData);
@@ -136,6 +139,7 @@ export const GeneralContextProvider = ({ children }) => {
     users,
     userProfile,
     userName,
+    userProfessionalId,
   };
 
   return (

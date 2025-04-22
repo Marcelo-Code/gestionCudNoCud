@@ -1,12 +1,10 @@
 import { useContext, useState } from "react";
 import { supabaseClient } from "../../../services/config/config";
 import { UpdatePasswordLoggedInUser } from "./UpdatePasswordLoggedInUser";
-import {
-  errorAlert,
-  successAlert,
-} from "../../../components/common/alerts/alerts";
+import { errorAlert } from "../../../components/common/alerts/alerts";
 import { LoadingContainer } from "../../loading/LoadingContainer";
 import { GeneralContext } from "../../../context/GeneralContext";
+import { updateLoggedInUserPassword } from "../../../services/api/users";
 
 export const UpdatePasswordLoggedInUserContainer = () => {
   // hook para el antiguo password
@@ -27,16 +25,18 @@ export const UpdatePasswordLoggedInUserContainer = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    //Verifica que las contraseñas coincidan
     if (newPassword !== confirmPassword) {
       errorAlert("Las contraseñas no coinciden.");
       return;
     }
 
+    //Importa el usuario de auth.user
     const {
       data: { user },
     } = await supabaseClient.auth.getUser();
 
-    // Reautenticamos al usuario con su email y contraseña actual
+    // verifica al usuario con su email y contraseña actual
     const { error: signInError } = await supabaseClient.auth.signInWithPassword(
       {
         email: user.email,
@@ -44,6 +44,7 @@ export const UpdatePasswordLoggedInUserContainer = () => {
       }
     );
 
+    //Si la reautenticación falla, se muestra un error
     if (signInError) {
       errorAlert("La contraseña actual es incorrecta.");
       return;
@@ -51,17 +52,13 @@ export const UpdatePasswordLoggedInUserContainer = () => {
 
     // Si la reautenticación fue exitosa, se cambia la contraseña
     setIsLoadingButton(true);
-    supabaseClient.auth
-      .updateUser({
-        password: newPassword,
-      })
+    updateLoggedInUserPassword(newPassword)
       .then((response) => {
-        console.log(response, "Contraseña actualizada");
-        successAlert("Contraseña actualizada con éxito.");
+        console.log(response);
         handleGoBack();
       })
       .catch((error) => {
-        console.log(error, "Error al actualizar la contraseña");
+        console.log(error);
       })
       .finally(() => {
         setIsLoadingButton(false);

@@ -5,32 +5,6 @@ import {
 } from "../../components/common/alerts/alerts";
 import { supabaseClient } from "../config/config";
 
-//Funcion para crear un usuario
-export const createUser = async (newUser) => {
-  try {
-    const { data, error } = await supabaseClient
-      .from("usuarios")
-      .insert([newUser]);
-    if (error) throw error;
-
-    successAlert(`Usuario ${newUser.nombreyapellidousuario} creado con éxito`);
-
-    return {
-      status: 201,
-      message: "Registro creado con éxito",
-      data,
-    };
-  } catch (error) {
-    errorAlert("Error al crear usuario");
-
-    return {
-      status: 400,
-      message: "Error al crear registro",
-      error: error.message,
-    };
-  }
-};
-
 export const createAuthUser = async (newUser) => {
   const {
     email,
@@ -44,13 +18,13 @@ export const createAuthUser = async (newUser) => {
   console.log(password);
 
   try {
-    // 1. Crear usuario en Supabase Auth
+    //Crear un usuario en la tabla auth.users
     const { data: authData, error: authError } =
       await supabaseClient.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/updatePassword`, // Added a dummy query parameter
+          emailRedirectTo: `${window.location.origin}/updatePassword`,
         },
       });
 
@@ -58,7 +32,7 @@ export const createAuthUser = async (newUser) => {
 
     const auth_user_id = authData.user.id;
 
-    // 2. Insertar el perfil del usuario en tu tabla personalizada
+    //Si el auth.user se crea correctamente, se inserta en la tabla 'usuarios'
     const { error: insertError } = await supabaseClient
       .from("usuarios")
       .insert([
@@ -114,20 +88,20 @@ export const updateAuthUser = async (updatedUser) => {
 
     if (updateError) throw updateError;
 
-    // 2. Usar RPC para actualizar la tabla auth.users (a través de una función definida en la base de datos)
-    const { error: rpcError } = await supabaseClient.rpc("admin_update_user", {
-      auth_user_id,
-      new_email: email,
-    });
+    // Usa RPC para actualizar la tabla auth.users (a través de una función definida en la base de datos)
+    // const { error: rpcError } = await supabaseClient.rpc("admin_update_user", {
+    //   auth_user_id,
+    //   new_email: email,
+    // });
 
-    if (rpcError) {
-      console.error("Error al actualizar usuario en auth:", rpcError);
-      return {
-        status: 400,
-        message: "No se pudo actualizar el usuario en auth",
-        error: rpcError.message,
-      };
-    }
+    // if (rpcError) {
+    //   console.error("Error al actualizar usuario en auth:", rpcError);
+    //   return {
+    //     status: 400,
+    //     message: "No se pudo actualizar el usuario en auth",
+    //     error: rpcError.message,
+    //   };
+    // }
 
     successAlert(`Usuario ${nombreyapellidousuario} actualizado con éxito`);
 
@@ -147,11 +121,28 @@ export const updateAuthUser = async (updatedUser) => {
   }
 };
 
-// export const { data, error } = await supabaseClient.auth.updatePasswordAuthUser(
-//   {
-//     password: "nuevacontraseña123",
-//   }
-// );
+export const updateLoggedInUserPassword = async (newPassword) => {
+  try {
+    const { data, error } = await supabaseClient.auth.updateUser({
+      password: newPassword,
+    });
+
+    if (error) throw error;
+    successAlert("Contraseña actualizada con éxito");
+    return {
+      status: 200,
+      message: "Contraseña actualizada con éxito",
+      data,
+    };
+  } catch (error) {
+    errorAlert("Error al actualizar contraseña");
+    return {
+      status: 400,
+      message: "Error al actualizar contraseña",
+      error: error.message,
+    };
+  }
+};
 
 export const getAuthUsers = async () => {
   try {
@@ -203,6 +194,7 @@ export const getUsers = async () => {
       .select("*, profesionales:professionalid(nombreyapellidoprofesional)")
       .eq("activo", true)
       .order("nombreyapellidousuario", { ascending: true });
+
     if (error) throw error;
     return {
       status: 201,

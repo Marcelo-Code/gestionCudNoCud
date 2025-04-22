@@ -47,7 +47,7 @@ export const UsersListContainer = () => {
 
     action()
       .then((response) => {
-        setUsers(response.data);
+        setUsers(response.data.filter((user) => user.auth_user_id !== null));
         console.log(response);
       })
       .catch((error) => console.log(error))

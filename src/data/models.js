@@ -130,6 +130,6 @@ export const userInitialState = {
   nombreyapellidousuario: "",
   email: "",
   professionalid: null,
-  password: "marcelo1234",
+  password: "12345678",
   activo: true,
 };
