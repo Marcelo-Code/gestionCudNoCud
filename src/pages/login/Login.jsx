@@ -22,6 +22,7 @@ export const Login = ({
         }}
       >
         <Box component="form" noValidate sx={{ mt: 1 }} className="loginForm">
+          <span className="loginTitle">Gestión Cud No Cud</span>
           <span className="loginTitle">Login</span>
           <TextField
             margin="normal"
