@@ -32,6 +32,7 @@ import { UpdatePasswordContainer } from "./pages/updatePassword/UpdatePasswordCo
 import { UsersListContainer } from "./pages/users/usersList/UsersListContainer";
 import { CreateEditUserContainer } from "./pages/users/createUser/CreateEditUserContainer";
 import { PageNotFoundContainer } from "./pages/pageNotFound/PageNotFoundContainer";
+import { UpdatePasswordLoggedInUserContainer } from "./pages/users/updatePasswordLoggedInUser/UpdatePasswordLoggedInUserContainer";
 
 function App() {
   return (
@@ -311,6 +312,11 @@ const AppContent = () => {
                 <Route
                   path="/users/list/:active"
                   element={<UsersListContainer />}
+                />
+                {/* Actualizar contraseña de usuario logueado */}
+                <Route
+                  path="/users/updatePasswordLoggedInUser"
+                  element={<UpdatePasswordLoggedInUserContainer />}
                 />
               </Routes>
             </ProtectedRoute>

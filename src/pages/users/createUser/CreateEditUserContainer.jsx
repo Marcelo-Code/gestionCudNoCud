@@ -50,7 +50,10 @@ export const CreateEditUserContainer = () => {
   const handleChange = (e) => {
     const { value, name } = e.target;
 
-    let updatedFormData = { ...formData, [name]: value };
+    let updatedFormData = {
+      ...formData,
+      [name]: name === "email" ? value.toLowerCase() : value,
+    };
 
     if (name === "professionalid") {
       const selectedProfessional = professionals.find(
@@ -62,7 +65,7 @@ export const CreateEditUserContainer = () => {
         : "";
 
       const asignedUserEmail = selectedProfessional
-        ? selectedProfessional.emailprofesional
+        ? selectedProfessional.emailprofesional.toLowerCase()
         : "";
 
       updatedFormData = {
@@ -74,8 +77,12 @@ export const CreateEditUserContainer = () => {
     }
 
     if (name === "email") {
-      if (users.some((user) => user.email === value)) {
-        const foundUser = users.find((user) => user.email === value);
+      if (
+        users.some((user) => user.email.toLowerCase() === value.toLowerCase())
+      ) {
+        const foundUser = users.find(
+          (user) => user.email === value.toLowerCase()
+        );
         setFoundUser(foundUser);
         setEmailMatch(true);
       } else setEmailMatch(false);

@@ -2,6 +2,8 @@
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { confirmationAlert } from "../components/common/alerts/alerts";
+import { supabaseClient } from "../services/config/config";
+import { getUsers } from "../services/api/users";
 
 export const GeneralContext = createContext();
 
@@ -94,8 +96,29 @@ export const GeneralContextProvider = ({ children }) => {
     return storedIsLoggedIn === "true" ? true : false;
   });
 
+  const [authUser, setAuthUser] = useState({});
+  const [users, setUsers] = useState([]);
+  const [userProfile, setUserProfile] = useState("");
+  const [userName, setUserName] = useState("");
+
   useEffect(() => {
     localStorage.setItem("isLoggedIn", isLoggedIn.toString());
+    Promise.all([supabaseClient.auth.getUser(), getUsers()])
+      .then(([responseAuthUser, responseUsers]) => {
+        const responseAuthUserData = responseAuthUser.data.user;
+        const responseUsersData = responseUsers.data;
+
+        const user = responseUsersData.find(
+          (user) => user.email === responseAuthUserData.email
+        );
+
+        setUserProfile(user.perfil);
+        setUserName(user.nombreyapellidousuario);
+
+        setAuthUser(responseAuthUserData);
+        setUsers(responseUsersData);
+      })
+      .catch((error) => console.log(error));
   }, [isLoggedIn]);
 
   const data = {
@@ -109,6 +132,10 @@ export const GeneralContextProvider = ({ children }) => {
     setUpdateList,
     isLoggedIn,
     setIsLoggedIn,
+    authUser,
+    users,
+    userProfile,
+    userName,
   };
 
   return (

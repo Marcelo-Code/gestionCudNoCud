@@ -147,6 +147,12 @@ export const updateAuthUser = async (updatedUser) => {
   }
 };
 
+// export const { data, error } = await supabaseClient.auth.updatePasswordAuthUser(
+//   {
+//     password: "nuevacontraseña123",
+//   }
+// );
+
 export const getAuthUsers = async () => {
   try {
     const { data, error } = await supabaseClient

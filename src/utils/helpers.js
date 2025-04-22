@@ -69,3 +69,15 @@ export const getCurrentDateTimeString = () => {
 
   return `${year}_${month}_${day}_${hours}_${minutes}_${seconds}`;
 };
+
+//Función para normalizar mayúsculas en nombres
+export const normalizeName = (name) => {
+  if (!name) return "";
+  return name
+    .toLowerCase()
+    .trim()
+    .split(" ")
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};

@@ -6,7 +6,7 @@ import { confirmationAlert } from "../../common/alerts/alerts";
 export const NavBarContainer = () => {
   const [showLogo, setShowLogo] = useState(false);
 
-  const { setIsLoggedIn } = useContext(GeneralContext);
+  const { setIsLoggedIn, userName, userProfile } = useContext(GeneralContext);
 
   //Función para cerrar sesión
   const handleLogout = async () => {
@@ -32,6 +32,8 @@ export const NavBarContainer = () => {
   const navBarProps = {
     showLogo,
     handleLogout,
+    userProfile,
+    userName,
   };
 
   return <NavBar {...navBarProps} />;
