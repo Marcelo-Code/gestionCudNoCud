@@ -5,7 +5,10 @@
 }
 
 body {
-  background: linear-gradient(rgba(0, 255, 255, 0.5), rgba(0, 255, 255, 0.5)),
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.8),
+      rgba(255, 255, 255, 0.8)
+    ),
     url(/images/background.jpg);
   background-size: 80px;
   background-repeat: repeat;
