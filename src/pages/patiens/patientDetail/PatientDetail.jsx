@@ -15,7 +15,21 @@ import { dateFormat } from "../../../utils/helpers";
 import { BackButtonContainer } from "../../../components/common/backButton/BackButtonContainer";
 
 export const PatientDetail = (patientDetailProps) => {
-  const { formData, patientAge } = patientDetailProps;
+  const { formData, patientAge, userProfessionalId } = patientDetailProps;
+
+  let medicalRecordsListRoute;
+  if (userProfessionalId) {
+    medicalRecordsListRoute = `/medicalRecords/list/professional/${userProfessionalId}/patient`;
+  } else {
+    medicalRecordsListRoute = `/medicalRecords/list/patient`;
+  }
+
+  let billingRecordsListRoute;
+  if (userProfessionalId) {
+    billingRecordsListRoute = `/billingRecords/list/professional/${userProfessionalId}/patient`;
+  } else {
+    billingRecordsListRoute = `/billingRecords/list/patient`;
+  }
 
   const dataStyle = {
     display: "flex",
@@ -267,7 +281,7 @@ export const PatientDetail = (patientDetailProps) => {
               </Link>
             </Box>
             <Box sx={{ flex: 1, minWidth: "200px" }}>
-              <Link to={`/billingRecords/list/patient/${formData.id}`}>
+              <Link to={`${billingRecordsListRoute}/${formData.id}`}>
                 <Button
                   size="small"
                   fullWidth
@@ -279,7 +293,7 @@ export const PatientDetail = (patientDetailProps) => {
               </Link>
             </Box>
             <Box sx={{ flex: 1, minWidth: "200px" }}>
-              <Link to={`/medicalRecords/list/patient/${formData.id}`}>
+              <Link to={`${medicalRecordsListRoute}/${formData.id}`}>
                 <Button
                   size="small"
                   fullWidth

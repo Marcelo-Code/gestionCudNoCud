@@ -216,6 +216,15 @@ const AppContent = () => {
                     </ProtectedUserRoute>
                   }
                 />
+                {/* Lista de consultas por paciente y por profesional */}
+                <Route
+                  path="/medicalRecords/list/professional/:professionalId/patient/:patientId"
+                  element={
+                    <ProtectedUserRoute>
+                      <MedicalRecordsListContainer />
+                    </ProtectedUserRoute>
+                  }
+                />
 
                 {/* Detalle consulta */}
                 <Route
@@ -273,6 +282,7 @@ const AppContent = () => {
                     </ProtectedUserRoute>
                   }
                 />
+
                 <Route
                   path="/billingRecords/list/professional/:professionalId"
                   element={

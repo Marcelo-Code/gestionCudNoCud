@@ -1,9 +1,10 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LoadingContainer } from "../../loading/LoadingContainer";
 import { getPatient } from "../../../services/api/patients";
 import { getAge } from "../../../utils/mathUtils";
 import { PatientDetail } from "./PatientDetail";
+import { GeneralContext } from "../../../context/GeneralContext";
 
 export const PatientDetailContainer = () => {
   //hook para el loading
@@ -15,12 +16,16 @@ export const PatientDetailContainer = () => {
   //hook para obtener el id del paciente
   const { patientId } = useParams();
 
+  //Importa userProfessionalId de context si existe
+  const { userProfessionalId = null } = useContext(GeneralContext);
+
   //Obtener paciente
   useEffect(() => {
     setIsLoading(true);
     getPatient(patientId)
       .then((response) => {
-        setFormData(response.data[0]);
+        const responseData = response.data[0];
+        setFormData(responseData);
         console.log(response);
       })
       .catch((error) => console.log(error))
@@ -35,6 +40,7 @@ export const PatientDetailContainer = () => {
   const patientDetailProps = {
     formData,
     patientAge,
+    userProfessionalId,
   };
 
   return <PatientDetail {...patientDetailProps} />;

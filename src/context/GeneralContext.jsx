@@ -36,6 +36,20 @@ export const GeneralContextProvider = ({ children }) => {
     }
   };
 
+  //hook para guardar las consultas seleccionadas para el informe
+  const [selectedRecords, setSelectedRecords] = useState([]);
+
+  const handleCheckboxChange = (record) => {
+    setSelectedRecords((prevSelected) => {
+      const alreadySelected = prevSelected.find((r) => r.id === record.id);
+      if (alreadySelected) {
+        return prevSelected.filter((r) => r.id !== record.id); // lo deselecciona
+      } else {
+        return [...prevSelected, record]; // lo selecciona
+      }
+    });
+  };
+
   //hook para actualizar la importación de datos
   const [updateList, setUpdateList] = useState(false);
 
@@ -88,6 +102,8 @@ export const GeneralContextProvider = ({ children }) => {
     userName,
     userProfessionalId,
     setUpdateUserProfile,
+    handleCheckboxChange,
+    selectedRecords,
   };
 
   return (

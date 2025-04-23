@@ -5,6 +5,7 @@ import {
   deleteMedicalRecord,
   getMedicalRecords,
   getMedicalRecordsByPatient,
+  getMedicalRecordsByPatientAndByProfessional,
   getMedicalRecordsByProfessional,
 } from "../../../services/api/medicalRecords";
 import { LoadingContainer } from "../../loading/LoadingContainer";
@@ -22,11 +23,11 @@ export const MedicalRecordsListContainer = () => {
   //hook para guardar los profesionales
   const [professionals, setProfessionals] = useState([]);
 
-  //hook para mostrar datos de la persona referenciada, paciente o profesional
-  const [referencedPerson, setReferencedPerson] = useState({});
-
   //hook para guardar el paciente en caso de exista
   const [patient, setPatient] = useState({});
+
+  //hook para guardar el profesinal en caso de exista
+  const [professional, setProfessional] = useState({});
 
   //hook para actualizar la lista luego de una acción
   const [updateList, setUpdateList] = useState(false);
@@ -40,6 +41,7 @@ export const MedicalRecordsListContainer = () => {
   //hook para el array de consultas
   const [medicalRecords, setMedicalRecords] = useState([]);
 
+  //Importa variables de contexto para la selección de registros para el informe
   const { handleCheckboxChange, selectedRecords } = useContext(GeneralContext);
 
   //Función para eliminar una consulta
@@ -52,60 +54,65 @@ export const MedicalRecordsListContainer = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const professionalsResponse = await getProfessionals();
-        setProfessionals(professionalsResponse.data);
+    let action;
+    if (patientId && professionalId) {
+      action = () =>
+        getMedicalRecordsByPatientAndByProfessional(patientId, professionalId);
+    } else if (patientId) {
+      action = () => getMedicalRecordsByPatient(patientId);
+    } else if (professionalId) {
+      action = () => getMedicalRecordsByProfessional(professionalId);
+    } else {
+      action = () => getMedicalRecords();
+    }
 
-        let medicalRecordsResponseData;
-        let personData;
+    setIsLoading(true);
 
-        if (patientId) {
-          const [medicalRecordsResponse, patientResponse] = await Promise.all([
-            getMedicalRecordsByPatient(patientId),
-            getPatient(patientId),
-          ]);
+    const promises = [action()];
 
-          console.log(medicalRecordsResponse);
-          medicalRecordsResponseData = medicalRecordsResponse.data;
-          personData = patientResponse.data[0];
-          setPatient(personData);
-        } else if (professionalId) {
-          const [medicalRecordsResponse, professionalResponse] =
-            await Promise.all([
-              getMedicalRecordsByProfessional(professionalId),
-              getProfessional(professionalId),
-            ]);
+    if (patientId) {
+      promises.push(getPatient(patientId));
+    }
 
-          console.log(medicalRecordsResponse),
-            (medicalRecordsResponseData = medicalRecordsResponse.data);
-          personData = professionalResponse.data[0];
-        } else {
-          const medicalRecordsResponse = await getMedicalRecords();
-          medicalRecordsResponseData = medicalRecordsResponse.data;
-          console.log(medicalRecordsResponse);
+    if (professionalId) {
+      promises.push(getProfessional(professionalId));
+    }
+
+    promises.push(getProfessionals());
+
+    Promise.all(promises)
+      .then(
+        ([
+          medicalRecordsResponse,
+          patientResponse,
+          professionalResponse,
+          professionalsResponse,
+        ]) => {
+          setMedicalRecords(medicalRecordsResponse.data);
+
+          if (patientResponse) setPatient(patientResponse.data[0]);
+          if (professionalResponse)
+            setProfessional(professionalResponse.data[0]);
+          if (professionalsResponse)
+            setProfessionals(professionalsResponse.data);
         }
-        setMedicalRecords(medicalRecordsResponseData);
-        setReferencedPerson(personData);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchData();
+      )
+      .catch((error) => {
+        console.error(error);
+      })
+      .finally(() => setIsLoading(false));
   }, [patientId, professionalId, updateList]);
 
   if (isLoading) return <LoadingContainer />;
 
-  //Obtiene el nombre del paciente o profesional
+  //Define el nombre del título de la página
   let titleName;
-  if (patientId) {
-    titleName = `paciente ${referencedPerson.nombreyapellidopaciente}`;
-  }
-  if (professionalId) {
-    titleName = `profesional ${referencedPerson.nombreyapellidoprofesional}`;
+  if (patientId && professionalId) {
+    titleName = `paciente ${patient.nombreyapellidopaciente} y profesional ${professional.nombreyapellidoprofesional}`;
+  } else if (patientId) {
+    titleName = `paciente ${patient.nombreyapellidopaciente}`;
+  } else if (professionalId) {
+    titleName = `profesional ${professional.nombreyapellidoprofesional}`;
   }
 
   //Lista de profesionales para el menu del informe

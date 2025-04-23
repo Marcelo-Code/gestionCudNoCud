@@ -75,6 +75,34 @@ export const getMedicalRecordsByPatient = async (patientId) => {
   }
 };
 
+export const getMedicalRecordsByPatientAndByProfessional = async (
+  patientId,
+  professionalId
+) => {
+  try {
+    const { data } = await supabaseClient
+      .from("consultas")
+      .select(
+        "*, pacientes: idpaciente(nombreyapellidopaciente), profesionales: idprofesional(nombreyapellidoprofesional, matriculaprofesional, cuitprofesional, especialidadprofesional)"
+      )
+      .eq("idpaciente", patientId)
+      .eq("idprofesional", professionalId)
+      .order("fechaconsulta", { ascending: false });
+
+    return {
+      status: 201,
+      message: "Consultas obtenidas con éxito",
+      data,
+    };
+  } catch (error) {
+    return {
+      status: 404,
+      message: "Error al obtener consutlas",
+      error: error.message,
+    };
+  }
+};
+
 export const getMedicalRecord = async (medicalRecordId) => {
   try {
     const { data, error } = await supabaseClient
