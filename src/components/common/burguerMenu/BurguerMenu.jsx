@@ -43,7 +43,16 @@ export const BurguerMenu = (burguerMenuProps) => {
               </IconButton>
             </Tooltip>
           </Box>
-          <Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center", // centra verticalmente
+              alignItems: "center", // opcional: centra horizontalmente también
+              height: "94%",
+              overflow: "hidden",
+            }}
+          >
             <List>
               {options.map(({ icon, option, link }) => (
                 <ListItem key={option}>

@@ -1,61 +1,26 @@
 import { Icons } from "../../../assets/Icons";
-import { useState } from "react";
+import { use, useContext, useEffect, useState } from "react";
 import { BurguerMenu } from "./BurguerMenu";
+import { GeneralContext } from "../../../context/GeneralContext";
+import { adminOptions, userOptions } from "./menuOptions";
 
 export const BurguerMenuContainer = () => {
   const [open, setOpen] = useState(false);
-
-  const options = [
-    {
-      icon: <Icons.PersonIcon />,
-      option: "Pacientes",
-      link: "/patients/list/active",
-    },
-    {
-      icon: <Icons.PersonIcon />,
-      option: "Profesionales",
-      link: "/professionals/list/active",
-    },
-    {
-      icon: <Icons.PersonIcon />,
-      option: "Usuarios",
-      link: "/users/list/active",
-    },
-    {
-      icon: <Icons.GroupsIcon />,
-      option: "Consultas/Report",
-      link: "/medicalRecords/list",
-    },
-    {
-      icon: <Icons.ReceiptIcon />,
-      option: "Facturación",
-      link: "/billingRecords/list",
-    },
-    {
-      icon: <Icons.ErrorIcon />,
-      option: "Reclamos",
-      link: "/paymentRequests/list",
-    },
-    {
-      icon: <Icons.PersonIcon />,
-      option: "Pacientes Inactivos",
-      link: "/patients/list/inactive",
-    },
-    {
-      icon: <Icons.PersonIcon />,
-      option: "Profesionales Inactivos",
-      link: "/professionals/list/inactive",
-    },
-    {
-      icon: <Icons.PersonIcon />,
-      option: "Usuarios Inactivos",
-      link: "/users/list/inactive",
-    },
-  ];
-
+  const [options, setOptions] = useState([]);
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
+
+  const { userProfile = "profesional", userProfessionalId } =
+    useContext(GeneralContext);
+
+  console.log(userProfessionalId);
+
+  useEffect(() => {
+    if (userProfile === "admin") setOptions(adminOptions);
+    if (userProfile === "profesional")
+      setOptions(userOptions({ professionalId: userProfessionalId }));
+  }, [userProfile, userProfessionalId]);
 
   const burguerMenuProps = {
     toggleDrawer,

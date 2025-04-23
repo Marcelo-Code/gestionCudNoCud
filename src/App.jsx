@@ -33,6 +33,8 @@ import { UsersListContainer } from "./pages/users/usersList/UsersListContainer";
 import { CreateEditUserContainer } from "./pages/users/createUser/CreateEditUserContainer";
 import { PageNotFoundContainer } from "./pages/pageNotFound/PageNotFoundContainer";
 import { UpdatePasswordLoggedInUserContainer } from "./pages/users/updatePasswordLoggedInUser/UpdatePasswordLoggedInUserContainer";
+import { ProtectedUserRoute } from "./routes/ProtectedUserRoute";
+import { UnauthorizedUserPageContainer } from "./pages/unauthorizedUserPage/UnauthorizedUserPageContainer";
 
 function App() {
   return (
@@ -70,12 +72,22 @@ const AppContent = () => {
                 {/*---------- Not found page ----------*/}
                 <Route path="*" element={<PageNotFoundContainer />} />
 
+                {/*---------- Unauthorized page ----------*/}
+                <Route
+                  path="/unauthorized"
+                  element={<UnauthorizedUserPageContainer />}
+                />
+
                 {/* ---------- Home ----------*/}
                 <Route path="/" element={<HomeContainer />} />
                 {/* ---------- Pacientes ----------*/}
                 <Route
                   path="/patients/createPatient"
-                  element={<CreateEditPatientContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditPatientContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
                 <Route
                   path="/patients/list/:active"
@@ -91,170 +103,299 @@ const AppContent = () => {
                 />
                 <Route
                   path="/patients/edit/:patientId"
-                  element={<CreateEditPatientContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditPatientContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
                 {/* ---------- Profesionales ----------*/}
+                {/* ---------- Crear profesional ----------*/}
                 <Route
                   path="/professionals/createProfessional"
-                  element={<CreateEditProfessionalContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditProfessionalContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
+                {/* ---------- Lista de profesionales activos ----------*/}
                 <Route
                   path="/professionals/list/:active"
-                  element={<ProfessionalsListContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <ProfessionalsListContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
+                {/* ---------- Detalle de profesional ----------*/}
                 <Route
                   path="/professionals/detail/:professionalId"
-                  element={<ProfessionalDetailContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <ProfessionalDetailContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
+
+                {/* ---------- Detalle de documentación de profesional ----------*/}
                 <Route
                   path="/professionals/documentation/:professionalId"
-                  element={<DocumentationContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <DocumentationContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
                 <Route
                   path="/professionals/edit/:professionalId"
-                  element={<CreateEditProfessionalContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditProfessionalContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
                 {/* ---------- Consultas Médicas ----------*/}
 
                 {/* Crear consulta */}
                 <Route
                   path="/medicalRecords/createMedicalRecord"
-                  element={<CreateEditMedicalRecordContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditMedicalRecordContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
 
                 {/* Crear consulta con profesional */}
                 <Route
                   path="/medicalRecords/createMedicalRecord/professional/:professionalId"
-                  element={<CreateEditMedicalRecordContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditMedicalRecordContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
 
                 {/* Crear consulta con paciente */}
                 <Route
                   path="/medicalRecords/createMedicalRecord/patient/:patientId"
-                  element={<CreateEditMedicalRecordContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditMedicalRecordContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
 
                 {/* Lista de consultas */}
                 <Route
                   path="/medicalRecords/list"
-                  element={<MedicalRecordsListContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <MedicalRecordsListContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
 
                 {/* Lista de consultas por profesional */}
                 <Route
                   path="/medicalRecords/list/professional/:professionalId"
-                  element={<MedicalRecordsListContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <MedicalRecordsListContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
 
                 {/* Lista de consultas por paciente */}
                 <Route
                   path="/medicalRecords/list/patient/:patientId"
-                  element={<MedicalRecordsListContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <MedicalRecordsListContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
 
                 {/* Detalle consulta */}
                 <Route
                   path="/medicalRecords/detail/:medicalRecordId"
-                  element={<MedicalRecordDetailContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <MedicalRecordDetailContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
 
                 {/* Editar consulta */}
                 <Route
                   path="/medicalRecords/edit/:medicalRecordId"
-                  element={<CreateEditMedicalRecordContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditMedicalRecordContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
 
                 {/* Editar consulta con paciente*/}
                 <Route
                   path="/medicalRecords/edit/patient/:patientId/:medicalRecordId"
-                  element={<CreateEditMedicalRecordContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditMedicalRecordContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
                 {/* Editar consulta con profesional */}
                 <Route
                   path="/medicalRecords/edit/professional/:professionalId/:medicalRecordId"
-                  element={<CreateEditMedicalRecordContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditMedicalRecordContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
 
                 {/* ---------- Facturación  ----------*/}
                 <Route
                   path="/billingRecords/list"
-                  element={<BillingRecordsContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <BillingRecordsContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
                 <Route
                   path="/billingRecords/list/patient/:patientId"
-                  element={<BillingRecordsContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <BillingRecordsContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
                 <Route
                   path="/billingRecords/list/professional/:professionalId"
-                  element={<BillingRecordsContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <BillingRecordsContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
                 {/* ---------- Facturación CUD  ----------*/}
                 {/* Crear facturación CUD */}
                 <Route
                   path="/billingRecords/createCudBillingRecord"
-                  element={<CreateEditCudBillingRecordContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditCudBillingRecordContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
                 {/* Crear facturación CUD con profesional */}
                 <Route
                   path="/billingRecords/createCudBillingRecord/professional/:professionalId"
-                  element={<CreateEditCudBillingRecordContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditCudBillingRecordContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
                 {/* Crear facturación CUD con paciente */}
                 <Route
                   path="/billingRecords/createCudBillingRecord/patient/:patientId"
-                  element={<CreateEditCudBillingRecordContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditCudBillingRecordContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
                 {/* Editar facturación CUD */}
                 <Route
                   path="/billingRecords/cudBillingRecords/edit/:cudBillingRecordId"
-                  element={<CreateEditCudBillingRecordContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditCudBillingRecordContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
                 {/* Editar facturación CUD con paciente*/}
                 <Route
                   path="/billingRecords/cudBillingRecords/edit/patient/:patientId/:cudBillingRecordId"
-                  element={<CreateEditCudBillingRecordContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditCudBillingRecordContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
                 {/* Editar facturación CUD con profesional */}
                 <Route
                   path="/billingRecords/cudBillingRecords/edit/professional/:professionalId/:cudBillingRecordId"
-                  element={<CreateEditCudBillingRecordContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditCudBillingRecordContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
                 {/* ---------- Facturación NO CUD ----------*/}
 
                 {/* Crear factura no CUD */}
                 <Route
                   path="/billingRecords/noCudBillingRecords/createNoCudBillingRecord"
-                  element={<CreateEditNoCudBillingRecordContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditNoCudBillingRecordContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
 
                 {/* Crear factura no CUD con paciente */}
                 <Route
                   path="/billingRecords/noCudBillingRecords/createNoCudBillingRecord/patient/:patientId"
-                  element={<CreateEditNoCudBillingRecordContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditNoCudBillingRecordContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
 
                 {/* Crear factura no CUD con profesional */}
                 <Route
                   path="/billingRecords/noCudBillingRecords/createNoCudBillingRecord/professional/:professionalId"
-                  element={<CreateEditNoCudBillingRecordContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditNoCudBillingRecordContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
 
                 {/* Editar factura no CUD */}
                 <Route
                   path="/billingRecords/noCudBillingRecords/edit/:noCudBillingRecordId"
-                  element={<CreateEditNoCudBillingRecordContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditNoCudBillingRecordContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
 
                 {/* Editar factura no CUD con profesional */}
                 <Route
                   path="/billingRecords/noCudBillingRecords/edit/professional/:professionalId/:noCudBillingRecordId"
-                  element={<CreateEditNoCudBillingRecordContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditNoCudBillingRecordContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
 
                 {/* Editar factura no CUD con paciente */}
                 <Route
                   path="/billingRecords/noCudBillingRecords/edit/patient/:patientId/:noCudBillingRecordId"
-                  element={<CreateEditNoCudBillingRecordContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditNoCudBillingRecordContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
 
                 {/*---------- Reclamos ----------*/}
@@ -262,37 +403,61 @@ const AppContent = () => {
                 {/* Crear reclamo */}
                 <Route
                   path="/paymentRequests/createPaymentRequest"
-                  element={<CreateEditPaymentRequestContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditPaymentRequestContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
 
                 {/* Crear reclamo con facturación CUD (con nro factura) */}
                 <Route
                   path="/paymentRequests/createPaymentRequest/cudBillingRecords/:cudBillingRecordId"
-                  element={<CreateEditPaymentRequestContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditPaymentRequestContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
 
                 {/* Editar reclamo */}
                 <Route
                   path="/paymentRequests/edit/:paymentRequestId"
-                  element={<CreateEditPaymentRequestContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditPaymentRequestContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
 
                 {/* Editar reclamo con facturación CUD (con nro factura) */}
                 <Route
                   path="/paymentRequests/edit/cudBillingRecords/:cudBillingRecordId/:paymentRequestId"
-                  element={<CreateEditPaymentRequestContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditPaymentRequestContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
 
                 {/* Lista de reclamos */}
                 <Route
                   path="/paymentRequests/list"
-                  element={<PaymentRequestsListContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <PaymentRequestsListContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
 
                 {/* Lista de reclamos con facturación CUD (con nro factura) */}
                 <Route
                   path="/paymentRequests/list/cudBillingRecords/:cudBillingRecordId"
-                  element={<PaymentRequestsListContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <PaymentRequestsListContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
 
                 {/*---------- Usuarios ----------*/}
@@ -300,18 +465,30 @@ const AppContent = () => {
                 {/* Crear usuario */}
                 <Route
                   path="/users/createUser"
-                  element={<CreateEditUserContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditUserContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
 
                 {/* Editar usuario */}
                 <Route
                   path="/users/edit/:userId"
-                  element={<CreateEditUserContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditUserContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
                 {/* Lista de usuarios */}
                 <Route
                   path="/users/list/:active"
-                  element={<UsersListContainer />}
+                  element={
+                    <ProtectedUserRoute>
+                      <UsersListContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
                 {/* Actualizar contraseña de usuario logueado */}
                 <Route

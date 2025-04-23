@@ -10,9 +10,6 @@ export const GeneralContext = createContext();
 export const GeneralContextProvider = ({ children }) => {
   const navigate = useNavigate();
 
-  //hook para el loading
-  const [isLoading, setIsLoading] = useState(false);
-
   //hook para cambiar el tamaño de la fuente
   const [textSize, setTextSize] = useState(15);
 
@@ -38,58 +35,9 @@ export const GeneralContextProvider = ({ children }) => {
       window.location.reload();
     }
   };
-  const [pageIsLoading, setPageIsLoading] = useState(false);
 
   //hook para actualizar la importación de datos
   const [updateList, setUpdateList] = useState(false);
-
-  const trimUrl = (url) => {
-    if (url && typeof url === "string") {
-      // Obtener todo después de la última barra diagonal
-      const lastSlashIndex = url.lastIndexOf("/");
-      if (lastSlashIndex !== -1) {
-        return url.slice(lastSlashIndex + 1); // Recorta todo lo que está después de la última barra
-      }
-      return url; // Si no hay barra diagonal, devolvemos la URL original
-    }
-    return "";
-  };
-
-  //Función para aplicar fomato al período facturado
-  //------------------------------------------------
-
-  const formatPeriod = (datePeriod) => {
-    const date = new Date(datePeriod);
-    // Crear el formateador para el mes y el año
-    const formatter = new Intl.DateTimeFormat("es-AR", {
-      month: "long",
-      year: "numeric",
-      timeZone: "UTC",
-    });
-
-    // Formatear la fecha
-    const formattedDate = formatter.format(date);
-
-    // Capitalizar el mes
-    const formattedDateCapitalized =
-      formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
-
-    return formattedDateCapitalized;
-  };
-
-  // Dentro de tu componente:
-  const [selectedRecords, setSelectedRecords] = useState([]);
-
-  const handleCheckboxChange = (record) => {
-    setSelectedRecords((prevSelected) => {
-      const alreadySelected = prevSelected.find((r) => r.id === record.id);
-      if (alreadySelected) {
-        return prevSelected.filter((r) => r.id !== record.id); // lo deselecciona
-      } else {
-        return [...prevSelected, record]; // lo selecciona
-      }
-    });
-  };
 
   //Lógica para setear el estado de isLoggedIn, y recuperar datos del usuario autenticado
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -130,8 +78,6 @@ export const GeneralContextProvider = ({ children }) => {
     cancelAction,
     textSize,
     setTextSize,
-    handleCheckboxChange,
-    selectedRecords,
     updateList,
     setUpdateList,
     isLoggedIn,

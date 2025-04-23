@@ -1,0 +1,23 @@
+@font-face {
+  font-family: "broughton";
+  src: url("/fonts/broughton.ttf") format("truetype");
+}
+
+.unauthorizedUserPageContainer {
+  width: 100%;
+  min-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.unauthorizedUserPageTitle {
+  font-family: "broughton";
+  width: 100%;
+  font-size: 2.5em;
+  text-align: center;
+  text-shadow: 0 0 20px black;
+  padding: 20px;
+  letter-spacing: 3px;
+}
