@@ -26,6 +26,7 @@
     "react-dropzone": "^14.3.8",
     "react-number-format": "^5.4.3",
     "react-router-dom": "^7.4.1",
+    "recharts": "^2.15.3",
     "supabase": "^2.20.12",
     "sweetalert2": "^11.17.2"
   },
