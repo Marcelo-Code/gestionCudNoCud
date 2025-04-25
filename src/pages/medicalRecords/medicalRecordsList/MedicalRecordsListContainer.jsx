@@ -127,6 +127,7 @@ export const MedicalRecordsListContainer = () => {
   //Define los campos a buscar por el filtro
   const fieldsToSearch = [
     (r) => r.descripcion,
+    (r) => r.tipoconsulta,
     (r) => r.pacientes?.nombreyapellidopaciente,
     (r) => r.profesionales?.nombreyapellidoprofesional,
   ];
