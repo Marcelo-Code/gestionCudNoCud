@@ -23,6 +23,14 @@ export const GeneralBar = (generalBarProps) => {
     fieldsToSearch,
     setFilteredRecords,
     records,
+    searchQuery,
+    handleSearchChange,
+    filters,
+    handleFilterChange,
+    sortOption,
+    handleSortChange,
+    DEFAULT_STATUS_OPTIONS,
+    DEFAULT_TYPE_OPTIONS,
     DEFAULT_SORT_OPTIONS,
   } = generalBarProps;
 
@@ -33,6 +41,14 @@ export const GeneralBar = (generalBarProps) => {
     fieldsToSearch,
     setFilteredRecords,
     records,
+    searchQuery,
+    handleSearchChange,
+    filters,
+    handleFilterChange,
+    sortOption,
+    handleSortChange,
+    DEFAULT_STATUS_OPTIONS,
+    DEFAULT_TYPE_OPTIONS,
     DEFAULT_SORT_OPTIONS,
   };
 

@@ -1,20 +1,16 @@
 import {
   Box,
-  Button,
-  Drawer,
-  FormControl,
-  FormControlLabel,
-  Checkbox,
   IconButton,
   InputAdornment,
-  InputLabel,
-  MenuItem,
-  Radio,
-  RadioGroup,
-  Select,
   TextField,
-  Typography,
   Tooltip,
+  Drawer,
+  Typography,
+  FormControl,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Chip,
 } from "@mui/material";
 import {
   Search as SearchIcon,
@@ -30,15 +26,12 @@ export const SearchFilterBar = ({
   activeBar,
   setActiveBar,
   enableReportBar,
-
   handleSearchChange,
   searchQuery,
-
   filters,
   handleFilterChange,
   sortOption,
   handleSortChange,
-
   DEFAULT_STATUS_OPTIONS,
   DEFAULT_TYPE_OPTIONS,
   DEFAULT_SORT_OPTIONS,
@@ -133,77 +126,79 @@ export const SearchFilterBar = ({
             Filtros
           </Typography>
 
-          {/* {DEFAULT_STATUS_OPTIONS.length > 0 && (
-            <FormControl fullWidth sx={{ mb: 3 }}>
-              <InputLabel id="status-label">Estado</InputLabel>
-              <Select
-                labelId="status-label"
-                value={filters.status}
-                onChange={(e) => handleFilterChange("status", e.target.value)}
-              >
-                {DEFAULT_STATUS_OPTIONS.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          )} */}
+          {/* <FormControl fullWidth sx={{ mb: 3 }}>
+            <Typography sx={{ color: "black", mb: 1 }}>Estado</Typography>
+            <RadioGroup
+              value={filters.status}
+              onChange={(e) => handleFilterChange("status", e.target.value)}
+            >
+              {DEFAULT_STATUS_OPTIONS.map((option) => (
+                <FormControlLabel
+                  key={option.value}
+                  value={option.value}
+                  control={<Radio sx={{ color: "black" }} />}
+                  label={option.label}
+                  sx={{ color: "black" }}
+                />
+              ))}
+            </RadioGroup>
+          </FormControl> */}
 
-          {/* {DEFAULT_TYPE_OPTIONS.length > 0 && (
-            <FormControl fullWidth sx={{ mb: 3 }}>
-              <InputLabel id="type-label">Tipo de cliente</InputLabel>
-              <Select
-                labelId="type-label"
-                value={filters.type}
-                onChange={(e) => handleFilterChange("type", e.target.value)}
-              >
-                {DEFAULT_TYPE_OPTIONS.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          )} */}
+          {/* <FormControl fullWidth sx={{ mb: 3 }}>
+            <Typography sx={{ color: "black", mb: 1 }}>
+              Tipo de cliente
+            </Typography>
+            <RadioGroup
+              value={filters.type}
+              onChange={(e) => handleFilterChange("type", e.target.value)}
+            >
+              {DEFAULT_TYPE_OPTIONS.map((option) => (
+                <FormControlLabel
+                  key={option.value}
+                  value={option.value}
+                  control={<Radio sx={{ color: "black" }} />}
+                  label={option.label}
+                  sx={{ color: "black" }}
+                />
+              ))}
+            </RadioGroup>
+          </FormControl> */}
 
-          <Box sx={{ mb: 2 }}>
-            <FormControl component="fieldset">
-              <Typography
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 1,
-                  color: "black",
-                  margin: "10px",
-                }}
-              >
-                <SortIcon fontSize="small" /> Ordenar por
-              </Typography>
+          <FormControl fullWidth>
+            <Typography
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 1,
+                color: "black",
+                margin: "10px 0",
+              }}
+            >
+              <SortIcon fontSize="small" /> Ordenar por
+            </Typography>
 
-              <RadioGroup value={sortOption} onChange={handleSortChange}>
-                {DEFAULT_SORT_OPTIONS.map((option) => (
-                  <FormControlLabel
-                    key={option.value}
-                    value={option.value}
-                    sx={{ color: "black" }}
-                    control={
-                      <Radio
-                        sx={{
-                          color: "black",
-                          "&.Mui-checked": {
-                            color: "white",
-                          },
-                        }}
-                      />
-                    }
-                    label={option.label}
-                  />
-                ))}
-              </RadioGroup>
-            </FormControl>
-          </Box>
+            <RadioGroup value={sortOption} onChange={handleSortChange}>
+              {DEFAULT_SORT_OPTIONS.map((option) => (
+                <FormControlLabel
+                  key={option.value}
+                  value={option.value}
+                  sx={{ color: "black" }}
+                  control={
+                    <Radio
+                      sx={{
+                        color: "black",
+                        "&.Mui-checked": {
+                          color: "white",
+                        },
+                      }}
+                    />
+                  }
+                  label={option.label}
+                />
+              ))}
+            </RadioGroup>
+          </FormControl>
         </Box>
       </Drawer>
     </>
