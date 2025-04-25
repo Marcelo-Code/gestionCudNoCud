@@ -42,6 +42,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     cudBillingRecordsfieldsToSearch,
     setFilteredCudBillingRecords,
     records,
+    DEFAULT_SORT_OPTIONS,
   } = cudBillingRecordsListProps;
 
   let createRoute = "/billingRecords/createCudBillingRecord";
@@ -78,6 +79,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     fieldsToSearch: cudBillingRecordsfieldsToSearch,
     setFilteredRecords: setFilteredCudBillingRecords,
     records,
+    DEFAULT_SORT_OPTIONS,
   };
 
   const iconStyle = { color: "blue", fontSize: "1.2em", margin: "5px" };

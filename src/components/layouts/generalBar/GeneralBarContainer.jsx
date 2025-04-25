@@ -15,6 +15,7 @@ export const GeneralBarContainer = (generalBarContainerProps) => {
     fieldsToSearch,
     setFilteredRecords,
     records,
+    DEFAULT_SORT_OPTIONS,
   } = generalBarContainerProps;
   const [activeBar, setActiveBar] = useState("editionBar");
 
@@ -44,6 +45,7 @@ export const GeneralBarContainer = (generalBarContainerProps) => {
     fieldsToSearch,
     setFilteredRecords,
     records,
+    DEFAULT_SORT_OPTIONS,
   };
   return <GeneralBar {...generalBarProps} />;
 };

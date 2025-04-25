@@ -23,8 +23,8 @@ import {
   Edit as EditIcon,
 } from "@mui/icons-material";
 import { useState } from "react";
-import "../../generalBar.css";
 import { Icons } from "../../../../../assets/Icons";
+import "../../generalBar.css";
 
 export const SearchFilterBar = ({
   activeBar,
@@ -104,21 +104,36 @@ export const SearchFilterBar = ({
           },
         }}
       >
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "flex-start",
+            px: 2,
+          }}
+        >
+          <Tooltip title="Cerrar" placement="top-start" arrow>
+            <IconButton onClick={() => setDrawerOpen(false)}>
+              <Icons.CloseIcon sx={{ color: "white" }} />
+            </IconButton>
+          </Tooltip>
+        </Box>
         <Box sx={{ width: 300, p: 3 }}>
           <Typography
-            variant="h4"
+            variant="h5"
             gutterBottom
             sx={{
-              fontFamily: "horndon",
+              fontFamily: "broughton",
               textAlign: "center",
-              marginTop: 2,
-              textShadow: "0 0 20px black",
+              color: "black",
+              borderBottom: "1px solid white",
+              paddingBottom: "10px",
             }}
           >
             Filtros
           </Typography>
 
-          {DEFAULT_STATUS_OPTIONS.length > 0 && (
+          {/* {DEFAULT_STATUS_OPTIONS.length > 0 && (
             <FormControl fullWidth sx={{ mb: 3 }}>
               <InputLabel id="status-label">Estado</InputLabel>
               <Select
@@ -133,9 +148,9 @@ export const SearchFilterBar = ({
                 ))}
               </Select>
             </FormControl>
-          )}
+          )} */}
 
-          {DEFAULT_TYPE_OPTIONS.length > 0 && (
+          {/* {DEFAULT_TYPE_OPTIONS.length > 0 && (
             <FormControl fullWidth sx={{ mb: 3 }}>
               <InputLabel id="type-label">Tipo de cliente</InputLabel>
               <Select
@@ -150,7 +165,7 @@ export const SearchFilterBar = ({
                 ))}
               </Select>
             </FormControl>
-          )}
+          )} */}
 
           <Box sx={{ mb: 2 }}>
             <FormControl component="fieldset">
@@ -160,7 +175,7 @@ export const SearchFilterBar = ({
                   alignItems: "center",
                   justifyContent: "center",
                   gap: 1,
-                  color: "white",
+                  color: "black",
                   margin: "10px",
                 }}
               >
@@ -172,10 +187,11 @@ export const SearchFilterBar = ({
                   <FormControlLabel
                     key={option.value}
                     value={option.value}
+                    sx={{ color: "black" }}
                     control={
                       <Radio
                         sx={{
-                          color: "white",
+                          color: "black",
                           "&.Mui-checked": {
                             color: "white",
                           },
@@ -187,19 +203,6 @@ export const SearchFilterBar = ({
                 ))}
               </RadioGroup>
             </FormControl>
-          </Box>
-
-          <Box sx={{ display: "flex", mt: 2 }}>
-            <Button
-              variant="outlined"
-              sx={{
-                backgroundColor: "white",
-              }}
-              fullWidth
-              onClick={() => setDrawerOpen(false)}
-            >
-              Cerrar
-            </Button>
           </Box>
         </Box>
       </Drawer>

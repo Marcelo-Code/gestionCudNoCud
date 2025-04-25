@@ -86,6 +86,50 @@ export const PaymentRequestsListContainer = () => {
     (r) => r.facturacioncud.profesionales.nombreyapellidoprofesional,
   ];
 
+  const DEFAULT_SORT_OPTIONS = [
+    { value: "none", label: "Sin ordenar", name: "" },
+    {
+      value: "alphabetical-asc-profesional",
+      label: "Profesional (A-Z)",
+      name: "profesionales.nombreyapellidoprofesional",
+    },
+    {
+      value: "alphabetical-desc-profesional",
+      label: "Profesional (Z-A)",
+      name: "profesionales.nombreyapellidoprofesional",
+    },
+    {
+      value: "alphabetical-asc-obrasocialpaciente",
+      label: "Obra social (A-Z)",
+      name: "facturacioncud.pacientes.obrasocialpaciente",
+    },
+    {
+      value: "alphabetical-desc-obrasocialpaciente",
+      label: "Obra social (Z-A)",
+      name: "facturacioncud.pacientes.obrasocialpaciente",
+    },
+    {
+      value: "alphabetical-asc-medioreclamo",
+      label: "Medio reclamo (A-Z)",
+      name: "medioreclamo",
+    },
+    {
+      value: "alphabetical-desc-medioreclamo",
+      label: "Medio reclamo (Z-A)",
+      name: "medioreclamo",
+    },
+    {
+      value: "date-desc",
+      label: "⬇️ Fecha reclamo",
+      name: "fechareclamo",
+    },
+    {
+      value: "date-asc",
+      label: "⬆️ Fecha reclamo",
+      name: "fechareclamo",
+    },
+  ];
+
   const paymentRequestsListProps = {
     paymentRequests: filteredPaymentRequests,
     handleDeletePaymentRequest,
@@ -98,6 +142,7 @@ export const PaymentRequestsListContainer = () => {
     paymentRequestFieldsToSearch,
     setFilteredPaymentRequests,
     records: paymentRequests,
+    DEFAULT_SORT_OPTIONS,
   };
 
   return <PaymentRequestsList {...paymentRequestsListProps} />;

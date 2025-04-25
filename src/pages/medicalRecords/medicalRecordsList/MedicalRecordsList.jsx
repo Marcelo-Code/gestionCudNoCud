@@ -38,6 +38,7 @@ export const MedicalRecordsList = ({
   fieldsToSearch,
   setFilteredRecords,
   records,
+  DEFAULT_SORT_OPTIONS,
 }) => {
   const [reportMode, setReportMode] = useState(false);
 
@@ -82,6 +83,7 @@ export const MedicalRecordsList = ({
     fieldsToSearch,
     setFilteredRecords,
     records,
+    DEFAULT_SORT_OPTIONS,
   };
 
   return (

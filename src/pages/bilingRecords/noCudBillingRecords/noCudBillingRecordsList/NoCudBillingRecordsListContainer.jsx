@@ -31,6 +31,60 @@ export const NoCudBillingRecordsListContainer = (
     return acc + Number.parseFloat(record.montofinalprofesional);
   }, 0);
 
+  const DEFAULT_SORT_OPTIONS = [
+    { value: "none", label: "Sin ordenar", name: "" },
+    {
+      value: "alphabetical-asc-paciente",
+      label: "Paciente (A-Z)",
+      name: "pacientes.nombreyapellidopaciente",
+    },
+    {
+      value: "alphabetical-desc-paciente",
+      label: "Paciente (Z-A)",
+      name: "pacientes.nombreyapellidopaciente",
+    },
+    {
+      value: "alphabetical-asc-profesional",
+      label: "Profesional (A-Z)",
+      name: "profesionales.nombreyapellidoprofesional",
+    },
+    {
+      value: "alphabetical-desc-profesional",
+      label: "Profesional (Z-A)",
+      name: "profesionales.nombreyapellidoprofesional",
+    },
+    {
+      value: "alphabetical-asc-prestacion",
+      label: "Prestación (A-Z)",
+      name: "prestacion",
+    },
+    {
+      value: "alphabetical-desc-prestacion",
+      label: "Prestación (Z-A)",
+      name: "profesionales.prestacion",
+    },
+    {
+      value: "date-desc-fechasesion",
+      label: "⬇️ Fecha sesión",
+      name: "fechasesion",
+    },
+    {
+      value: "date-asc-fechasesion",
+      label: "⬆️ Fecha sesión",
+      name: "fechasesion",
+    },
+    {
+      value: "date-desc-fechapago",
+      label: "⬇️ Fecha pago",
+      name: "fechadepago",
+    },
+    {
+      value: "date-asc-fechapago",
+      label: "⬆️ Fecha pago",
+      name: "fechadepago",
+    },
+  ];
+
   const noCudBillingRecordsListProps = {
     noCudBillingRecords,
     editMode,
@@ -48,6 +102,7 @@ export const NoCudBillingRecordsListContainer = (
     noCudBillingRecordsfieldsToSearch,
     setFilteredNoCudBillingRecords,
     records,
+    DEFAULT_SORT_OPTIONS,
   };
 
   return <NoCudBillingRecordsList {...noCudBillingRecordsListProps} />;

@@ -132,6 +132,41 @@ export const MedicalRecordsListContainer = () => {
     (r) => r.profesionales?.nombreyapellidoprofesional,
   ];
 
+  //Define los campos a ordenar en el menú de filtros
+  const DEFAULT_SORT_OPTIONS = [
+    { value: "none", label: "Sin ordenar", name: "" },
+    {
+      value: "alphabetical-asc-paciente",
+      label: "Paciente (A-Z)",
+      name: "pacientes.nombreyapellidopaciente",
+    },
+    {
+      value: "alphabetical-desc-paciente",
+      label: "Paciente (Z-A)",
+      name: "pacientes.nombreyapellidopaciente",
+    },
+    {
+      value: "alphabetical-asc-profesional",
+      label: "Profesional (A-Z)",
+      name: "profesionales.nombreyapellidoprofesional",
+    },
+    {
+      value: "alphabetical-desc-profesional",
+      label: "Profesional (Z-A)",
+      name: "profesionales.nombreyapellidoprofesional",
+    },
+    {
+      value: "date-desc",
+      label: "Más reciente",
+      name: "fechaconsulta",
+    },
+    {
+      value: "date-asc",
+      label: "Más antiguo",
+      name: "fechaconsulta",
+    },
+  ];
+
   //Define el nombre del título de la página
   let titleName;
   if (patientId && professionalId) {
@@ -179,6 +214,7 @@ export const MedicalRecordsListContainer = () => {
     fieldsToSearch,
     setFilteredRecords: setFilteredMedicalRecords,
     records: medicalRecords,
+    DEFAULT_SORT_OPTIONS,
   };
   return <MedicalRecordsList {...medicalRecordsListProps} />;
 };

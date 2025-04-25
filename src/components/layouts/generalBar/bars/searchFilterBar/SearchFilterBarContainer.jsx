@@ -8,6 +8,7 @@ export const SearchFilterBarContainer = ({
   fieldsToSearch,
   setFilteredRecords,
   records,
+  DEFAULT_SORT_OPTIONS,
 }) => {
   const DEFAULT_STATUS_OPTIONS = [
     { value: "all", label: "Todos" },
@@ -19,14 +20,6 @@ export const SearchFilterBarContainer = ({
     { value: "all", label: "Todos" },
     { value: "individual", label: "Individual" },
     { value: "company", label: "Empresa" },
-  ];
-
-  const DEFAULT_SORT_OPTIONS = [
-    { value: "none", label: "Sin ordenar", name: "" },
-    { value: "alphabetical-asc", label: "Nombre (A-Z)", name: "full_name" },
-    { value: "alphabetical-desc", label: "Nombre (Z-A)", name: "full_name" },
-    { value: "date-desc", label: "Más reciente", name: "fechaconsulta" },
-    { value: "date-asc", label: "Más antiguo", name: "fechaconsulta" },
   ];
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -57,28 +50,40 @@ export const SearchFilterBarContainer = ({
       return matchesSearch && matchesStatus && matchesType;
     });
 
-    const selectedSort = DEFAULT_SORT_OPTIONS.find(
-      (opt) => opt.value === newSort
-    );
-    if (selectedSort && selectedSort.value !== "none") {
-      result = [...result].sort((a, b) => {
-        const aValue = a[selectedSort.name];
-        const bValue = b[selectedSort.name];
+    if (newSort !== "none") {
+      const sortConfig = DEFAULT_SORT_OPTIONS.find(
+        (opt) => opt.value === newSort
+      );
+      if (sortConfig) {
+        const [type, direction] = newSort.split("-");
 
-        if (selectedSort.value.includes("alphabetical")) {
-          return selectedSort.value.includes("asc")
-            ? aValue.localeCompare(bValue)
-            : bValue.localeCompare(aValue);
-        }
+        const fieldPath = sortConfig.name.split("."); // ej: ["pacientes", "nombreyapellidopaciente"]
 
-        if (selectedSort.value.includes("date")) {
-          return selectedSort.value.includes("asc")
-            ? new Date(aValue) - new Date(bValue)
-            : new Date(bValue) - new Date(aValue);
-        }
+        const getValue = (obj, path) =>
+          path.reduce(
+            (acc, key) => (acc && acc[key] !== undefined ? acc[key] : ""),
+            obj
+          );
 
-        return 0;
-      });
+        result = [...result].sort((a, b) => {
+          const aValue = getValue(a, fieldPath);
+          const bValue = getValue(b, fieldPath);
+
+          if (type === "alphabetical") {
+            return direction === "asc"
+              ? aValue.localeCompare(bValue)
+              : bValue.localeCompare(aValue);
+          }
+
+          if (type === "date") {
+            return direction === "asc"
+              ? new Date(aValue) - new Date(bValue)
+              : new Date(bValue) - new Date(aValue);
+          }
+
+          return 0;
+        });
+      }
     }
 
     setFilteredRecords(result);

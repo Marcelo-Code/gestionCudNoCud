@@ -23,6 +23,7 @@ export const GeneralBar = (generalBarProps) => {
     fieldsToSearch,
     setFilteredRecords,
     records,
+    DEFAULT_SORT_OPTIONS,
   } = generalBarProps;
 
   const searchFilterBarContainerProps = {
@@ -32,6 +33,7 @@ export const GeneralBar = (generalBarProps) => {
     fieldsToSearch,
     setFilteredRecords,
     records,
+    DEFAULT_SORT_OPTIONS,
   };
 
   const editionBarProps = {

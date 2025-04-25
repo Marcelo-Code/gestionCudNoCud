@@ -21,6 +21,7 @@ export const PaymentRequestsList = ({
   paymentRequestFieldsToSearch,
   setFilteredPaymentRequests,
   records,
+  DEFAULT_SORT_OPTIONS,
 }) => {
   let createRoute = "/paymentRequests/createPaymentRequest";
   let editRoute = "/paymentRequests/edit";
@@ -44,6 +45,7 @@ export const PaymentRequestsList = ({
     fieldsToSearch: paymentRequestFieldsToSearch,
     setFilteredRecords: setFilteredPaymentRequests,
     records,
+    DEFAULT_SORT_OPTIONS,
   };
 
   let titleName = "Reclamos";
