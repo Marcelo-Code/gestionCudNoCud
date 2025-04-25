@@ -86,6 +86,7 @@ export const PaymentRequestsListContainer = () => {
     (r) => r.facturacioncud.profesionales.nombreyapellidoprofesional,
   ];
 
+  //Define los campos a ordenar en el menú de filtros
   const DEFAULT_SORT_OPTIONS = [
     { value: "none", label: "Sin ordenar", name: "" },
     {
