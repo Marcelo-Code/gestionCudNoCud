@@ -79,12 +79,12 @@ export const CudBillingRecordsListContainer = (
     },
     {
       value: "date-desc",
-      label: "⬇️ Período facturado",
+      label: "Período facturado (más recientes)",
       name: "periodofacturado",
     },
     {
       value: "date-asc",
-      label: "⬆️ Período facturado",
+      label: "Período facturado (más antiguos)",
       name: "periodofacturado",
     },
   ];

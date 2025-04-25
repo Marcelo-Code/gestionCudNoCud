@@ -65,22 +65,22 @@ export const NoCudBillingRecordsListContainer = (
     },
     {
       value: "date-desc-fechasesion",
-      label: "⬇️ Fecha sesión",
+      label: "Fecha sesión (más recientes)",
       name: "fechasesion",
     },
     {
       value: "date-asc-fechasesion",
-      label: "⬆️ Fecha sesión",
+      label: "Fecha sesión (más antiguos)",
       name: "fechasesion",
     },
     {
       value: "date-desc-fechapago",
-      label: "⬇️ Fecha pago",
+      label: "Fecha pago (más recientes)",
       name: "fechadepago",
     },
     {
       value: "date-asc-fechapago",
-      label: "⬆️ Fecha pago",
+      label: "Fecha pago (más antiguos)",
       name: "fechadepago",
     },
   ];

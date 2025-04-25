@@ -120,12 +120,12 @@ export const PaymentRequestsListContainer = () => {
     },
     {
       value: "date-desc",
-      label: "⬇️ Fecha reclamo",
+      label: "Fecha reclamo (más recientes)",
       name: "fechareclamo",
     },
     {
       value: "date-asc",
-      label: "⬆️ Fecha reclamo",
+      label: "Fecha reclamo (más antiguos)",
       name: "fechareclamo",
     },
   ];
