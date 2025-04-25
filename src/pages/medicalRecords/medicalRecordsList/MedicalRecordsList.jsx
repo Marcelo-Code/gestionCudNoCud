@@ -35,7 +35,9 @@ export const MedicalRecordsList = ({
   professionals,
   userProfessionalId,
   userProfile,
-  onsearch,
+  fieldsToSearch,
+  setFilteredRecords,
+  records,
 }) => {
   const [reportMode, setReportMode] = useState(false);
 
@@ -77,7 +79,9 @@ export const MedicalRecordsList = ({
     setReportMode,
 
     //Barra busqueda
-    onsearch,
+    fieldsToSearch,
+    setFilteredRecords,
+    records,
   };
 
   return (

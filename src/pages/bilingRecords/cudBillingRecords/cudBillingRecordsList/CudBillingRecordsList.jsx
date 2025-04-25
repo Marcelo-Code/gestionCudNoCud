@@ -39,6 +39,9 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     paymentRequests,
     userProfessionalId,
     userProfile,
+    cudBillingRecordsfieldsToSearch,
+    setFilteredCudBillingRecords,
+    records,
   } = cudBillingRecordsListProps;
 
   let createRoute = "/billingRecords/createCudBillingRecord";
@@ -72,6 +75,9 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     tooltipMessage: disableEditionBarButton
       ? "El paciente no es CUD"
       : "Crear factura CUD",
+    fieldsToSearch: cudBillingRecordsfieldsToSearch,
+    setFilteredRecords: setFilteredCudBillingRecords,
+    records,
   };
 
   const iconStyle = { color: "blue", fontSize: "1.2em", margin: "5px" };

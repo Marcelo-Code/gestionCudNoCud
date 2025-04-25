@@ -40,7 +40,7 @@ export const MedicalRecordsListContainer = () => {
 
   //hook para el array de consultas
   const [medicalRecords, setMedicalRecords] = useState([]);
-  const [filteredMedicarRecords, setFilteredMedicalRecords] = useState([]);
+  const [filteredMedicalRecords, setFilteredMedicalRecords] = useState([]);
 
   //Importa variables de contexto para la selección de registros para el informe
   const {
@@ -124,20 +124,12 @@ export const MedicalRecordsListContainer = () => {
 
   if (isLoading) return <LoadingContainer />;
 
-  //------------ FUNCIÓN DEL FILTRO -------------------------------
-
-  const handleSearch = (query) => {
-    const lowerQuery = query.toLowerCase();
-
-    const result = medicalRecords.filter((record) =>
-      `${record.descripcion}`.toLowerCase().includes(lowerQuery)
-    );
-
-    console.log(query);
-    setFilteredMedicalRecords(result);
-  };
-
-  //------------ FUNCIÓN DEL FILTRO -------------------------------
+  //Define los campos a buscar por el filtro
+  const fieldsToSearch = [
+    (r) => r.descripcion,
+    (r) => r.pacientes?.nombreyapellidopaciente,
+    (r) => r.profesionales?.nombreyapellidoprofesional,
+  ];
 
   //Define el nombre del título de la página
   let titleName;
@@ -149,10 +141,10 @@ export const MedicalRecordsListContainer = () => {
     titleName = `profesional ${professional.nombreyapellidoprofesional}`;
   }
 
-  //Lista de profesionales para el menu del informe
+  //Defin la lista de profesionales para el menu del informe
   const professionalsList = Array.from(
     new Map(
-      filteredMedicarRecords.map(({ idprofesional, profesionales }) => [
+      filteredMedicalRecords.map(({ idprofesional, profesionales }) => [
         idprofesional,
         {
           id: idprofesional,
@@ -168,7 +160,7 @@ export const MedicalRecordsListContainer = () => {
   );
 
   const medicalRecordsListProps = {
-    medicalRecords: filteredMedicarRecords,
+    medicalRecords: filteredMedicalRecords,
     professionalsList,
     handleDeleteMedicalRecord,
     editMode,
@@ -182,7 +174,10 @@ export const MedicalRecordsListContainer = () => {
     professionals,
     userProfessionalId,
     userProfile,
-    onsearch: handleSearch,
+
+    fieldsToSearch,
+    setFilteredRecords: setFilteredMedicalRecords,
+    records: medicalRecords,
   };
   return <MedicalRecordsList {...medicalRecordsListProps} />;
 };

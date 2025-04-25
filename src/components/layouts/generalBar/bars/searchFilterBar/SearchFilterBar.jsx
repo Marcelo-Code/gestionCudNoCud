@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
 import {
   Box,
   Button,
@@ -25,16 +23,15 @@ import {
   Sort as SortIcon,
   Edit as EditIcon,
 } from "@mui/icons-material";
-import "../generalBar.css";
-import { Icons } from "../../../../assets/Icons";
+import "../../generalBar.css";
+import { Icons } from "../../../../../assets/Icons";
 
 export const SearchFilterBar = ({
   darkMode,
   darkColor,
   lightColor,
   buttonColor,
-  // handleSearchChange,
-  // searchQuery,
+
   setDrawerOpen,
   drawerOpen,
   sortOption,
@@ -43,48 +40,17 @@ export const SearchFilterBar = ({
   filters,
   handleFilterChange,
 
-  activeBar = "editionBar",
+  activeBar,
   setActiveBar,
   enableReportBar,
 
-  onSearch,
+  handleSearchChange,
+  searchQuery,
+
+  DEFAULT_STATUS_OPTIONS,
+  DEFAULT_TYPE_OPTIONS,
+  DEFAULT_SORT_OPTIONS,
 }) => {
-  const DEFAULT_STATUS_OPTIONS = [
-    // { value: "all", label: "Todos" },
-    // { value: "active", label: "Activos" },
-    // { value: "inactive", label: "Inactivos" },
-    // { value: "pending", label: "Pendientes" },
-  ];
-
-  const DEFAULT_TYPE_OPTIONS = [
-    // { value: "all", label: "Todos" },
-    // { value: "individual", label: "Individual" },
-    // { value: "company", label: "Empresa" },
-    // { value: "government", label: "Gobierno" },
-  ];
-
-  const DEFAULT_SORT_OPTIONS = [
-    { value: "none", label: "Sin ordenar", name: "none" },
-    { value: "alphabetical-asc", label: "Nombre (A-Z)", name: "full_name" },
-    { value: "alphabetical-desc", label: "Nombre (Z-A)", name: "full_name" },
-    // { value: "alphabetical-asc", label: "Dirección (A-Z)", name: "address" },
-    // { value: "alphabetical-desc", label: "Dirección (Z-A)", name: "address" },
-    // { value: "alphabetical-asc", label: "email (A-Z)", name: "email" },
-    // { value: "alphabetical-desc", label: "email (Z-A)", name: "email" },
-  ];
-
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const handleSearchChange = (e) => {
-    const query = e.target.value;
-
-    console.log(onSearch);
-
-    setSearchQuery(query);
-    if (onSearch) {
-      onSearch(query);
-    }
-  };
   return (
     <>
       <Box

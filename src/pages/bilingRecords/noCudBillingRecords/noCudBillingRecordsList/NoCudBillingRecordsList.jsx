@@ -28,6 +28,9 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
     professional,
     userProfessionalId,
     userProfile,
+    noCudBillingRecordsfieldsToSearch,
+    setFilteredNoCudBillingRecords,
+    records,
   } = cudBillingRecordsListProps;
 
   let createRoute =
@@ -61,6 +64,9 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
     tooltipMessage: disableEditionBarButton
       ? "El paciente no es CUD"
       : "Crear factura no CUD",
+    fieldsToSearch: noCudBillingRecordsfieldsToSearch,
+    setFilteredRecords: setFilteredNoCudBillingRecords,
+    records,
   };
 
   const iconStyle = { color: "blue", fontSize: "1.2em", margin: "5px" };

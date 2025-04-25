@@ -18,6 +18,9 @@ export const PaymentRequestsList = ({
   cudBillingRecord,
   userProfile,
   userProfessionalId,
+  paymentRequestFieldsToSearch,
+  setFilteredPaymentRequests,
+  records,
 }) => {
   let createRoute = "/paymentRequests/createPaymentRequest";
   let editRoute = "/paymentRequests/edit";
@@ -37,8 +40,10 @@ export const PaymentRequestsList = ({
     buttonIcon: <Icons.AddIcon />,
     to: `${createRoute}`,
     tooltipMessage: "Crear reclamo",
-
     enableReportBar: false,
+    fieldsToSearch: paymentRequestFieldsToSearch,
+    setFilteredRecords: setFilteredPaymentRequests,
+    records,
   };
 
   let titleName = "Reclamos";

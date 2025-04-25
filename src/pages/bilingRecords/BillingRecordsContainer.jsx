@@ -27,8 +27,13 @@ export const BillingRecordsContainer = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [cudBillingRecords, setCudBillingRecords] = useState([]);
+  const [filteredCudBillingRecords, setFilteredCudBillingRecords] = useState(
+    []
+  );
   const [paymentRequests, setPaymentRequests] = useState([]);
   const [noCudBillingRecords, setNoCudBillingRecords] = useState([]);
+  const [filteredNoCudBillingRecords, setFilteredNoCudBillingRecords] =
+    useState([]);
   const [professional, setProfessional] = useState({});
   const [patient, setPatient] = useState({});
 
@@ -105,7 +110,9 @@ export const BillingRecordsContainer = () => {
           const paymentRequestsResponseData = paymentRequestsResponse.data;
 
           setCudBillingRecords(cudBillingResponseData);
+          setFilteredCudBillingRecords(cudBillingResponseData);
           setNoCudBillingRecords(noCudBillingResponseData);
+          setFilteredNoCudBillingRecords(noCudBillingResponseData);
           setPatient(patientResponseData);
           setProfessional(professionalResponseData);
           setPaymentRequests(paymentRequestsResponseData);
@@ -121,23 +128,48 @@ export const BillingRecordsContainer = () => {
 
   if (isLoading) return <LoadingContainer />;
 
+  //Define los campos a buscar por el filtro de cudBillingRecords
+  const cudBillingRecordsfieldsToSearch = [
+    (r) => r.profesionales?.nombreyapellidoprofesional,
+    (r) => r.pacientes?.nombreyapellidopaciente,
+    (r) => r.pacientes?.obrasocialpaciente,
+    (r) => r.prestacion,
+    (r) => r.nrofactura,
+    (r) => r.estadofacturacion,
+  ];
+
+  //Define los campos a buscar por el filtro de noCudBillingRecords
+  const noCudBillingRecordsfieldsToSearch = [
+    (r) => r.profesionales?.nombreyapellidoprofesional,
+    (r) => r.pacientes?.nombreyapellidopaciente,
+    (r) => r.prestacion,
+    (r) => r.estadopago,
+    (r) => r.mediopago,
+  ];
+
   const cudBillingRecordsListContainerProps = {
     patientId,
     professionalId,
-    cudBillingRecords,
+    cudBillingRecords: filteredCudBillingRecords,
     handleDeleteCudBillingRecord,
     patient,
     professional,
     paymentRequests,
+    cudBillingRecordsfieldsToSearch,
+    setFilteredCudBillingRecords,
+    records: cudBillingRecords,
   };
 
   const noCudBillingRecordsListContainerProps = {
     patientId,
     professionalId,
-    noCudBillingRecords,
+    noCudBillingRecords: filteredNoCudBillingRecords,
     handleDeleteNoCudBillingRecord,
     patient,
     professional,
+    noCudBillingRecordsfieldsToSearch,
+    setFilteredNoCudBillingRecords,
+    records: noCudBillingRecords,
   };
 
   //Lista de pestañas para el tab

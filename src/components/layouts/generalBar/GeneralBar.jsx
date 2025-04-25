@@ -1,8 +1,8 @@
-import { SearchFilterBar } from "./bars/SearchFilterBar";
 import { Box } from "@mui/material";
 import { EditionBar } from "./bars/EditionBar";
 import "./generalBar.css";
 import { ReportBarContainer } from "./bars/reportBar/ReportBarContainer";
+import { SearchFilterBarContainer } from "./bars/searchFilterBar/SearchFilterBarContainer";
 export const GeneralBar = (generalBarProps) => {
   const {
     editMode,
@@ -20,14 +20,18 @@ export const GeneralBar = (generalBarProps) => {
     selectedRecords,
     patient,
     professionals,
-    onsearch,
+    fieldsToSearch,
+    setFilteredRecords,
+    records,
   } = generalBarProps;
 
-  const searchFilterBarProps = {
+  const searchFilterBarContainerProps = {
     activeBar,
     setActiveBar,
     enableReportBar,
-    onsearch,
+    fieldsToSearch,
+    setFilteredRecords,
+    records,
   };
 
   const editionBarProps = {
@@ -58,7 +62,9 @@ export const GeneralBar = (generalBarProps) => {
     <Box className="barContainer">
       <Box className="barInner">
         <EditionBar {...editionBarProps} />
-        {enableSearchFilterBar && <SearchFilterBar {...searchFilterBarProps} />}
+        {enableSearchFilterBar && (
+          <SearchFilterBarContainer {...searchFilterBarContainerProps} />
+        )}
         {enableReportBar && <ReportBarContainer {...reportBarContainerProps} />}
       </Box>
     </Box>

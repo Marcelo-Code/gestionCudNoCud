@@ -12,6 +12,9 @@ export const NoCudBillingRecordsListContainer = (
     professionalId,
     patient,
     professional,
+    noCudBillingRecordsfieldsToSearch,
+    setFilteredNoCudBillingRecords,
+    records,
   } = noCudBillingRecordsListContainerProps;
 
   const [editMode, setEditMode] = useState(false);
@@ -42,6 +45,9 @@ export const NoCudBillingRecordsListContainer = (
     professional,
     userProfessionalId,
     userProfile,
+    noCudBillingRecordsfieldsToSearch,
+    setFilteredNoCudBillingRecords,
+    records,
   };
 
   return <NoCudBillingRecordsList {...noCudBillingRecordsListProps} />;

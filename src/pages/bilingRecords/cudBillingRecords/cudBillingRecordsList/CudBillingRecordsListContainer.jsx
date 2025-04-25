@@ -13,6 +13,9 @@ export const CudBillingRecordsListContainer = (
     patient,
     professional,
     paymentRequests,
+    cudBillingRecordsfieldsToSearch,
+    setFilteredCudBillingRecords,
+    records,
   } = cudBillingRecordsListContainerProps;
 
   const [editMode, setEditMode] = useState(false);
@@ -48,6 +51,9 @@ export const CudBillingRecordsListContainer = (
     paymentRequests,
     userProfessionalId,
     userProfile,
+    cudBillingRecordsfieldsToSearch,
+    setFilteredCudBillingRecords,
+    records,
   };
 
   return <CudBillingRecordsList {...cudBillingRecordsListProps} />;

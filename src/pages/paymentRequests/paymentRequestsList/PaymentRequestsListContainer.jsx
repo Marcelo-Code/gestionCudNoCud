@@ -28,6 +28,9 @@ export const PaymentRequestsListContainer = () => {
   //hook para el array de reclamos
   const [paymentRequests, setPaymentRequests] = useState([]);
 
+  //hook para el array de reclamos filtrados
+  const [filteredPaymentRequests, setFilteredPaymentRequests] = useState([]);
+
   //hook para el el registro de la factura reclamada
   const [cudBillingRecord, setCudBillingRecord] = useState({});
 
@@ -61,6 +64,7 @@ export const PaymentRequestsListContainer = () => {
         const paymentRequestsData = paymentRequestResponse.data;
         const cudBillingRecordData = cudBillingRecordResponse.data[0];
         setPaymentRequests(paymentRequestsData);
+        setFilteredPaymentRequests(paymentRequestsData);
         setCudBillingRecord(cudBillingRecordData);
       })
       .catch((error) => console.log(error))
@@ -69,8 +73,21 @@ export const PaymentRequestsListContainer = () => {
 
   if (isLoading) return <LoadingContainer />;
 
+  console.log(paymentRequests);
+
+  //Campos de busqueda para el filtro
+  const paymentRequestFieldsToSearch = [
+    (r) => r.medioreclamo,
+    (r) => r.descripcionreclamo,
+    (r) => r.respuestareclamo,
+    (r) => r.facturacioncud.nrofactura,
+    (r) => r.facturacioncud.pacientes.nombreyapellidopaciente,
+    (r) => r.facturacioncud.pacientes.obrasocialpaciente,
+    (r) => r.facturacioncud.profesionales.nombreyapellidoprofesional,
+  ];
+
   const paymentRequestsListProps = {
-    paymentRequests,
+    paymentRequests: filteredPaymentRequests,
     handleDeletePaymentRequest,
     editMode,
     setEditMode,
@@ -78,6 +95,9 @@ export const PaymentRequestsListContainer = () => {
     cudBillingRecord,
     userProfile,
     userProfessionalId,
+    paymentRequestFieldsToSearch,
+    setFilteredPaymentRequests,
+    records: paymentRequests,
   };
 
   return <PaymentRequestsList {...paymentRequestsListProps} />;
