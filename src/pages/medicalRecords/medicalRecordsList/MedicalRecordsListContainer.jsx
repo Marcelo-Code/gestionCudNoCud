@@ -157,12 +157,12 @@ export const MedicalRecordsListContainer = () => {
     },
     {
       value: "date-desc",
-      label: "Más reciente",
+      label: "⬇️ Fecha consulta",
       name: "fechaconsulta",
     },
     {
       value: "date-asc",
-      label: "Más antiguo",
+      label: "⬆️ Fecha consulta",
       name: "fechaconsulta",
     },
   ];
