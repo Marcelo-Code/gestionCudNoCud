@@ -7,6 +7,7 @@ import {
   getNoCudBillingRecords,
   getNoCudBillingRecordsByPatient,
   getNoCudBillingRecordsByProfessional,
+  getNoCudBillingRecordsByProfessionalAndByPatient,
 } from "../../services/api/noCudBillingRecords";
 import { LoadingContainer } from "../loading/LoadingContainer";
 import { CudBillingRecordsListContainer } from "./cudBillingRecords/cudBillingRecordsList/CudBillingRecordsListContainer";
@@ -15,6 +16,7 @@ import {
   getCudBillingRecords,
   getCudBillingRecordsByPatient,
   getCudBillingRecordsByProfessional,
+  getCudBillingRecordsByProfessionalAndByPatient,
 } from "../../services/api/cudBillingRecords";
 import { BillingRecords } from "./BillingRecords";
 import { NoCudBillingRecordsListContainer } from "./noCudBillingRecords/noCudBillingRecordsList/NoCudBillingRecordsListContainer";
@@ -51,51 +53,70 @@ export const BillingRecordsContainer = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        let cudBillingResponse;
-        let noCudBillingResponse;
+    let cudBillingRecordAction;
+    let noCudBillingRecordAction;
 
-        const paymentRequestsResponse = await getPaymentRequests();
-        setPaymentRequests(paymentRequestsResponse.data);
+    setIsLoading(true);
 
-        if (patientId) {
-          const patientResponse = await getPatient(patientId);
-          setPatient(patientResponse.data[0]);
+    if (patientId && professionalId) {
+      cudBillingRecordAction = getCudBillingRecordsByProfessionalAndByPatient(
+        professionalId,
+        patientId
+      );
+      noCudBillingRecordAction =
+        getNoCudBillingRecordsByProfessionalAndByPatient(
+          professionalId,
+          patientId
+        );
+    } else if (patientId) {
+      cudBillingRecordAction = getCudBillingRecordsByPatient(patientId);
+      noCudBillingRecordAction = getNoCudBillingRecordsByPatient(patientId);
+    } else if (professionalId) {
+      cudBillingRecordAction =
+        getCudBillingRecordsByProfessional(professionalId);
+      noCudBillingRecordAction =
+        getNoCudBillingRecordsByProfessional(professionalId);
+    } else {
+      cudBillingRecordAction = getCudBillingRecords();
+      noCudBillingRecordAction = getNoCudBillingRecords();
+    }
 
-          [cudBillingResponse, noCudBillingResponse] = await Promise.all([
-            getCudBillingRecordsByPatient(patientId),
-            getNoCudBillingRecordsByPatient(patientId),
-          ]);
-        } else if (professionalId) {
-          const professionalResponse = await getProfessional(professionalId);
-          setProfessional(professionalResponse.data[0]);
+    Promise.all([
+      cudBillingRecordAction,
+      noCudBillingRecordAction,
+      patientId ? getPatient(patientId) : Promise.resolve({ data: [null] }),
+      professionalId
+        ? getProfessional(professionalId)
+        : Promise.resolve({ data: [null] }),
+      getPaymentRequests(),
+    ])
+      .then(
+        ([
+          cudBillingResponse,
+          noCudBillingResponse,
+          patientResponse,
+          professionalResponse,
+          paymentRequestsResponse,
+        ]) => {
+          const cudBillingResponseData = cudBillingResponse.data;
+          const noCudBillingResponseData = noCudBillingResponse.data;
+          const patientResponseData = patientResponse.data[0];
+          const professionalResponseData = professionalResponse.data[0];
+          const paymentRequestsResponseData = paymentRequestsResponse.data;
 
-          [cudBillingResponse, noCudBillingResponse] = await Promise.all([
-            getCudBillingRecordsByProfessional(professionalId),
-            getNoCudBillingRecordsByProfessional(professionalId),
-          ]);
-        } else {
-          [cudBillingResponse, noCudBillingResponse] = await Promise.all([
-            getCudBillingRecords(),
-            getNoCudBillingRecords(),
-          ]);
+          setCudBillingRecords(cudBillingResponseData);
+          setNoCudBillingRecords(noCudBillingResponseData);
+          setPatient(patientResponseData);
+          setProfessional(professionalResponseData);
+          setPaymentRequests(paymentRequestsResponseData);
         }
-
-        setCudBillingRecords(cudBillingResponse.data);
-        setNoCudBillingRecords(noCudBillingResponse.data);
-
-        console.log(cudBillingResponse);
-        console.log(noCudBillingResponse);
-      } catch (error) {
+      )
+      .catch((error) => {
         console.error("Error al obtener registros:", error);
-      } finally {
+      })
+      .finally(() => {
         setIsLoading(false);
-      }
-    };
-
-    fetchData();
+      });
   }, [updateList, patientId, professionalId]);
 
   if (isLoading) return <LoadingContainer />;

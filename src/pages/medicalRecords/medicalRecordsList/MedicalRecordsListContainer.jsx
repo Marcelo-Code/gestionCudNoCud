@@ -42,7 +42,12 @@ export const MedicalRecordsListContainer = () => {
   const [medicalRecords, setMedicalRecords] = useState([]);
 
   //Importa variables de contexto para la selección de registros para el informe
-  const { handleCheckboxChange, selectedRecords } = useContext(GeneralContext);
+  const {
+    handleCheckboxChange,
+    selectedRecords,
+    userProfessionalId,
+    userProfile,
+  } = useContext(GeneralContext);
 
   //Función para eliminar una consulta
   const handleDeleteMedicalRecord = (medicalRecordId) => {
@@ -54,53 +59,65 @@ export const MedicalRecordsListContainer = () => {
   };
 
   useEffect(() => {
-    let action;
-    if (patientId && professionalId) {
-      action = () =>
-        getMedicalRecordsByPatientAndByProfessional(patientId, professionalId);
-    } else if (patientId) {
-      action = () => getMedicalRecordsByPatient(patientId);
-    } else if (professionalId) {
-      action = () => getMedicalRecordsByProfessional(professionalId);
-    } else {
-      action = () => getMedicalRecords();
-    }
+    const fetchData = async () => {
+      let action;
+      if (patientId && professionalId) {
+        action = () =>
+          getMedicalRecordsByPatientAndByProfessional(
+            patientId,
+            professionalId
+          );
+      } else if (patientId) {
+        action = () => getMedicalRecordsByPatient(patientId);
+      } else if (professionalId) {
+        action = () => getMedicalRecordsByProfessional(professionalId);
+      } else {
+        action = () => getMedicalRecords();
+      }
 
-    setIsLoading(true);
+      setIsLoading(true);
 
-    const promises = [action()];
+      Promise.all([
+        action(),
+        patientId ? getPatient(patientId) : Promise.resolve[{ data: [null] }],
+        professionalId
+          ? getProfessional(professionalId)
+          : Promise.resolve[{ data: [null] }],
+        getProfessionals(),
+      ])
+        .then(
+          ([
+            medicalRecordsResponse,
+            patientResponse,
+            professionalResponse,
+            professionalsResponse,
+          ]) => {
+            setMedicalRecords(medicalRecordsResponse.data);
 
-    if (patientId) {
-      promises.push(getPatient(patientId));
-    }
+            if (patientResponse) setPatient(patientResponse.data[0]);
 
-    if (professionalId) {
-      promises.push(getProfessional(professionalId));
-    }
+            console.log(
+              medicalRecordsResponse,
+              patientResponse,
+              professionalResponse,
+              professionalsResponse
+            );
 
-    promises.push(getProfessionals());
+            if (professionalResponse) {
+              setProfessional(professionalResponse.data[0]);
+            }
+            if (professionalsResponse) {
+              setProfessionals(professionalsResponse.data);
+            }
+          }
+        )
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => setIsLoading(false));
+    };
 
-    Promise.all(promises)
-      .then(
-        ([
-          medicalRecordsResponse,
-          patientResponse,
-          professionalResponse,
-          professionalsResponse,
-        ]) => {
-          setMedicalRecords(medicalRecordsResponse.data);
-
-          if (patientResponse) setPatient(patientResponse.data[0]);
-          if (professionalResponse)
-            setProfessional(professionalResponse.data[0]);
-          if (professionalsResponse)
-            setProfessionals(professionalsResponse.data);
-        }
-      )
-      .catch((error) => {
-        console.error(error);
-      })
-      .finally(() => setIsLoading(false));
+    fetchData();
   }, [patientId, professionalId, updateList]);
 
   if (isLoading) return <LoadingContainer />;
@@ -146,6 +163,8 @@ export const MedicalRecordsListContainer = () => {
     selectedRecords,
     patient,
     professionals,
+    userProfessionalId,
+    userProfile,
   };
   return <MedicalRecordsList {...medicalRecordsListProps} />;
 };

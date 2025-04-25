@@ -33,15 +33,22 @@ export const MedicalRecordsList = ({
   selectedRecords,
   patient,
   professionals,
+  userProfessionalId,
+  userProfile,
 }) => {
   const [reportMode, setReportMode] = useState(false);
 
   let createRoute = "/medicalRecords/createMedicalRecord";
   let editRoute = "/medicalRecords/edit";
 
+  //Si se ingresa por el perfil del profesional se utiliza el id del profesional
   if (professionalId) {
     createRoute += `/professional/${professionalId}`;
     editRoute += `/professional/${professionalId}`;
+  } else if (userProfessionalId && userProfile !== "admin") {
+    //Si no se ingresa por el perfil del profesional y el usuario no es admin se utiliza el id del profesional del contexto
+    createRoute += `/professional/${userProfessionalId}`;
+    editRoute += `/professional/${userProfessionalId}`;
   }
   if (patientId) {
     createRoute += `/patient/${patientId}`;
@@ -81,6 +88,10 @@ export const MedicalRecordsList = ({
         {(recordsToShow) => (
           <Box className="listContainer">
             {recordsToShow.map((medicalRecord) => {
+              // Si el usuario no es admin, solamente puede editarse sus propias consultas
+              const editAllowed =
+                userProfile === "admin" ||
+                userProfessionalId === medicalRecord.idprofesional;
               return (
                 <Card key={medicalRecord.id} className="medicalRecordListItem">
                   <CardContent>
@@ -124,6 +135,7 @@ export const MedicalRecordsList = ({
                           handleDeleteMedicalRecord(medicalRecord.id)
                         }
                         editLink={`${editRoute}/${medicalRecord.id}`}
+                        isAllowed={editAllowed}
                       />
                     ) : (
                       <Link to={`/medicalRecords/detail/${medicalRecord.id}`}>

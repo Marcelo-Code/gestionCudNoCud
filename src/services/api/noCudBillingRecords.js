@@ -134,6 +134,36 @@ export const getNoCudBillingRecordsByPatient = async (patientId) => {
   }
 };
 
+export const getNoCudBillingRecordsByProfessionalAndByPatient = async (
+  professionalId,
+  patientId
+) => {
+  try {
+    const { data, error } = await supabaseClient
+      .from("facturacionnocud")
+      .select(
+        "*, pacientes: idpaciente(nombreyapellidopaciente, obrasocialpaciente), profesionales: idprofesional(nombreyapellidoprofesional, matriculaprofesional, cuitprofesional, especialidadprofesional)"
+      )
+      .eq("idprofesional", professionalId)
+      .eq("idpaciente", patientId)
+      .order("fechasesion", { ascending: false });
+
+    if (error) throw error;
+
+    return {
+      status: 201,
+      message: "Registros obtenidos con éxito",
+      data,
+    };
+  } catch (error) {
+    return {
+      status: 404,
+      message: "Error al obtener registros",
+      error: error.message,
+    };
+  }
+};
+
 export const deleteNoCudBillingRecord = async (
   noCudBillingRecordId,
   setUpdateList

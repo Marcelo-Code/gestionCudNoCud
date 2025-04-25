@@ -19,6 +19,9 @@ export const CreateEditPaymentRequest = ({
   handleChange,
   handleSubmit,
   cudBillingRecord,
+  userProfessionalId,
+  userProfile,
+  professional,
 }) => {
   const formButtonGroupProps = {
     modifiedFlag,
@@ -42,10 +45,13 @@ export const CreateEditPaymentRequest = ({
 
   const iconsStyle = { marginRight: "5px" };
 
+  console.log(cudBillingRecords);
+
   return (
     <Box className="generalContainer">
       <Box className="generalTitle">
         {!paymentRequestId && !cudBillingRecordId && "Crear nuevo reclamo"}
+        {userProfile !== "admin" && professional.nombreyapellidoprofesional}
         {!paymentRequestId &&
           cudBillingRecordId &&
           `Crear nuevo reclamo factura ${cudBillingRecord.nrofactura}`}
@@ -83,7 +89,9 @@ export const CreateEditPaymentRequest = ({
               <Box className="createEditPaymentRequestMenuItemContainer">
                 <Icons.ReceiptIcon />
                 <OptionSelect
-                  getOptionLabel={(option) => `${option.nrofactura}`}
+                  getOptionLabel={(option) =>
+                    `${option.nrofactura} ${option.profesionales.nombreyapellidoprofesional}`
+                  }
                   name="idfacturacioncud"
                   placeholder="Seleccionar factura"
                   clients={cudBillingRecords}

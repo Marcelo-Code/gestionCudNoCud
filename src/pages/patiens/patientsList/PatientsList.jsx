@@ -22,6 +22,7 @@ export const PatientsList = (patientsListProps) => {
     handleDeletePatient,
     active,
     handleUndeletePatient,
+    userProfile,
   } = patientsListProps;
 
   const generalBarContainerProps = {
@@ -42,9 +43,11 @@ export const PatientsList = (patientsListProps) => {
       <Box className="generalTitle">
         Lista de pacientes {active === "inactive" && "inactivos"}
       </Box>
-      {/* Para los registros inactivos se deshabilita la barra de edición */}
 
-      {active === "active" && (
+      {/* Para los registros inactivos se deshabilita la barra de edición */}
+      {/* Solamente los usuarios admin pueden editar pacientes */}
+
+      {active === "active" && userProfile === "admin" && (
         <GeneralBarContainer {...generalBarContainerProps} />
       )}
 

@@ -1,8 +1,9 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LoadingContainer } from "../../loading/LoadingContainer";
 import { getProfessional } from "../../../services/api/professionals";
 import { ProfessionalDetail } from "./ProfessionalDetail";
+import { GeneralContext } from "../../../context/GeneralContext";
 
 export const ProfessionalDetailContainer = () => {
   //hook para el loading
@@ -13,6 +14,8 @@ export const ProfessionalDetailContainer = () => {
 
   //hook para obtener el id del paciente
   const { professionalId } = useParams();
+
+  const { userProfile, userProfessionalId } = useContext(GeneralContext);
 
   //Obtener paciente
   useEffect(() => {
@@ -27,6 +30,8 @@ export const ProfessionalDetailContainer = () => {
 
   const professionalDetailProps = {
     formData,
+    userProfile,
+    userProfessionalId,
   };
 
   return <ProfessionalDetail {...professionalDetailProps} />;

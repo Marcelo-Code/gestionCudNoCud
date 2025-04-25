@@ -85,6 +85,7 @@ export const getProfessional = async (professionalId) => {
       .from("profesionales")
       .select("*")
       .eq("id", professionalId);
+
     if (error) throw error;
     return {
       status: 201,

@@ -16,13 +16,17 @@ export const PaymentRequestsList = ({
   setEditMode,
   cudBillingRecordId,
   cudBillingRecord,
+  userProfile,
+  userProfessionalId,
 }) => {
   let createRoute = "/paymentRequests/createPaymentRequest";
   let editRoute = "/paymentRequests/edit";
 
   if (cudBillingRecordId) {
-    createRoute += `/cudBillingRecords/${cudBillingRecordId}`;
-    editRoute += `/cudBillingRecords/${cudBillingRecordId}`;
+    createRoute += `/cudBillingRecords/${cudBillingRecordId}/professional/${cudBillingRecord.idprofesional}`;
+    editRoute += `/cudBillingRecords/${cudBillingRecordId}/professional/${cudBillingRecord.idprofesional}`;
+  } else if (userProfessionalId && userProfile !== "admin") {
+    createRoute += `/professional/${userProfessionalId}`;
   }
 
   const generalBarContainerProps = {
@@ -53,6 +57,11 @@ export const PaymentRequestsList = ({
         {(recordsToShow) => (
           <Box className="listContainer">
             {recordsToShow.map((paymentRequest) => {
+              // Si el usuario no es admin, solamente puede editarse sus propias consultas
+              const editAllowed =
+                userProfile === "admin" ||
+                userProfessionalId ===
+                  paymentRequest.facturacioncud.idprofesional;
               return (
                 <Card key={paymentRequest.id} className="medicalRecordListItem">
                   <CardContent>
@@ -101,12 +110,15 @@ export const PaymentRequestsList = ({
                   </CardContent>
                   <CardActions className="medicalRecordListItemActions">
                     {editMode && (
-                      <EditModeButtonGroupContainer
-                        deleteFunction={() =>
-                          handleDeletePaymentRequest(paymentRequest.id)
-                        }
-                        editLink={`${editRoute}/${paymentRequest.id}`}
-                      />
+                      <>
+                        <EditModeButtonGroupContainer
+                          deleteFunction={() =>
+                            handleDeletePaymentRequest(paymentRequest.id)
+                          }
+                          editLink={`${editRoute}/${paymentRequest.id}`}
+                          isAllowed={editAllowed}
+                        />
+                      </>
                     )}
                   </CardActions>
                 </Card>

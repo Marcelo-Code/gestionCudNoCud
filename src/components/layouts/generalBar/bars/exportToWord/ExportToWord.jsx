@@ -4,15 +4,17 @@ export const ExportToWord = (exportToWordProps) => {
   const { handleGenerateDoc, enableReportButton } = exportToWordProps;
   return (
     <Tooltip title="Generar informe" placement="top-end" arrow>
-      <Button
-        onClick={() => handleGenerateDoc()}
-        variant="contained"
-        startIcon={<Icons.ArticleIcon />}
-        disabled={!enableReportButton}
-        size="small"
-      >
-        Informe
-      </Button>
+      <span>
+        <Button
+          onClick={() => handleGenerateDoc()}
+          variant="contained"
+          startIcon={<Icons.ArticleIcon />}
+          disabled={!enableReportButton}
+          size="small"
+        >
+          Informe
+        </Button>
+      </span>
     </Tooltip>
   );
 };

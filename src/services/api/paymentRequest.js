@@ -36,8 +36,33 @@ export const getPaymentRequests = async () => {
     const { data, error } = await supabaseClient
       .from("reclamos")
       .select(
-        "*, facturacioncud: idfacturacioncud(nrofactura, profesionales: idprofesional(nombreyapellidoprofesional), pacientes: idpaciente(obrasocialpaciente, nombreyapellidopaciente))"
+        "*, facturacioncud: idfacturacioncud(nrofactura, idprofesional, profesionales: idprofesional(nombreyapellidoprofesional), pacientes: idpaciente(obrasocialpaciente, nombreyapellidopaciente))"
       )
+      .order("fechareclamo", { ascending: false });
+
+    if (error) throw error;
+    return {
+      status: 201,
+      message: "Registros obtenido con éxito",
+      data,
+    };
+  } catch (error) {
+    return {
+      status: 404,
+      message: "Error al obtener registros",
+      error: error.message,
+    };
+  }
+};
+
+export const getPaymentRequestsByProfessionalId = async (professionalId) => {
+  try {
+    const { data, error } = await supabaseClient
+      .from("reclamos")
+      .select(
+        "*, facturacioncud: idfacturacioncud(nrofactura, idprofesional, profesionales: idprofesional(nombreyapellidoprofesional), pacientes: idpaciente(obrasocialpaciente, nombreyapellidopaciente))"
+      )
+      .eq("idfacturacioncud.idprofesional", professionalId)
       .order("fechareclamo", { ascending: false });
 
     if (error) throw error;
@@ -60,7 +85,7 @@ export const getPaymentRequest = async (paymentRequestId) => {
     const { data, error } = await supabaseClient
       .from("reclamos")
       .select(
-        "*, facturacioncud: idfacturacioncud(nrofactura, pacientes: idpaciente(obrasocialpaciente, nombreyapellidopaciente), profesionales: idprofesional(matriculaprofesional, nombreyapellidoprofesional))"
+        "*, facturacioncud: idfacturacioncud(nrofactura, idprofesional, pacientes: idpaciente(obrasocialpaciente, nombreyapellidopaciente), profesionales: idprofesional(matriculaprofesional, nombreyapellidoprofesional))"
       )
       .eq("id", paymentRequestId)
       .order("fechareclamo", { ascending: false });
@@ -80,16 +105,41 @@ export const getPaymentRequest = async (paymentRequestId) => {
   }
 };
 
-export const getPaymentRequestByCudBillingRecord = async (
+export const getPaymentRequestByCudBillingRecordId = async (
   cudBillingRecordId
 ) => {
   try {
     const { data, error } = await supabaseClient
       .from("reclamos")
       .select(
-        "*, facturacioncud: idfacturacioncud(nrofactura, pacientes: idpaciente(obrasocialpaciente, nombreyapellidopaciente), profesionales: idprofesional(matriculaprofesional, nombreyapellidoprofesional))"
+        "*, facturacioncud: idfacturacioncud(nrofactura, idprofesional, pacientes: idpaciente(obrasocialpaciente, nombreyapellidopaciente), profesionales: idprofesional(matriculaprofesional, nombreyapellidoprofesional))"
       )
       .eq("idfacturacioncud", cudBillingRecordId)
+      .order("fechareclamo", { ascending: false });
+
+    if (error) throw error;
+    return {
+      status: 201,
+      message: "Registro obtenido con éxito",
+      data,
+    };
+  } catch (error) {
+    return {
+      status: 404,
+      message: "Error al obtener registro",
+      error: error.message,
+    };
+  }
+};
+
+export const getPaymentRequestByProfessionalId = async (professionalId) => {
+  try {
+    const { data, error } = await supabaseClient
+      .from("reclamos")
+      .select(
+        "*, facturacioncud: idfacturacioncud(nrofactura, idprofesional, pacientes: idpaciente(obrasocialpaciente, nombreyapellidopaciente), profesionales: idprofesional(matriculaprofesional, nombreyapellidoprofesional))"
+      )
+      .eq("idfacturacioncud.idprofesional", professionalId)
       .order("fechareclamo", { ascending: false });
 
     if (error) throw error;

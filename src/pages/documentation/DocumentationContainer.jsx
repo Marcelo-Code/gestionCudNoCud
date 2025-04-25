@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { getPatient, updatePatient } from "../../services/api/patients";
@@ -22,6 +22,7 @@ import {
   patientDocumentData,
   professionalDocumentData,
 } from "../../data/documentsData";
+import { GeneralContext } from "../../context/GeneralContext";
 
 export const DocumentationContainer = () => {
   //hooks para los datos del formulario
@@ -42,6 +43,9 @@ export const DocumentationContainer = () => {
 
   //hook para el loading de un documento específico (tanto para el upload como para el delete)
   const [uploadingDocumentName, setUploadingDocumentName] = useState(null);
+
+  //importa el perfil de usuario del contexto
+  const { userProfile } = useContext(GeneralContext);
 
   //hook para el selector de archivos
   const fileInputRef = useRef(null);
@@ -192,6 +196,7 @@ export const DocumentationContainer = () => {
     handleFileChange,
     fileInputRef,
     handleDownloadDocument,
+    userProfile,
   };
 
   return <Documentation {...documentationProps} />;

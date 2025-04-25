@@ -35,7 +35,7 @@ export const Login = ({
             autoFocus
             sx={{ backgroundColor: "white" }}
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value.toLowerCase())}
           />
           <TextField
             margin="normal"

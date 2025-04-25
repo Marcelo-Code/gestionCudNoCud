@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
+import { act, useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { LoadingContainer } from "../../loading/LoadingContainer";
 
 import {
   deletePaymentRequestRecord,
-  getPaymentRequest,
-  getPaymentRequestByCudBillingRecord,
+  getPaymentRequestByCudBillingRecordId,
   getPaymentRequests,
 } from "../../../services/api/paymentRequest";
 import { PaymentRequestsList } from "./PaymentRequestsList";
 import { getCudBillingRecord } from "../../../services/api/cudBillingRecords";
+import { GeneralContext } from "../../../context/GeneralContext";
 
 export const PaymentRequestsListContainer = () => {
   //hook para obtener el id de la facturacion CUD
-  const { cudBillingRecordId = null } = useParams();
+  const { cudBillingRecordId = null, professionalId = null } = useParams();
 
   //hook para actualizar la lista luego de una acción
   const [updateList, setUpdateList] = useState(false);
@@ -31,6 +31,8 @@ export const PaymentRequestsListContainer = () => {
   //hook para el el registro de la factura reclamada
   const [cudBillingRecord, setCudBillingRecord] = useState({});
 
+  const { userProfile, userProfessionalId } = useContext(GeneralContext);
+
   //Función para eliminar una consulta
   const handleDeletePaymentRequest = (paymentRequestRecordId) => {
     deletePaymentRequestRecord(paymentRequestRecordId, setUpdateList)
@@ -41,29 +43,28 @@ export const PaymentRequestsListContainer = () => {
   };
 
   useEffect(() => {
+    let action;
+    if (cudBillingRecordId) {
+      action = getPaymentRequestByCudBillingRecordId(cudBillingRecordId);
+    } else {
+      action = getPaymentRequests();
+    }
     setIsLoading(true);
-    const fetchData = async () => {
-      try {
-        if (cudBillingRecordId) {
-          const responsePaymentRequest =
-            await getPaymentRequestByCudBillingRecord(cudBillingRecordId);
-          const responseCudBillingRecord = await getCudBillingRecord(
-            cudBillingRecordId
-          );
 
-          setPaymentRequests(responsePaymentRequest.data);
-          setCudBillingRecord(responseCudBillingRecord.data[0]);
-        } else {
-          const response = await getPaymentRequests();
-          setPaymentRequests(response.data);
-        }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchData();
+    Promise.all([
+      action,
+      cudBillingRecordId
+        ? getCudBillingRecord(cudBillingRecordId)
+        : Promise.resolve({ data: [null] }),
+    ])
+      .then(([paymentRequestResponse, cudBillingRecordResponse]) => {
+        const paymentRequestsData = paymentRequestResponse.data;
+        const cudBillingRecordData = cudBillingRecordResponse.data[0];
+        setPaymentRequests(paymentRequestsData);
+        setCudBillingRecord(cudBillingRecordData);
+      })
+      .catch((error) => console.log(error))
+      .finally(() => setIsLoading(false));
   }, [updateList, cudBillingRecordId]);
 
   if (isLoading) return <LoadingContainer />;
@@ -75,6 +76,8 @@ export const PaymentRequestsListContainer = () => {
     setEditMode,
     cudBillingRecordId,
     cudBillingRecord,
+    userProfile,
+    userProfessionalId,
   };
 
   return <PaymentRequestsList {...paymentRequestsListProps} />;

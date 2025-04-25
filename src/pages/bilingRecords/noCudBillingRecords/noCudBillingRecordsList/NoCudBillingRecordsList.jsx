@@ -8,9 +8,10 @@ import {
   dateFormat,
   getExtension,
 } from "../../../../utils/helpers";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { TrafficLightStatus } from "../../../../components/common/trafficLightStatus/TrafficLight";
 import { BackButtonContainer } from "../../../../components/common/backButton/BackButtonContainer";
+import { errorAlert } from "../../../../components/common/alerts/alerts";
 
 export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
   const {
@@ -25,6 +26,8 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
     professionalId,
     patient,
     professional,
+    userProfessionalId,
+    userProfile,
   } = cudBillingRecordsListProps;
 
   let createRoute =
@@ -34,13 +37,19 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
   if (professionalId) {
     createRoute += `/professional/${professionalId}`;
     editRoute += `/professional/${professionalId}`;
+  } else if (userProfessionalId && userProfile !== "admin") {
+    //Si no se ingresa por el perfil del profesional y el usuario no es admin se utiliza el id del profesional del contexto
+    createRoute += `/professional/${userProfessionalId}`;
+    editRoute += `/professional/${userProfessionalId}`;
   }
   if (patientId) {
     createRoute += `/patient/${patientId}`;
     editRoute += `/patient/${patientId}`;
   }
 
+  //Se deshabilita el boton de edicion si el paciente es CUD
   const disableEditionBarButton = !!(patientId && patient.cud);
+  const navigate = useNavigate();
 
   const generalBarContainerProps = {
     buttonText: "Factura No CUD",
@@ -149,164 +158,186 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
                 </tr>
               </thead>
               <tbody>
-                {noCudBillingRecords.map((record, index) => (
-                  <tr
-                    key={record.id}
-                    style={{
-                      borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
-                      backgroundColor: "inherit",
-                    }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.backgroundColor =
-                        "rgba(0,0,0,0.04)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.backgroundColor = "inherit")
-                    }
-                  >
-                    <td
+                {noCudBillingRecords.map((record, index) => {
+                  // Si el usuario no es admin, solamente puede editarse sus propias consultas
+                  const editAllowed =
+                    userProfile === "admin" ||
+                    userProfessionalId === record.idprofesional;
+
+                  return (
+                    <tr
+                      key={record.id}
                       style={{
-                        position: "sticky",
-                        left: 0,
-                        margin: 0,
-                        backgroundColor: "#fff",
-                        zIndex: 2,
-                        padding: "2px",
-                        textAlign: "center",
+                        borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
+                        backgroundColor: "inherit",
                       }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.backgroundColor =
+                          "rgba(0,0,0,0.04)")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.backgroundColor = "inherit")
+                      }
                     >
-                      {index + 1}
-                    </td>
-                    {editMode && (
                       <td
                         style={{
                           position: "sticky",
-                          left: "20px",
-                          zIndex: 2,
+                          left: 0,
+                          margin: 0,
                           backgroundColor: "#fff",
-                          padding: "10px",
+                          zIndex: 2,
+                          padding: "2px",
+                          textAlign: "center",
                         }}
                       >
-                        <div style={{ display: "flex", gap: "8px" }}>
-                          <Tooltip title="Eliminar" placement="top-end" arrow>
-                            <IconButton
-                              onClick={() =>
-                                handleDeleteNoCudBillingRecord(record.id)
-                              }
-                            >
-                              <Icons.DeleteIcon sx={iconStyle} />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip title="Editar" placement="top-end" arrow>
-                            <Link to={`${editRoute}/${record.id}`}>
-                              <IconButton>
+                        {index + 1}
+                      </td>
+                      {editMode && (
+                        <td
+                          style={{
+                            position: "sticky",
+                            left: "20px",
+                            zIndex: 2,
+                            backgroundColor: "#fff",
+                            padding: "10px",
+                          }}
+                        >
+                          <div style={{ display: "flex", gap: "8px" }}>
+                            <Tooltip title="Eliminar" placement="top-end" arrow>
+                              <IconButton
+                                onClick={() => {
+                                  editAllowed
+                                    ? handleDeleteNoCudBillingRecord(record.id)
+                                    : errorAlert(
+                                        "Usuario no autorizado, solo lectura"
+                                      );
+                                }}
+                              >
+                                <Icons.DeleteIcon sx={iconStyle} />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Editar" placement="top-end" arrow>
+                              <IconButton
+                                onClick={(e) => {
+                                  if (editAllowed) {
+                                    navigate(`${editRoute}/${record.id}`);
+                                  } else {
+                                    e.preventDefault(); // evita comportamiento por defecto
+                                    errorAlert(
+                                      "Usuario no autorizado, solamente lectura"
+                                    );
+                                  }
+                                }}
+                              >
                                 <Icons.EditIcon sx={iconStyle} />
                               </IconButton>
-                            </Link>
-                          </Tooltip>
-                        </div>
+                            </Tooltip>
+                          </div>
+                        </td>
+                      )}
+                      <td style={colStyle}>
+                        {record.profesionales.nombreyapellidoprofesional}
                       </td>
-                    )}
-                    <td style={colStyle}>
-                      {record.profesionales.nombreyapellidoprofesional}
-                    </td>
-                    <td style={colStyle}>
-                      {record.profesionales.especialidadprofesional}
-                    </td>
-                    <td style={colStyle}>
-                      {record.pacientes.nombreyapellidopaciente}
-                    </td>
-                    <td style={colStyle}>
-                      {record.fechasesion
-                        ? dateFormat(record.fechasesion)
-                        : "Sin fecha"}
-                    </td>
-                    <td style={colStyle}>
-                      <span style={inLineStyle}>
-                        <TrafficLightStatus status={record.estadopago} />
-                        {record.estadopago}
-                      </span>
-                    </td>
-                    <td style={{ padding: "16px" }}>
-                      {record.fechadepago
-                        ? dateFormat(record.fechadepago)
-                        : "Sin fecha"}
-                    </td>
-                    <td style={{ padding: "16px" }}>{record.mediopago}</td>
-                    <td style={{ padding: "16px" }}>
-                      {currencyFormat(record.montosesion)}
-                    </td>
-                    <td style={{ padding: "16px" }}>
-                      {currencyFormat(record.retencion)}
-                    </td>
-                    <td style={{ padding: "16px" }}>
-                      {currencyFormat(record.montofinalprofesional)}
-                    </td>
-                    <td style={colStyle}>
-                      {record.documentofactura ? (
-                        <>
-                          <Link
-                            to={record.documentofactura}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            Documento Pago Retención
-                          </Link>
-                          {["jpg", "png", "jpeg"].includes(
-                            getExtension(record.documentofactura)
-                          ) && <Icons.ImageIcon sx={iconDocumentStyle} />}
-                          {["doc", "docx"].includes(
-                            getExtension(record.documentofactura)
-                          ) && <Icons.ArticleIcon sx={iconDocumentStyle} />}
-                          {["pdf"].includes(
-                            getExtension(record.documentofactura)
-                          ) && (
-                            <Icons.PictureAsPdfIcon sx={iconDocumentStyle} />
-                          )}
-                          {getExtension(record.documentofactura).toUpperCase()}
-                        </>
-                      ) : (
-                        "Sin documento"
-                      )}
-                    </td>
-                    <td style={colStyle}>
-                      {record.documentocomprobantepagoretencion ? (
-                        <>
-                          <Link
-                            to={record.documentocomprobantepagoretencion}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            Documento Pago Retención
-                          </Link>
-                          {["jpg", "png", "jpeg"].includes(
-                            getExtension(
+                      <td style={colStyle}>
+                        {record.profesionales.especialidadprofesional}
+                      </td>
+                      <td style={colStyle}>
+                        {record.pacientes.nombreyapellidopaciente}
+                      </td>
+                      <td style={colStyle}>
+                        {record.fechasesion
+                          ? dateFormat(record.fechasesion)
+                          : "Sin fecha"}
+                      </td>
+                      <td style={colStyle}>
+                        <span style={inLineStyle}>
+                          <TrafficLightStatus status={record.estadopago} />
+                          {record.estadopago}
+                        </span>
+                      </td>
+                      <td style={{ padding: "16px" }}>
+                        {record.fechadepago
+                          ? dateFormat(record.fechadepago)
+                          : "Sin fecha"}
+                      </td>
+                      <td style={{ padding: "16px" }}>{record.mediopago}</td>
+                      <td style={{ padding: "16px" }}>
+                        {currencyFormat(record.montosesion)}
+                      </td>
+                      <td style={{ padding: "16px" }}>
+                        {currencyFormat(record.retencion)}
+                      </td>
+                      <td style={{ padding: "16px" }}>
+                        {currencyFormat(record.montofinalprofesional)}
+                      </td>
+                      <td style={colStyle}>
+                        {record.documentofactura ? (
+                          <>
+                            <Link
+                              to={record.documentofactura}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              Documento Pago Retención
+                            </Link>
+                            {["jpg", "png", "jpeg"].includes(
+                              getExtension(record.documentofactura)
+                            ) && <Icons.ImageIcon sx={iconDocumentStyle} />}
+                            {["doc", "docx"].includes(
+                              getExtension(record.documentofactura)
+                            ) && <Icons.ArticleIcon sx={iconDocumentStyle} />}
+                            {["pdf"].includes(
+                              getExtension(record.documentofactura)
+                            ) && (
+                              <Icons.PictureAsPdfIcon sx={iconDocumentStyle} />
+                            )}
+                            {getExtension(
+                              record.documentofactura
+                            ).toUpperCase()}
+                          </>
+                        ) : (
+                          "Sin documento"
+                        )}
+                      </td>
+                      <td style={colStyle}>
+                        {record.documentocomprobantepagoretencion ? (
+                          <>
+                            <Link
+                              to={record.documentocomprobantepagoretencion}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              Documento Pago Retención
+                            </Link>
+                            {["jpg", "png", "jpeg"].includes(
+                              getExtension(
+                                record.documentocomprobantepagoretencion
+                              )
+                            ) && <Icons.ImageIcon sx={iconDocumentStyle} />}
+                            {["doc", "docx"].includes(
+                              getExtension(
+                                record.documentocomprobantepagoretencion
+                              )
+                            ) && <Icons.ArticleIcon sx={iconDocumentStyle} />}
+                            {["pdf"].includes(
+                              getExtension(
+                                record.documentocomprobantepagoretencion
+                              )
+                            ) && (
+                              <Icons.PictureAsPdfIcon sx={iconDocumentStyle} />
+                            )}
+                            {getExtension(
                               record.documentocomprobantepagoretencion
-                            )
-                          ) && <Icons.ImageIcon sx={iconDocumentStyle} />}
-                          {["doc", "docx"].includes(
-                            getExtension(
-                              record.documentocomprobantepagoretencion
-                            )
-                          ) && <Icons.ArticleIcon sx={iconDocumentStyle} />}
-                          {["pdf"].includes(
-                            getExtension(
-                              record.documentocomprobantepagoretencion
-                            )
-                          ) && (
-                            <Icons.PictureAsPdfIcon sx={iconDocumentStyle} />
-                          )}
-                          {getExtension(
-                            record.documentocomprobantepagoretencion
-                          ).toUpperCase()}
-                        </>
-                      ) : (
-                        "Sin documento"
-                      )}
-                    </td>
-                    <td style={{ padding: "16px" }}></td>
-                  </tr>
-                ))}
+                            ).toUpperCase()}
+                          </>
+                        ) : (
+                          "Sin documento"
+                        )}
+                      </td>
+                      <td style={{ padding: "16px" }}></td>
+                    </tr>
+                  );
+                })}
               </tbody>
               <tfoot>
                 <tr

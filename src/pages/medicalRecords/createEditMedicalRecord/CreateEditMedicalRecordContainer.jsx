@@ -40,6 +40,8 @@ export const CreateEditMedicalRecordContainer = () => {
     professionalId = null,
   } = useParams();
 
+  console.log(professionalId, patientId);
+
   //hook para detectar los cambios
   const [modifiedFlag, setModifiedFlag] = useState(false);
 
@@ -49,6 +51,7 @@ export const CreateEditMedicalRecordContainer = () => {
   //Función para guardar los cambios en el registro
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     const updatedFormData = {
       ...formData,
       [name]: value,

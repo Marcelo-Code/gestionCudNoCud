@@ -15,7 +15,7 @@ import { dateFormat } from "../../../utils/helpers";
 import { BackButtonContainer } from "../../../components/common/backButton/BackButtonContainer";
 
 export const ProfessionalDetail = (professionalDetailProps) => {
-  const { formData } = professionalDetailProps;
+  const { formData, userProfile, userProfessionalId } = professionalDetailProps;
 
   const dataStyle = {
     display: "flex",
@@ -170,6 +170,20 @@ export const ProfessionalDetail = (professionalDetailProps) => {
                 </Button>
               </Link>
             </Box>
+            {userProfile !== "admin" && (
+              <Box sx={{ flex: 1, minWidth: "200px" }}>
+                <Link to={`/professionals/edit/${userProfessionalId}`}>
+                  <Button
+                    size="small"
+                    fullWidth
+                    variant="contained"
+                    startIcon={<Icons.EditIcon />}
+                  >
+                    Edición
+                  </Button>
+                </Link>
+              </Box>
+            )}
           </Box>
         </CardActions>
         <CardActions>

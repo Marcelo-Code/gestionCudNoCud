@@ -1,5 +1,4 @@
-import { Icons } from "../../../assets/Icons";
-import { use, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BurguerMenu } from "./BurguerMenu";
 import { GeneralContext } from "../../../context/GeneralContext";
 import { adminOptions, userOptions } from "./menuOptions";
@@ -13,8 +12,6 @@ export const BurguerMenuContainer = () => {
 
   const { userProfile = "profesional", userProfessionalId } =
     useContext(GeneralContext);
-
-  console.log(userProfessionalId);
 
   useEffect(() => {
     if (userProfile === "admin") setOptions(adminOptions);

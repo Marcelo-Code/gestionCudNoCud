@@ -29,6 +29,7 @@ export const Documentation = (documentationProps) => {
     handleDownloadDocument,
     handleFileChange,
     fileInputRef,
+    userProfile,
   } = documentationProps;
 
   const generalBarContainerProps = {
@@ -54,7 +55,12 @@ export const Documentation = (documentationProps) => {
         {professionalId &&
           `Documentación: ${formData.nombreyapellidoprofesional}`}
       </Box>
-      <GeneralBarContainer {...generalBarContainerProps} />
+
+      {/* Solamente los usuarios admin pueden editar documentación */}
+      {userProfile === "admin" && (
+        <GeneralBarContainer {...generalBarContainerProps} />
+      )}
+
       <Box className="listContainer">
         {documentData.map((document, index) => {
           return (

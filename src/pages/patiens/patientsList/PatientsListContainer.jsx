@@ -24,7 +24,7 @@ export const PatientsListContainer = () => {
   //hook para el edit mode
   const [editMode, setEditMode] = useState(false);
 
-  const { handleGoBack, updateList, setUpdateList } =
+  const { handleGoBack, updateList, setUpdateList, userProfile } =
     useContext(GeneralContext);
 
   //Función para eliminar un paciente
@@ -72,6 +72,7 @@ export const PatientsListContainer = () => {
     handleGoBack,
     active,
     handleUndeletePatient,
+    userProfile,
   };
 
   return <PatientsList {...patientsListProps} />;

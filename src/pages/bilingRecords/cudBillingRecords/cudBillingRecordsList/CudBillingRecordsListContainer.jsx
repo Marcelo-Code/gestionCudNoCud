@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { CudBillingRecordsList } from "./CudBillingRecordsList";
+import { GeneralContext } from "../../../../context/GeneralContext";
 
 export const CudBillingRecordsListContainer = (
   cudBillingRecordsListContainerProps
@@ -15,6 +16,8 @@ export const CudBillingRecordsListContainer = (
   } = cudBillingRecordsListContainerProps;
 
   const [editMode, setEditMode] = useState(false);
+
+  const { userProfessionalId, userProfile } = useContext(GeneralContext);
 
   const totalProfesional = cudBillingRecords.reduce((acc, record) => {
     return acc + Number.parseFloat(record.montofinalprofesional);
@@ -43,6 +46,8 @@ export const CudBillingRecordsListContainer = (
     patient,
     professional,
     paymentRequests,
+    userProfessionalId,
+    userProfile,
   };
 
   return <CudBillingRecordsList {...cudBillingRecordsListProps} />;

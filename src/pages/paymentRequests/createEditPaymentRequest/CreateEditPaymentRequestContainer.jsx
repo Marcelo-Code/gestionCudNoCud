@@ -7,6 +7,7 @@ import { GeneralContext } from "../../../context/GeneralContext";
 import {
   getCudBillingRecord,
   getCudBillingRecords,
+  getCudBillingRecordsByProfessional,
 } from "../../../services/api/cudBillingRecords";
 import { CreateEditPaymentRequest } from "./CreateEditPaymentRequest";
 import {
@@ -14,18 +15,26 @@ import {
   getPaymentRequest,
   updatePaymentRequest,
 } from "../../../services/api/paymentRequest";
+import { getProfessional } from "../../../services/api/professionals";
 
 export const CreateEditPaymentRequestContainer = () => {
   //hooks para cargar los registros de facturas CUD
   const [cudBillingRecords, setCudBillingRecords] = useState([]);
   const [cudBillingRecord, setCudBillingRecord] = useState({});
+  const [professional, setProfessional] = useState({});
 
   //hook para el loading
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingButton, setIsLoadingButton] = useState(false);
 
   //Importa variables de context
-  const { handleGoBack, textSize, setTextSize } = useContext(GeneralContext);
+  const {
+    handleGoBack,
+    textSize,
+    setTextSize,
+    userProfessionalId,
+    userProfile,
+  } = useContext(GeneralContext);
 
   //hook para obtener el id de la consulta
   const { paymentRequestId = null, cudBillingRecordId = null } = useParams();
@@ -78,13 +87,26 @@ export const CreateEditPaymentRequestContainer = () => {
 
   useEffect(() => {
     setIsLoading(true);
+
+    let action;
+    if (userProfile === "admin") {
+      action = getCudBillingRecords();
+    } else if (cudBillingRecordId) {
+      action = getCudBillingRecord(cudBillingRecordId);
+    } else if (!cudBillingRecordId && userProfile !== "admin") {
+      action = getCudBillingRecordsByProfessional(userProfessionalId);
+    }
+
     Promise.all([
-      getCudBillingRecords(),
+      action,
       paymentRequestId
         ? getPaymentRequest(paymentRequestId)
         : Promise.resolve({ data: [null] }),
       cudBillingRecordId
         ? getCudBillingRecord(cudBillingRecordId)
+        : Promise.resolve({ data: [null] }),
+      userProfessionalId
+        ? getProfessional(userProfessionalId)
         : Promise.resolve({ data: [null] }),
     ])
       .then(
@@ -92,13 +114,16 @@ export const CreateEditPaymentRequestContainer = () => {
           cudBillingRecordsResponse,
           paymentRequestResponse,
           cudBillingRecordResponse,
+          professionalResponse,
         ]) => {
           const cudBillingRecordsResponseData = cudBillingRecordsResponse.data;
           const paymentRequestResponseData = paymentRequestResponse.data[0];
           const cudBillingRecordResponseData = cudBillingRecordResponse.data[0];
+          const professionalResponseData = professionalResponse.data[0];
 
           setCudBillingRecords(cudBillingRecordsResponseData);
           setCudBillingRecord(cudBillingRecordResponseData);
+          setProfessional(professionalResponseData);
 
           // baseData será el objeto que se va a cargar en el form
           let baseData = paymentRequestResponseData || {
@@ -123,8 +148,6 @@ export const CreateEditPaymentRequestContainer = () => {
 
   if (isLoading) return <LoadingContainer />;
 
-  console.log(formData);
-
   const createEditPaymentRequestProps = {
     formData,
     cudBillingRecords,
@@ -137,7 +160,11 @@ export const CreateEditPaymentRequestContainer = () => {
     handleChange,
     handleSubmit,
     cudBillingRecord,
+    userProfessionalId,
+    userProfile,
+    professional,
   };
 
   return <CreateEditPaymentRequest {...createEditPaymentRequestProps} />;
+  // return <h1>hola</h1>;
 };

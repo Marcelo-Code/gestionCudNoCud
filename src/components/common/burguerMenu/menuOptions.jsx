@@ -62,13 +62,13 @@ export const userOptions = ({ professionalId }) => {
     },
     {
       icon: <Icons.GroupsIcon />,
-      option: "Mis Consultas/Report",
-      link: `/medicalRecords/list/professional/${professionalId}`,
+      option: "Consultas/Report",
+      link: "/medicalRecords/list",
     },
     {
       icon: <Icons.ReceiptIcon />,
-      option: "Mi Facturación",
-      link: `/billingRecords/list/professional/${professionalId}`,
+      option: "Facturación",
+      link: "/billingRecords/list",
     },
 
     {

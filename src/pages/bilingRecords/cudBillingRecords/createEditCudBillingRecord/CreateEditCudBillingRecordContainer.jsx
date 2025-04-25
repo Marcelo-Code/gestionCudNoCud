@@ -140,11 +140,11 @@ export const CreateEditCudBillingRecordContainer = () => {
       const exist = cudBillingRecords.some(
         (cudBillingRecord) => cudBillingRecord.nrofactura === value
       );
-      setExistingCudBillingNumber(exist);
+      // setExistingCudBillingNumber(exist);
     }
 
     setFormData(updatedFormData);
-    console.log(updatedFormData);
+
     if (!modifiedFlag) setModifiedFlag(true);
   };
 

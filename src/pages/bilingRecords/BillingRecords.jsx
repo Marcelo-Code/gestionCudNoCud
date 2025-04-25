@@ -9,11 +9,13 @@ export const BillingRecords = (billingRecordsProps) => {
   return (
     <Box className="generalContainer">
       <Box className="generalTitle">
-        {professionalId
-          ? `Facturación profesional ${professional?.nombreyapellidoprofesional}`
-          : patientId
-          ? `Facturación paciente ${patient?.nombreyapellidopaciente}`
-          : "Facturación"}
+        {`Facturación${
+          professionalId
+            ? ` profesional ${professional.nombreyapellidoprofesional}`
+            : " "
+        } ${patientId && professionalId ? "y" : ""}${
+          patientId ? ` paciente ${patient.nombreyapellidopaciente}` : ""
+        }`}
       </Box>
       <CustomTabsContainer tabs={tabs} />
     </Box>

@@ -44,14 +44,14 @@ export const LoginContainer = () => {
     }
   };
 
-  return (
-    <Login
-      handleLogin={handleLogin}
-      email={email}
-      setEmail={setEmail}
-      password={password}
-      setPassword={setPassword}
-      error={error}
-    />
-  );
+  const loginProps = {
+    handleLogin,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    error,
+  };
+
+  return <Login {...loginProps} />;
 };

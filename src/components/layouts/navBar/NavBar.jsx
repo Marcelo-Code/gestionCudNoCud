@@ -20,7 +20,7 @@ export const NavBar = (navBarProps) => {
               <Link to="/">
                 <Box
                   component="img"
-                  src="/images/logo.png"
+                  src="/images/elReinoDelReves.png"
                   alt="Logo"
                   sx={{ width: "90px", height: "90px" }}
                 />

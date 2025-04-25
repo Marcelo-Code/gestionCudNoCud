@@ -16,9 +16,11 @@ import {
   getExtension,
   monthFormat,
 } from "../../../../utils/helpers";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { TrafficLightStatus } from "../../../../components/common/trafficLightStatus/TrafficLight";
 import { BackButtonContainer } from "../../../../components/common/backButton/BackButtonContainer";
+import { errorAlert } from "../../../../components/common/alerts/alerts";
+import { use } from "react";
 
 export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
   const {
@@ -35,6 +37,8 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     patient,
     professional,
     paymentRequests,
+    userProfessionalId,
+    userProfile,
   } = cudBillingRecordsListProps;
 
   let createRoute = "/billingRecords/createCudBillingRecord";
@@ -43,13 +47,20 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
   if (professionalId) {
     createRoute += `/professional/${professionalId}`;
     editRoute += `/professional/${professionalId}`;
+  } else if (userProfessionalId && userProfile !== "admin") {
+    //Si no se ingresa por el perfil del profesional y el usuario no es admin se utiliza el id del profesional del contexto
+    createRoute += `/professional/${userProfessionalId}`;
+    editRoute += `/professional/${userProfessionalId}`;
   }
   if (patientId) {
     createRoute += `/patient/${patientId}`;
     editRoute += `/patient/${patientId}`;
   }
 
+  //Se deshabilita la barra de edición si el paciente no es CUD
   const disableEditionBarButton = !!(patientId && !patient.cud);
+
+  const navigate = useNavigate();
 
   const generalBarContainerProps = {
     buttonText: "Factura CUD",
@@ -176,6 +187,11 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                       request.idfacturacioncud === parseInt(record.id)
                   ).length;
 
+                  // Si el usuario no es admin, solamente puede editarse sus propias consultas
+                  const editAllowed =
+                    userProfile === "admin" ||
+                    userProfessionalId === record.idprofesional;
+
                   return (
                     <tr
                       key={record.id}
@@ -217,19 +233,32 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                           <div style={{ display: "flex", gap: "1px" }}>
                             <Tooltip title="Eliminar" placement="top-end" arrow>
                               <IconButton
-                                onClick={() =>
-                                  handleDeleteCudBillingRecord(record.id)
-                                }
+                                onClick={() => {
+                                  editAllowed
+                                    ? handleDeleteCudBillingRecord(record.id)
+                                    : errorAlert(
+                                        "Usuario no autorizado, solo lectura"
+                                      );
+                                }}
                               >
                                 <Icons.DeleteIcon sx={iconStyle} />
                               </IconButton>
                             </Tooltip>
                             <Tooltip title="Editar" placement="top-end" arrow>
-                              <Link to={`${editRoute}/${record.id}`}>
-                                <IconButton>
-                                  <Icons.EditIcon sx={iconStyle} />
-                                </IconButton>
-                              </Link>
+                              <IconButton
+                                onClick={(e) => {
+                                  if (editAllowed) {
+                                    navigate(`${editRoute}/${record.id}`);
+                                  } else {
+                                    e.preventDefault(); // evita comportamiento por defecto
+                                    errorAlert(
+                                      "Usuario no autorizado, solamente lectura"
+                                    );
+                                  }
+                                }}
+                              >
+                                <Icons.EditIcon sx={iconStyle} />
+                              </IconButton>
                             </Tooltip>
                           </div>
                         </td>
