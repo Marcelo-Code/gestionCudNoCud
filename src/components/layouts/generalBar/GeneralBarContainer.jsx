@@ -12,6 +12,7 @@ export const GeneralBarContainer = (generalBarContainerProps) => {
     selectedRecords,
     patient,
     professionals,
+    onsearch,
   } = generalBarContainerProps;
   const [activeBar, setActiveBar] = useState("editionBar");
 
@@ -38,6 +39,7 @@ export const GeneralBarContainer = (generalBarContainerProps) => {
     selectedRecords,
     patient,
     professionals,
+    onsearch,
   };
   return <GeneralBar {...generalBarProps} />;
 };

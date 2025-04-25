@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import {
   Box,
@@ -33,8 +33,8 @@ export const SearchFilterBar = ({
   darkColor,
   lightColor,
   buttonColor,
-  handleSearchChange,
-  searchQuery,
+  // handleSearchChange,
+  // searchQuery,
   setDrawerOpen,
   drawerOpen,
   sortOption,
@@ -46,6 +46,8 @@ export const SearchFilterBar = ({
   activeBar = "editionBar",
   setActiveBar,
   enableReportBar,
+
+  onSearch,
 }) => {
   const DEFAULT_STATUS_OPTIONS = [
     // { value: "all", label: "Todos" },
@@ -70,6 +72,19 @@ export const SearchFilterBar = ({
     // { value: "alphabetical-asc", label: "email (A-Z)", name: "email" },
     // { value: "alphabetical-desc", label: "email (Z-A)", name: "email" },
   ];
+
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearchChange = (e) => {
+    const query = e.target.value;
+
+    console.log(onSearch);
+
+    setSearchQuery(query);
+    if (onSearch) {
+      onSearch(query);
+    }
+  };
   return (
     <>
       <Box

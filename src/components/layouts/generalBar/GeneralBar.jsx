@@ -20,12 +20,14 @@ export const GeneralBar = (generalBarProps) => {
     selectedRecords,
     patient,
     professionals,
+    onsearch,
   } = generalBarProps;
 
   const searchFilterBarProps = {
     activeBar,
     setActiveBar,
     enableReportBar,
+    onsearch,
   };
 
   const editionBarProps = {

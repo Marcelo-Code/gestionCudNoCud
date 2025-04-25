@@ -40,6 +40,7 @@ export const MedicalRecordsListContainer = () => {
 
   //hook para el array de consultas
   const [medicalRecords, setMedicalRecords] = useState([]);
+  const [filteredMedicarRecords, setFilteredMedicalRecords] = useState([]);
 
   //Importa variables de contexto para la selección de registros para el informe
   const {
@@ -93,6 +94,7 @@ export const MedicalRecordsListContainer = () => {
             professionalsResponse,
           ]) => {
             setMedicalRecords(medicalRecordsResponse.data);
+            setFilteredMedicalRecords(medicalRecordsResponse.data);
 
             if (patientResponse) setPatient(patientResponse.data[0]);
 
@@ -122,6 +124,21 @@ export const MedicalRecordsListContainer = () => {
 
   if (isLoading) return <LoadingContainer />;
 
+  //------------ FUNCIÓN DEL FILTRO -------------------------------
+
+  const handleSearch = (query) => {
+    const lowerQuery = query.toLowerCase();
+
+    const result = medicalRecords.filter((record) =>
+      `${record.descripcion}`.toLowerCase().includes(lowerQuery)
+    );
+
+    console.log(query);
+    setFilteredMedicalRecords(result);
+  };
+
+  //------------ FUNCIÓN DEL FILTRO -------------------------------
+
   //Define el nombre del título de la página
   let titleName;
   if (patientId && professionalId) {
@@ -135,7 +152,7 @@ export const MedicalRecordsListContainer = () => {
   //Lista de profesionales para el menu del informe
   const professionalsList = Array.from(
     new Map(
-      medicalRecords.map(({ idprofesional, profesionales }) => [
+      filteredMedicarRecords.map(({ idprofesional, profesionales }) => [
         idprofesional,
         {
           id: idprofesional,
@@ -151,7 +168,7 @@ export const MedicalRecordsListContainer = () => {
   );
 
   const medicalRecordsListProps = {
-    medicalRecords,
+    medicalRecords: filteredMedicarRecords,
     professionalsList,
     handleDeleteMedicalRecord,
     editMode,
@@ -165,6 +182,7 @@ export const MedicalRecordsListContainer = () => {
     professionals,
     userProfessionalId,
     userProfile,
+    onsearch: handleSearch,
   };
   return <MedicalRecordsList {...medicalRecordsListProps} />;
 };
