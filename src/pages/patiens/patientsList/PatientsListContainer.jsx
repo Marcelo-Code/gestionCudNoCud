@@ -10,6 +10,7 @@ import { LoadingContainer } from "../../loading/LoadingContainer";
 import { GeneralContext } from "../../../context/GeneralContext";
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
+import { ErrorPageContainer } from "../../errorPage/ErrorPageContainer";
 
 export const PatientsListContainer = () => {
   //hook para determinar si se piden parámetros activos o inactivos
@@ -24,14 +25,24 @@ export const PatientsListContainer = () => {
   //hook para el edit mode
   const [editMode, setEditMode] = useState(false);
 
+  //hook para capturar el error
+  const [error, setError] = useState(null);
+
   const { handleGoBack, updateList, setUpdateList, userProfile } =
     useContext(GeneralContext);
 
   //Función para eliminar un paciente
-  const handleDeletePatient = (patientId, patientName) => {
-    softDeletePatient(patientId, patientName, setUpdateList)
-      .then((response) => console.log(response))
-      .catch((error) => console.log(error));
+  const handleDeletePatient = async (patientId, patientName) => {
+    try {
+      const response = await softDeletePatient(
+        patientId,
+        patientName,
+        setUpdateList
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleUndeletePatient = (patientId, patientName) => {
@@ -44,15 +55,19 @@ export const PatientsListContainer = () => {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
+      let action;
+      if (active === "active") {
+        action = () => getPatients();
+      } else {
+        action = () => getInactivePatients();
+      }
       try {
-        const response =
-          active === "active"
-            ? await getPatients()
-            : await getInactivePatients();
-        console.log(response);
-        setPatients(response.data);
+        const [patientsResponse] = await Promise.all([action()]);
+        const patientsResponseData = patientsResponse.data;
+        setPatients(patientsResponseData);
       } catch (error) {
         console.log(error);
+        setError(error);
       } finally {
         setIsLoading(false);
       }
@@ -62,6 +77,9 @@ export const PatientsListContainer = () => {
 
   if (isLoading) {
     return <LoadingContainer />;
+  }
+  if (error) {
+    return <ErrorPageContainer error={error} />;
   }
 
   const patientsListProps = {

@@ -1,0 +1,33 @@
+@font-face {
+  font-family: "broughton";
+  src: url("/fonts/broughton.ttf") format("truetype");
+}
+
+.pageNotFoundContainer {
+  width: 100%;
+  min-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pageNotFoundTitle {
+  font-family: "broughton";
+  width: 100%;
+  font-size: 2.5em;
+  text-align: center;
+  text-shadow: 0 0 20px black;
+  padding: 20px;
+  letter-spacing: 3px;
+}
+
+.errorMessage {
+  font-family: Arial, Helvetica, sans-serif;
+  width: 100%;
+  font-size: 1.5em;
+  text-align: center;
+  text-shadow: 0 0 20px black;
+  padding: 20px;
+  letter-spacing: 3px;
+}

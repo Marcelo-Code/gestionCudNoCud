@@ -56,6 +56,7 @@ export const PatientsList = (patientsListProps) => {
       </Box>
       <Box className="listContainer">
         {patients.map((patient) => {
+          const isAllowed = userProfile === "admin";
           return (
             <Card
               key={patient.id}
@@ -101,6 +102,7 @@ export const PatientsList = (patientsListProps) => {
                       )
                     }
                     editLink={`/patients/edit/${patient.id}`}
+                    isAllowed={isAllowed}
                   />
                 )}
                 {!editMode && active === "active" && (

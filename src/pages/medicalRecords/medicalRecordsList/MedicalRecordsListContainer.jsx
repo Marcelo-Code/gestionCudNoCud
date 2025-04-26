@@ -15,6 +15,7 @@ import {
   getProfessionals,
 } from "../../../services/api/professionals";
 import { GeneralContext } from "../../../context/GeneralContext";
+import { ErrorPageContainer } from "../../errorPage/ErrorPageContainer";
 
 export const MedicalRecordsListContainer = () => {
   //hook para obtener el id del paciente o profesional
@@ -38,8 +39,13 @@ export const MedicalRecordsListContainer = () => {
   //hook para el edit mode
   const [editMode, setEditMode] = useState(false);
 
+  //hook para capturar el error
+  const [error, setError] = useState(null);
+
   //hook para el array de consultas
   const [medicalRecords, setMedicalRecords] = useState([]);
+
+  //hook para el array de consultas filtradas
   const [filteredMedicalRecords, setFilteredMedicalRecords] = useState([]);
 
   //Importa variables de contexto para la selección de registros para el informe
@@ -51,78 +57,79 @@ export const MedicalRecordsListContainer = () => {
   } = useContext(GeneralContext);
 
   //Función para eliminar una consulta
-  const handleDeleteMedicalRecord = (medicalRecordId) => {
-    deleteMedicalRecord(medicalRecordId, setUpdateList)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => console.log(error));
+  const handleDeleteMedicalRecord = async (medicalRecordId) => {
+    try {
+      const response = await deleteMedicalRecord(
+        medicalRecordId,
+        setUpdateList
+      );
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      let action;
-      if (patientId && professionalId) {
-        action = () =>
-          getMedicalRecordsByPatientAndByProfessional(
-            patientId,
-            professionalId
-          );
-      } else if (patientId) {
-        action = () => getMedicalRecordsByPatient(patientId);
-      } else if (professionalId) {
-        action = () => getMedicalRecordsByProfessional(professionalId);
-      } else {
-        action = () => getMedicalRecords();
-      }
-
       setIsLoading(true);
 
-      Promise.all([
-        action(),
-        patientId ? getPatient(patientId) : Promise.resolve[{ data: [null] }],
-        professionalId
-          ? getProfessional(professionalId)
-          : Promise.resolve[{ data: [null] }],
-        getProfessionals(),
-      ])
-        .then(
-          ([
-            medicalRecordsResponse,
-            patientResponse,
-            professionalResponse,
-            professionalsResponse,
-          ]) => {
-            setMedicalRecords(medicalRecordsResponse.data);
-            setFilteredMedicalRecords(medicalRecordsResponse.data);
-
-            if (patientResponse) setPatient(patientResponse.data[0]);
-
-            console.log(
-              medicalRecordsResponse,
-              patientResponse,
-              professionalResponse,
-              professionalsResponse
+      try {
+        let action;
+        if (patientId && professionalId) {
+          action = () =>
+            getMedicalRecordsByPatientAndByProfessional(
+              patientId,
+              professionalId
             );
+        } else if (patientId) {
+          action = () => getMedicalRecordsByPatient(patientId);
+        } else if (professionalId) {
+          action = () => getMedicalRecordsByProfessional(professionalId);
+        } else {
+          action = () => getMedicalRecords();
+        }
 
-            if (professionalResponse) {
-              setProfessional(professionalResponse.data[0]);
-            }
-            if (professionalsResponse) {
-              setProfessionals(professionalsResponse.data);
-            }
-          }
-        )
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => setIsLoading(false));
+        const [
+          medicalRecordsResponse,
+          patientResponse,
+          professionalResponse,
+          professionalsResponse,
+        ] = await Promise.all([
+          action(),
+          patientId ? getPatient(patientId) : Promise.resolve({ data: [null] }),
+          professionalId
+            ? getProfessional(professionalId)
+            : Promise.resolve({ data: [null] }),
+          getProfessionals(),
+        ]);
+
+        setMedicalRecords(medicalRecordsResponse.data);
+        setFilteredMedicalRecords(medicalRecordsResponse.data);
+
+        if (patientResponse?.data[0]) {
+          setPatient(patientResponse.data[0]);
+        }
+
+        if (professionalResponse?.data[0]) {
+          setProfessional(professionalResponse.data[0]);
+        }
+
+        if (professionalsResponse?.data) {
+          setProfessionals(professionalsResponse.data);
+        }
+      } catch (error) {
+        setError(error);
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     fetchData();
   }, [patientId, professionalId, updateList]);
 
   if (isLoading) return <LoadingContainer />;
+  if (error) return <ErrorPageContainer error={error} />;
 
   //Define los campos a buscar por el filtro
   const fieldsToSearch = [
@@ -168,16 +175,16 @@ export const MedicalRecordsListContainer = () => {
   ];
 
   //Define el nombre del título de la página
-  let titleName;
+  let titleName = "Consultas ";
   if (patientId && professionalId) {
-    titleName = `paciente ${patient.nombreyapellidopaciente} y profesional ${professional.nombreyapellidoprofesional}`;
+    titleName += `paciente ${patient.nombreyapellidopaciente} y profesional ${professional.nombreyapellidoprofesional}`;
   } else if (patientId) {
-    titleName = `paciente ${patient.nombreyapellidopaciente}`;
+    titleName += `paciente ${patient.nombreyapellidopaciente}`;
   } else if (professionalId) {
-    titleName = `profesional ${professional.nombreyapellidoprofesional}`;
+    titleName += `profesional ${professional.nombreyapellidoprofesional}`;
   }
 
-  //Defin la lista de profesionales para el menu del informe
+  //Define la lista de profesionales para el menu del informe
   const professionalsList = Array.from(
     new Map(
       filteredMedicalRecords.map(({ idprofesional, profesionales }) => [

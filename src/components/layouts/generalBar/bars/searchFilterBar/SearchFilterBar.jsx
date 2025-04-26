@@ -28,12 +28,8 @@ export const SearchFilterBar = ({
   enableReportBar,
   handleSearchChange,
   searchQuery,
-  filters,
-  handleFilterChange,
   sortOption,
   handleSortChange,
-  DEFAULT_STATUS_OPTIONS,
-  DEFAULT_TYPE_OPTIONS,
   DEFAULT_SORT_OPTIONS,
 }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);

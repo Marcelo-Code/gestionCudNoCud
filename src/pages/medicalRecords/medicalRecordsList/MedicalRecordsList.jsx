@@ -88,9 +88,7 @@ export const MedicalRecordsList = ({
 
   return (
     <Box className="generalContainer">
-      <Box className="generalTitle">
-        Consultas {(patientId || professionalId) && `${titleName}`}
-      </Box>
+      <Box className="generalTitle">{titleName}</Box>
       <GeneralBarContainer {...generalBarContainerProps} />
       <Box className="generalSubTitle">{`${medicalRecords.length} registros obtenidos`}</Box>
 

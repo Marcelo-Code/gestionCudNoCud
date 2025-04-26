@@ -23,7 +23,7 @@ export const ProfessionalsListContainer = () => {
   //hook para el edit mode
   const [editMode, setEditMode] = useState(false);
 
-  const { updateList, setUpdateList } = useContext(GeneralContext);
+  const { updateList, setUpdateList, userProfile } = useContext(GeneralContext);
 
   //Función para eliminar un profesional
   const handleDeleteProfessional = (professionalId, professionalName) => {
@@ -70,6 +70,7 @@ export const ProfessionalsListContainer = () => {
     handleDeleteProfessional,
     handleUndeleteProfessional,
     active,
+    userProfile,
   };
 
   return <ProfessionalsList {...professionalsListProps} />;

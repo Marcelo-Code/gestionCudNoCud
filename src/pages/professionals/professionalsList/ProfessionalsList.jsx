@@ -22,6 +22,7 @@ export const ProfessionalsList = (professionalsListProps) => {
     handleDeleteProfessional,
     handleUndeleteProfessional,
     active,
+    userProfile,
   } = professionalsListProps;
 
   const generalBarContainerProps = {
@@ -50,6 +51,7 @@ export const ProfessionalsList = (professionalsListProps) => {
       <Box className="generalSubTitle">{`${professionals.length} registros obtenidos`}</Box>
       <Box className="listContainer">
         {professionals.map((professional) => {
+          const isAllowed = userProfile === "admin";
           return (
             <Card
               key={professional.id}
@@ -100,25 +102,6 @@ export const ProfessionalsList = (professionalsListProps) => {
               </CardContent>
               <CardActions sx={{ justifyContent: "center" }}>
                 {editMode && active === "active" && (
-                  // <>
-                  //   <Link
-                  //     onClick={() =>
-                  //       handleDeleteProfessional(
-                  //         professional.id,
-                  //         professional.nombreyapellidoprofesional
-                  //       )
-                  //     }
-                  //   >
-                  //     <Icons.DeleteIcon
-                  //       sx={{ margin: "10px", fontSize: "2em" }}
-                  //     />
-                  //   </Link>
-                  //   <Link to={`/professionals/edit/${professional.id}`}>
-                  //     <Icons.EditIcon
-                  //       sx={{ margin: "10px", fontSize: "2em" }}
-                  //     />
-                  //   </Link>
-                  // </>
                   <EditModeButtonGroupContainer
                     deleteFunction={() =>
                       handleDeleteProfessional(
@@ -127,6 +110,7 @@ export const ProfessionalsList = (professionalsListProps) => {
                       )
                     }
                     editLink={`/professionals/edit/${professional.id}`}
+                    isAllowed={isAllowed}
                   />
                 )}
                 {!editMode && active === "active" && (
