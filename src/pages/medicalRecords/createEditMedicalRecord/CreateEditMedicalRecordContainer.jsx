@@ -48,6 +48,8 @@ export const CreateEditMedicalRecordContainer = () => {
   //hooks para guardar los datos del formulario
   const [formData, setFormData] = useState({});
 
+  console.log(formData);
+
   //Función para guardar los cambios en el registro
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,8 +58,6 @@ export const CreateEditMedicalRecordContainer = () => {
       ...formData,
       [name]: value,
     };
-
-    console.log(formData);
 
     setFormData(updatedFormData);
 
@@ -77,6 +77,8 @@ export const CreateEditMedicalRecordContainer = () => {
     delete formData.profesionales;
 
     const action = medicalRecordId ? updateMedicalRecord : createMedicalRecord;
+
+    console.log(formData);
 
     action(formData)
       .then((response) => {
@@ -113,7 +115,7 @@ export const CreateEditMedicalRecordContainer = () => {
           const patientsResponseData = patientsResponse.data;
           const professionalsResponseData = professionalsResponse.data;
           const medicalRecordsResponseData = medicalRecordsResponse.data;
-          const medicalRecordResponseData = medicalRecordResponse.data;
+          const medicalRecordResponseData = medicalRecordResponse.data[0];
           const patientResponseData = patientResponse.data[0];
           const professionalResponseData = professionalResponse.data[0];
 

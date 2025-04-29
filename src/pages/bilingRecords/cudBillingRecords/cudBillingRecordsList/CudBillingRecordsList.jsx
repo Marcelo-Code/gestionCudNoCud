@@ -20,7 +20,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { TrafficLightStatus } from "../../../../components/common/trafficLightStatus/TrafficLight";
 import { BackButtonContainer } from "../../../../components/common/backButton/BackButtonContainer";
 import { errorAlert } from "../../../../components/common/alerts/alerts";
-import { use } from "react";
 
 export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
   const {
@@ -43,6 +42,9 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     setFilteredCudBillingRecords,
     records,
     DEFAULT_SORT_OPTIONS,
+    handleSort,
+    sortedRecords,
+    sortConfig,
   } = cudBillingRecordsListProps;
 
   let createRoute = "/billingRecords/createCudBillingRecord";
@@ -89,6 +91,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     justifyContent: "left",
     alignItems: "center",
     gap: "8px",
+    verticalAlign: "middle",
   };
 
   const colStyle = {
@@ -151,43 +154,124 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                     </th>
                   )}
                   {[
-                    "Profesional",
-                    "Paciente",
-                    "Prestación",
-                    "Período Facturado",
-                    "Fecha Presentación O.S.",
-                    "Estado Facturación",
-                    "Factura Mensual",
-                    "Asistencia Mensual",
-                    "Monto Facturado",
-                    "Nro. Factura",
-                    "Obra Social",
+                    {
+                      label: "Profesional",
+                      key: "profesionales.nombreyapellidoprofesional",
+                      sortable: true,
+                    },
+                    {
+                      label: "Paciente",
+                      key: "pacientes.nombreyapellidopaciente",
+                      sortable: true,
+                    },
+                    {
+                      label: "Prestación",
+                      key: "profesionales.especialidadprofesional",
+                      sortable: true,
+                    },
+                    {
+                      label: "Período Facturado",
+                      key: "periodofacturado",
+                      sortable: true,
+                    },
+                    {
+                      label: "Fecha Presentación O.S.",
+                      key: "fechapresentacionos",
+                      sortable: true,
+                    },
+                    {
+                      label: "Estado Facturación",
+                      key: "estadofacturacion",
+                      sortable: true,
+                    },
+                    {
+                      label: "Factura Mensual",
+                      key: "facturaMensual",
+                      sortable: false,
+                    },
+                    {
+                      label: "Asistencia Mensual",
+                      key: "asistenciaMensual",
+                      sortable: false,
+                    },
+                    {
+                      label: "Monto Facturado",
+                      key: "montofacturado",
+                      sortable: true,
+                    },
+                    {
+                      label: "Nro. Factura",
+                      key: "nrofactura",
+                      sortable: true,
+                    },
+                    {
+                      label: "Obra Social",
+                      key: "obrasocialpaciente",
+                      sortable: true,
+                    },
 
                     // "Informe Mensual",
 
-                    "Fecha Aviso Recepción O.S.",
-                    "Reclamos",
-                    "Fecha de Cobro",
-                    "Monto Percibido",
-                    "35% Retención",
-                    "Monto Final Profesional",
-                  ].map((label, index) => (
+                    {
+                      label: "Fecha Aviso Recepción O.S.",
+                      key: "fecharecepcionos",
+                      sortable: true,
+                    },
+                    { label: "Reclamos", key: "reclamos", sortable: false },
+                    {
+                      label: "Fecha de Cobro",
+                      key: "fechacobro",
+                      sortable: true,
+                    },
+                    {
+                      label: "Monto Percibido",
+                      key: "montopercibido",
+                      sortable: true,
+                    },
+                    {
+                      label: "35% Retención",
+                      key: "retencion",
+                      sortable: true,
+                    },
+                    {
+                      label: "Monto Final Profesional",
+                      key: "montofinalprofesional",
+                      sortable: true,
+                    },
+                  ].map(({ label, key, sortable }) => (
                     <th
-                      key={index}
+                      onClick={sortable ? () => handleSort(key) : undefined}
+                      key={key}
                       style={{
-                        padding: "16px",
+                        padding: "8px",
                         textAlign: "center",
                         minWidth: "100px",
                         width: "auto",
+                        color: sortable ? "#555" : "#888",
+                        cursor: sortable ? "pointer" : "default",
+                        transition: "color 0.2s ease",
+                      }}
+                      onMouseEnter={(e) => {
+                        if (sortable) e.currentTarget.style.color = "#1976d2"; // MUI primary
+                      }}
+                      onMouseLeave={(e) => {
+                        if (sortable) e.currentTarget.style.color = "#555";
                       }}
                     >
-                      {label}
+                      <div>
+                        {label}
+                        {sortable && sortConfig.key === key && (
+                          <span>
+                            {sortConfig.direction === "asc" ? "▲" : "▼"}
+                          </span>
+                        )}
+                      </div>
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {cudBillingRecords.map((record, index) => {
+                {sortedRecords.map((record, index) => {
                   //Cuenta la cantidad de reclamos asociados a la factura
                   //para mostrarlo en el Tooltip del botón "Reclamo"
                   const paymentRequestsCount = paymentRequests.filter(
@@ -331,22 +415,24 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                               target="_blank"
                               rel="noopener noreferrer"
                             >
-                              Documento Fact. Mensual
+                              {/* Documento Fact. Mensual */}
+                              {["jpg", "png", "jpeg"].includes(
+                                getExtension(record.documentofacturamensual)
+                              ) && <Icons.ImageIcon sx={iconDocumentStyle} />}
+                              {["doc", "docx"].includes(
+                                getExtension(record.documentofacturamensual)
+                              ) && <Icons.ArticleIcon sx={iconDocumentStyle} />}
+                              {["pdf"].includes(
+                                getExtension(record.documentofacturamensual)
+                              ) && (
+                                <Icons.PictureAsPdfIcon
+                                  sx={iconDocumentStyle}
+                                />
+                              )}
+                              {getExtension(
+                                record.documentofacturamensual
+                              ).toUpperCase()}
                             </Link>
-                            {["jpg", "png", "jpeg"].includes(
-                              getExtension(record.documentofacturamensual)
-                            ) && <Icons.ImageIcon sx={iconDocumentStyle} />}
-                            {["doc", "docx"].includes(
-                              getExtension(record.documentofacturamensual)
-                            ) && <Icons.ArticleIcon sx={iconDocumentStyle} />}
-                            {["pdf"].includes(
-                              getExtension(record.documentofacturamensual)
-                            ) && (
-                              <Icons.PictureAsPdfIcon sx={iconDocumentStyle} />
-                            )}
-                            {getExtension(
-                              record.documentofacturamensual
-                            ).toUpperCase()}
                           </>
                         ) : (
                           "Sin Documento"
@@ -360,22 +446,24 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                               target="_blank"
                               rel="noopener noreferrer"
                             >
-                              Documento Asist. Mensual
+                              {/* Documento Asist. Mensual */}
+                              {["jpg", "png", "jpeg"].includes(
+                                getExtension(record.imgasistenciamensual)
+                              ) && <Icons.ImageIcon sx={iconDocumentStyle} />}
+                              {["doc", "docx"].includes(
+                                getExtension(record.imgasistenciamensual)
+                              ) && <Icons.ArticleIcon sx={iconDocumentStyle} />}
+                              {["pdf"].includes(
+                                getExtension(record.imgasistenciamensual)
+                              ) && (
+                                <Icons.PictureAsPdfIcon
+                                  sx={iconDocumentStyle}
+                                />
+                              )}
+                              {getExtension(
+                                record.imgasistenciamensual
+                              ).toUpperCase()}
                             </Link>
-                            {["jpg", "png", "jpeg"].includes(
-                              getExtension(record.imgasistenciamensual)
-                            ) && <Icons.ImageIcon sx={iconDocumentStyle} />}
-                            {["doc", "docx"].includes(
-                              getExtension(record.imgasistenciamensual)
-                            ) && <Icons.ArticleIcon sx={iconDocumentStyle} />}
-                            {["pdf"].includes(
-                              getExtension(record.imgasistenciamensual)
-                            ) && (
-                              <Icons.PictureAsPdfIcon sx={iconDocumentStyle} />
-                            )}
-                            {getExtension(
-                              record.imgasistenciamensual
-                            ).toUpperCase()}
                           </>
                         ) : (
                           "Sin Documento"

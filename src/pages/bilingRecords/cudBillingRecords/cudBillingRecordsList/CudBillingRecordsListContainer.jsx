@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { CudBillingRecordsList } from "./CudBillingRecordsList";
 import { GeneralContext } from "../../../../context/GeneralContext";
 
@@ -90,6 +90,56 @@ export const CudBillingRecordsListContainer = (
     },
   ];
 
+  const getNestedValue = (obj, path) =>
+    path.split(".").reduce((o, p) => (o ? o[p] : null), obj);
+
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
+
+  const handleSort = (key) => {
+    let direction = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const sortedRecords = useMemo(() => {
+    const sorted = [...cudBillingRecords];
+    if (sortConfig.key) {
+      sorted.sort((a, b) => {
+        let aValue = getNestedValue(a, sortConfig.key);
+        let bValue = getNestedValue(b, sortConfig.key);
+
+        // Convertir si son números
+        if (!isNaN(aValue) && !isNaN(bValue)) {
+          aValue = parseFloat(aValue);
+          bValue = parseFloat(bValue);
+        }
+
+        // Convertir si son fechas
+        if (
+          (sortConfig.key.toLowerCase().includes("fecha") ||
+            sortConfig.key.toLowerCase().includes("periodo")) &&
+          Date.parse(aValue) &&
+          Date.parse(bValue)
+        ) {
+          aValue = new Date(aValue);
+          bValue = new Date(bValue);
+        }
+
+        if (aValue == null && bValue != null) return 1; // nulls al final
+        if (aValue != null && bValue == null) return -1;
+        if (aValue == null && bValue == null) return 0;
+
+        if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
+        if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
+
+        return 0;
+      });
+    }
+    return sorted;
+  }, [cudBillingRecords, sortConfig]);
+
   const cudBillingRecordsListProps = {
     cudBillingRecords,
     editMode,
@@ -110,6 +160,9 @@ export const CudBillingRecordsListContainer = (
     setFilteredCudBillingRecords,
     records,
     DEFAULT_SORT_OPTIONS,
+    handleSort,
+    sortedRecords,
+    sortConfig,
   };
 
   return <CudBillingRecordsList {...cudBillingRecordsListProps} />;
