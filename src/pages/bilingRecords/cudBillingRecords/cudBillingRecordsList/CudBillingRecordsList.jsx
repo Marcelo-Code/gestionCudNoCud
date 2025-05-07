@@ -238,6 +238,11 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                       key: "montofinalprofesional",
                       sortable: true,
                     },
+                    {
+                      label: "Pago Retención",
+                      key: "documentocomprobrantepagoretencion",
+                      sortable: false,
+                    },
                   ].map(({ label, key, sortable }) => (
                     <th
                       onClick={sortable ? () => handleSort(key) : undefined}
@@ -507,11 +512,56 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                       <td style={{ padding: "16px" }}>
                         {currencyFormat(record.montopercibido)}
                       </td>
-                      <td style={{ padding: "16px" }}>
+                      <td
+                        style={{
+                          padding: "16px",
+                          textDecoration:
+                            record.documentocomprobantepagoretencion
+                              ? "line-through"
+                              : "none",
+                        }}
+                      >
                         {currencyFormat(record.montopercibido * 0.35)}
                       </td>
                       <td style={{ padding: "16px" }}>
                         {currencyFormat(record.montofinalprofesional)}
+                      </td>
+                      <td style={colStyle}>
+                        {record.documentocomprobantepagoretencion ? (
+                          <>
+                            <Link
+                              to={record.documentocomprobantepagoretencion}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {/* Documento Asist. Mensual */}
+                              {["jpg", "png", "jpeg"].includes(
+                                getExtension(
+                                  record.documentocomprobantepagoretencion
+                                )
+                              ) && <Icons.ImageIcon sx={iconDocumentStyle} />}
+                              {["doc", "docx"].includes(
+                                getExtension(
+                                  record.documentocomprobantepagoretencion
+                                )
+                              ) && <Icons.ArticleIcon sx={iconDocumentStyle} />}
+                              {["pdf"].includes(
+                                getExtension(
+                                  record.documentocomprobantepagoretencion
+                                )
+                              ) && (
+                                <Icons.PictureAsPdfIcon
+                                  sx={iconDocumentStyle}
+                                />
+                              )}
+                              {getExtension(
+                                record.documentocomprobantepagoretencion
+                              ).toUpperCase()}
+                            </Link>
+                          </>
+                        ) : (
+                          "Sin Documento"
+                        )}
                       </td>
                     </tr>
                   );
@@ -528,7 +578,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                   }}
                 >
                   <td
-                    colSpan={editMode ? 9 : 8}
+                    colSpan={editMode ? 10 : 9}
                     style={{
                       padding: "16px",
                       fontWeight: "bold",
@@ -557,6 +607,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                   <td style={{ padding: "16px" }}>
                     {currencyFormat(totalProfesional)}
                   </td>
+                  <td style={{ padding: "16px" }}></td>
                 </tr>
               </tfoot>
             </table>

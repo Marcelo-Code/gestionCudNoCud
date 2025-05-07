@@ -111,6 +111,11 @@ export const cudDocumentData = [
     value: "",
     title: "Factura Mensual",
   },
+  {
+    name: "documentocomprobantepagoretencion",
+    value: "",
+    title: "Comprobante Retencion",
+  },
 ];
 
 export const meetings = [

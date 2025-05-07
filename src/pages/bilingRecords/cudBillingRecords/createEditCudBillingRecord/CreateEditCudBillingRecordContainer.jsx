@@ -69,6 +69,7 @@ export const CreateEditCudBillingRecordContainer = () => {
 
   const facturaMensualFileInputRef = useRef(null);
   const asistenciaMensualFileInputRef = useRef(null);
+  const comprobantePagoRetencionFileInputRef = useRef(null);
 
   //Función para guardar los cambios en el registro
   const handleChange = (e) => {
@@ -155,6 +156,7 @@ export const CreateEditCudBillingRecordContainer = () => {
       [fieldName]: "",
     };
     setFormData(updatedFormData);
+    setModifiedFlag(true);
   };
 
   //Función submit
@@ -197,6 +199,11 @@ export const CreateEditCudBillingRecordContainer = () => {
           deleteCudBillingDocument(formFiles.documentofacturamensual);
         if (formFiles.imgasistenciamensual !== formData.imgasistenciamensual)
           deleteCudBillingDocument(formFiles.imgasistenciamensual);
+        if (
+          formFiles.documentocomprobantepagoretencion !==
+          formData.documentocomprobantepagoretencion
+        )
+          deleteCudBillingDocument(formFiles.documentocomprobantepagoretencion);
       }
 
       // Construcción del nombre base para los archivos
@@ -241,6 +248,25 @@ export const CreateEditCudBillingRecordContainer = () => {
         updatedFormData = {
           ...updatedFormData,
           imgasistenciamensual: asistenciaMensualUrl,
+        };
+      }
+
+      // Si se modifican los archivos a cargar se borran los archivos anteriores
+      if (
+        formFiles.documentocomprobantepagoretencion !==
+        formData.documentocomprobantepagoretencion
+      ) {
+        const comprobantePagoRetencionUrl = await uploadCudBillingDocument(
+          formData.documentocomprobantepagoretencion,
+          documentationCudBillingFolder,
+          "documentocomprobantepagoretencion",
+          halfDocumentName
+        );
+
+        console.log(comprobantePagoRetencionUrl);
+        updatedFormData = {
+          ...updatedFormData,
+          documentocomprobantepagoretencion: comprobantePagoRetencionUrl,
         };
       }
 
@@ -347,6 +373,7 @@ export const CreateEditCudBillingRecordContainer = () => {
     professionals,
     facturaMensualFileInputRef,
     asistenciaMensualFileInputRef,
+    comprobantePagoRetencionFileInputRef,
     handleRemoveFile,
     existingCudBillingNumber,
     currentMonth,

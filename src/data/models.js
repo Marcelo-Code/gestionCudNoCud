@@ -100,6 +100,7 @@ export const cudBillingRecordInitialState = {
   montopercibido: 0,
   retencion: 0,
   montofinalprofesional: 0,
+  documentocomprobantepagoretencion: "",
 };
 
 export const noCudBillingRecordInitialState = {

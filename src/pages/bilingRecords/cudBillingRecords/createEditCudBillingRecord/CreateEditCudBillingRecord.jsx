@@ -29,6 +29,7 @@ export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
     professionals,
     facturaMensualFileInputRef,
     asistenciaMensualFileInputRef,
+    comprobantePagoRetencionFileInputRef,
     handleRemoveFile,
     existingCudBillingNumber,
     currentMonth,
@@ -254,6 +255,66 @@ export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
                 }
                 disabled={true}
                 InputLabelProps={{ shrink: true }} // 👈 Esto mantiene el label flotante
+                sx={{
+                  "& .MuiOutlinedInput-root.Mui-disabled": {
+                    color: "black", // texto
+                  },
+                  "& .MuiInputLabel-root.Mui-disabled": {
+                    color: "black", // label
+                  },
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "black", // borde
+                  },
+                }}
+              />
+            </Box>
+
+            {/* Selector de archivos comrobante retención */}
+            <Box className="createEditPatientElement">
+              <input
+                type="file"
+                ref={comprobantePagoRetencionFileInputRef}
+                style={{ display: "none" }}
+                onChange={handleChange}
+                name="documentocomprobantepagoretencion"
+              />
+              {formData.documentocomprobantepagoretencion ? (
+                <Tooltip title="Quitar archivo" placement="top-end" arrow>
+                  <IconButton
+                    onClick={() =>
+                      handleRemoveFile("documentocomprobantepagoretencion")
+                    }
+                    sx={{ margin: 0, padding: 0 }}
+                  >
+                    <Icons.ClearIcon sx={iconsUploadStyle} />
+                  </IconButton>
+                </Tooltip>
+              ) : (
+                <Tooltip title="Seleccionar archivo" placement="top-end" arrow>
+                  <IconButton
+                    onClick={() =>
+                      comprobantePagoRetencionFileInputRef.current.click()
+                    }
+                    sx={{ margin: 0, padding: 0 }}
+                  >
+                    <Icons.UploadIcon sx={iconsUploadStyle} />
+                  </IconButton>
+                </Tooltip>
+              )}
+              <TextField
+                style={elementStyle}
+                id="outlined-basic"
+                label="Doc. comprobante retención"
+                variant="outlined"
+                value={
+                  !formData.documentocomprobantepagoretencion
+                    ? "No seleccionado"
+                    : typeof formData.documentocomprobantepagoretencion ===
+                      "object"
+                    ? formData.documentocomprobantepagoretencion.name
+                    : "Doc. asistencia mensual"
+                }
+                disabled={true}
                 sx={{
                   "& .MuiOutlinedInput-root.Mui-disabled": {
                     color: "black", // texto
