@@ -250,13 +250,13 @@ export const ExportToWordContainer = ({
                             children: [
                               new Paragraph({
                                 children: [
-                                  new ImageRun({
-                                    data: imageBlob,
-                                    transformation: {
-                                      width: 100,
-                                      height: 100,
-                                    },
-                                  }),
+                                  // new ImageRun({
+                                  //   data: imageBlob,
+                                  //   transformation: {
+                                  //     width: 100,
+                                  //     height: 100,
+                                  //   },
+                                  // }),
                                 ],
                                 spacing: { after: 10 },
                               }),
