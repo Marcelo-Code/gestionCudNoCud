@@ -151,10 +151,10 @@ export const CreateEditNoCudBillingRecordContainer = () => {
     }
 
     // Validación: si está pagado, deben existir ambos documentos
-    if (isPago && !formData.documentocomprobantepagoretencion) {
-      errorAlert("Subir documento comprobante retención");
-      return;
-    }
+    // if (isPago && !formData.documentocomprobantepagoretencion) {
+    //   errorAlert("Subir documento comprobante retención");
+    //   return;
+    // }
 
     setIsLoadingButton(true); // Se activa indicador de carga
 

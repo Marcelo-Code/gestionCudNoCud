@@ -376,7 +376,7 @@ export const CreateEditNoCudBillingRecord = (createEditCudBillingProps) => {
                     id="outlined-basic"
                     label="Doc. comprobante retención"
                     variant="outlined"
-                    required={formData.estadopago === "pagado"}
+                    // required={formData.estadopago === "pagado"}
                     name="documentocomprobantepagoretencion"
                     value={
                       !formData.documentocomprobantepagoretencion

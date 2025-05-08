@@ -269,11 +269,12 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
                           : "Sin fecha"}
                       </td>
                       <td style={{ padding: "16px" }}>{record.mediopago}</td>
-                      <td style={{ padding: "16px" }}>
+                      <td style={{ textAlign: "right", padding: "16px" }}>
                         {currencyFormat(record.montosesion)}
                       </td>
                       <td
                         style={{
+                          textAlign: "right",
                           padding: "16px",
                           textDecoration:
                             record.documentocomprobantepagoretencion
@@ -283,7 +284,7 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
                       >
                         {currencyFormat(record.retencion)}
                       </td>
-                      <td style={{ padding: "16px" }}>
+                      <td style={{ textAlign: "right", padding: "16px" }}>
                         {currencyFormat(record.montofinalprofesional)}
                       </td>
                       <td style={colStyle}>
@@ -366,7 +367,7 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
                   }}
                 >
                   <td
-                    colSpan={editMode ? 8 : 7}
+                    colSpan={editMode ? 9 : 8}
                     style={{
                       padding: "16px",
                       fontWeight: "bold",
@@ -375,11 +376,13 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
                   >
                     Totales:
                   </td>
-                  <td>{currencyFormat(totalMontoSesion)}</td>
-                  <td style={{ padding: "16px" }}>
+                  <td style={{ padding: "16px", textAlign: "right" }}>
+                    {currencyFormat(totalMontoSesion)}
+                  </td>
+                  <td style={{ padding: "16px", textAlign: "right" }}>
                     {currencyFormat(totalRetencion)}
                   </td>
-                  <td style={{ padding: "16px" }}>
+                  <td style={{ padding: "16px", textAlign: "right" }}>
                     {currencyFormat(totalProfesional)}
                   </td>
                   <td colSpan={6}></td>

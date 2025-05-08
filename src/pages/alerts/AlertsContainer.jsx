@@ -5,6 +5,8 @@ import { getProfessionals } from "../../services/api/professionals";
 import { LoadingContainer } from "../loading/LoadingContainer";
 import dayjs from "dayjs";
 import { GeneralContext } from "../../context/GeneralContext";
+import { formatDate } from "date-fns";
+import { dateFormat } from "../../utils/helpers";
 
 export function AlertsContainer() {
   //hook para los pacientes

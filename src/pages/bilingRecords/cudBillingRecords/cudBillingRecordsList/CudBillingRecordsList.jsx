@@ -475,7 +475,9 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                         )}
                       </td>
 
-                      <td>{currencyFormat(record.montofacturado)}</td>
+                      <td style={{ textAlign: "right" }}>
+                        {currencyFormat(record.montofacturado)}
+                      </td>
                       <td style={{ padding: "16px" }}>{record.nrofactura}</td>
                       <td style={colStyle}>
                         {record.pacientes?.obrasocialpaciente}
@@ -509,11 +511,12 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                           ? dateFormat(record.fechacobro)
                           : "Sin fecha"}
                       </td>
-                      <td style={{ padding: "16px" }}>
+                      <td style={{ textAlign: "right", padding: "16px" }}>
                         {currencyFormat(record.montopercibido)}
                       </td>
                       <td
                         style={{
+                          textAlign: "right",
                           padding: "16px",
                           textDecoration:
                             record.documentocomprobantepagoretencion
@@ -523,7 +526,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                       >
                         {currencyFormat(record.montopercibido * 0.35)}
                       </td>
-                      <td style={{ padding: "16px" }}>
+                      <td style={{ textAlign: "right", padding: "16px" }}>
                         {currencyFormat(record.montofinalprofesional)}
                       </td>
                       <td style={colStyle}>
@@ -587,7 +590,9 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                   >
                     Totales:
                   </td>
-                  <td>{currencyFormat(totalMontoFacturado)}</td>
+                  <td style={{ textAlign: "right" }}>
+                    {currencyFormat(totalMontoFacturado)}
+                  </td>
                   <td
                     colSpan={5}
                     style={{
@@ -598,13 +603,13 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                   >
                     Totales:{" "}
                   </td>
-                  <td style={{ padding: "16px" }}>
+                  <td style={{ textAlign: "right", padding: "16px" }}>
                     {currencyFormat(totalMontoPercibido)}
                   </td>
-                  <td style={{ padding: "16px" }}>
+                  <td style={{ textAlign: "right", padding: "16px" }}>
                     {currencyFormat(totalRetencion)}
                   </td>
-                  <td style={{ padding: "16px" }}>
+                  <td style={{ textAlign: "right", padding: "16px" }}>
                     {currencyFormat(totalProfesional)}
                   </td>
                   <td style={{ padding: "16px" }}></td>

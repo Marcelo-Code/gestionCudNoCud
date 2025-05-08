@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UsersList } from "./UsersList";
 import { LoadingContainer } from "../../loading/LoadingContainer";
 import { GeneralContext } from "../../../context/GeneralContext";
@@ -24,6 +24,8 @@ export const UsersListContainer = () => {
   const [editMode, setEditMode] = useState(false);
 
   const [updateList, setUpdateList] = useState(false);
+
+  const { userProfile } = useContext(GeneralContext);
 
   //Función para eliminar un usuario
   const handleDeleteUser = (userId, userName) => {
@@ -67,6 +69,7 @@ export const UsersListContainer = () => {
     handleDeleteUser,
     active,
     handleUndeleteUser,
+    userProfile,
   };
 
   return <UsersList {...usersListProps} />;

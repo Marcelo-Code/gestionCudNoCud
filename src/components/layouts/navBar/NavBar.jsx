@@ -53,7 +53,7 @@ export const NavBar = (navBarProps) => {
         </Box>
       </Box>
       <Box className="generalSubTitle">
-        <b>¡Bienvenido!: </b> {normalizeName(userName) || "Cargando..."}{" "}
+        <b>¡Bienvenido!: </b> {normalizeName(userName) || "Cargando..."}
         <b>Perfil:</b> {userProfile || "Cargando..."}
       </Box>
     </Box>
