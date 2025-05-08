@@ -312,7 +312,7 @@ export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
                     : typeof formData.documentocomprobantepagoretencion ===
                       "object"
                     ? formData.documentocomprobantepagoretencion.name
-                    : "Doc. asistencia mensual"
+                    : "Doc. pago retención"
                 }
                 disabled={true}
                 sx={{
