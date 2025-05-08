@@ -22,7 +22,6 @@ export const UsersList = (usersListProps) => {
     handleDeleteUser,
     active,
     handleUndeleteUser,
-    userProfile,
   } = usersListProps;
 
   const generalBarContainerProps = {
@@ -56,8 +55,6 @@ export const UsersList = (usersListProps) => {
       </Box>
       <Box className="listContainer">
         {users.map((user) => {
-          const isAllowed = userProfile === "admin";
-
           return (
             <Card
               key={user.id}
@@ -123,7 +120,7 @@ export const UsersList = (usersListProps) => {
                       handleDeleteUser(user.id, user.nombreyapellidousuario)
                     }
                     editLink={`/users/edit/${user.id}`}
-                    isAllowed={isAllowed}
+                    isAllowed={true}
                   />
                 )}
                 {active === "inactive" && (

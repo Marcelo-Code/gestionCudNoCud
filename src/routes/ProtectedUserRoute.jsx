@@ -8,8 +8,6 @@ export const ProtectedUserRoute = ({ children }) => {
     useContext(GeneralContext);
   const { professionalId } = useParams();
 
-  console.log(userProfile);
-
   //Espera a que se cargue el perfil del usuario desde el contexto
   if (!userProfile) {
     return <LoadingContainer />;

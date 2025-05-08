@@ -25,8 +25,6 @@ export const UsersListContainer = () => {
 
   const [updateList, setUpdateList] = useState(false);
 
-  const { userProfile } = useContext(GeneralContext);
-
   //Función para eliminar un usuario
   const handleDeleteUser = (userId, userName) => {
     softDeleteUser(userId, userName, setUpdateList)
@@ -69,7 +67,6 @@ export const UsersListContainer = () => {
     handleDeleteUser,
     active,
     handleUndeleteUser,
-    userProfile,
   };
 
   return <UsersList {...usersListProps} />;
