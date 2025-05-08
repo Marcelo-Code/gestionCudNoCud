@@ -272,7 +272,15 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
                       <td style={{ padding: "16px" }}>
                         {currencyFormat(record.montosesion)}
                       </td>
-                      <td style={{ padding: "16px" }}>
+                      <td
+                        style={{
+                          padding: "16px",
+                          textDecoration:
+                            record.documentocomprobantepagoretencion
+                              ? "line-through"
+                              : "none",
+                        }}
+                      >
                         {currencyFormat(record.retencion)}
                       </td>
                       <td style={{ padding: "16px" }}>

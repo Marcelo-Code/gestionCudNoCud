@@ -25,7 +25,10 @@ export const NoCudBillingRecordsListContainer = (
     return acc + Number.parseFloat(record.montosesion);
   }, 0);
   const totalRetencion = noCudBillingRecords.reduce((acc, record) => {
-    return acc + Number.parseFloat(record.retencion);
+    if (!record.documentocomprobantepagoretencion) {
+      return acc + Number.parseFloat(record.retencion);
+    }
+    return acc;
   }, 0);
   const totalProfesional = noCudBillingRecords.reduce((acc, record) => {
     return acc + Number.parseFloat(record.montofinalprofesional);

@@ -322,7 +322,7 @@ export const CreateEditNoCudBillingRecord = (createEditCudBillingProps) => {
                   />
                 </Box>
 
-                {/* Selector de archivos factura mensual */}
+                {/* Selector de comprobante de retención */}
                 <Box className="createEditPatientElement">
                   <input
                     type="file"
