@@ -149,6 +149,11 @@ export const ExportToWordContainer = ({
         spacing: { line: 360, before: 180, after: 180 },
       });
 
+      // Firma como imagen
+      const spacedBlankParagraph = new Paragraph({
+        spacing: { before: 1000, after: 0 },
+      });
+
       const imageResponse = await fetch(`${professional[signature.value]}`);
       const buffer = await imageResponse.arrayBuffer();
 
@@ -164,7 +169,7 @@ export const ExportToWordContainer = ({
           }),
         ],
         alignment: AlignmentType.CENTER,
-        spacing: { line: 360, before: 1000, after: 180 },
+        spacing: { line: 360, before: 0, after: 180 },
       });
 
       const title = new Paragraph({
@@ -468,7 +473,8 @@ export const ExportToWordContainer = ({
               title,
               ...flattenedParagraphs,
               observationsParagraph,
-              signatureImage,
+              spacedBlankParagraph,
+              signature.value !== "Sin firma" ? signatureImage : undefined,
               lineSignatureParagraph,
               signatureParagraph,
             ],
