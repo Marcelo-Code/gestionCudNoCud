@@ -195,6 +195,10 @@ export const MedicalRecordsListContainer = () => {
           matriculaprofesional: profesionales.matriculaprofesional,
           cuitprofesional: profesionales.cuitprofesional,
           especialidadprofesional: profesionales.especialidadprofesional,
+          documentofirmaprofesional: profesionales.documentofirmaprofesional,
+          documentoselloprofesional: profesionales.documentoselloprofesional,
+          documentoselloyfirmaprofesional:
+            profesionales.documentoselloyfirmaprofesional,
         },
       ])
     ).values()

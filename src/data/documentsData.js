@@ -1,3 +1,5 @@
+import { id } from "date-fns/locale";
+
 export const patientDocumentData = [
   {
     name: "imgdnifrentepaciente",
@@ -115,6 +117,29 @@ export const cudDocumentData = [
     name: "documentocomprobantepagoretencion",
     value: "",
     title: "Comprobante Retencion",
+  },
+];
+
+export const signatureData = [
+  {
+    id: "Sin firma",
+    value: "Sin firma",
+    name: "Sin firma",
+  },
+  {
+    id: "documentofirmaprofesional",
+    value: "documentofirmaprofesional",
+    name: "Firma",
+  },
+  {
+    id: "documentoselloprofesional",
+    value: "documentoselloprofesional",
+    name: "Sello",
+  },
+  {
+    id: "documentoselloyfirmaprofesional",
+    value: "documentoselloyfirmaprofesional",
+    name: "Sello y Firma",
   },
 ];
 

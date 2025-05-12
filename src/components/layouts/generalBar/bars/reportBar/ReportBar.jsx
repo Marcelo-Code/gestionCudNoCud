@@ -1,20 +1,22 @@
 import { Box, IconButton, Tooltip } from "@mui/material";
 import { Edit as EditIcon } from "@mui/icons-material";
-import "../generalBar.css";
-import { Icons } from "../../../../assets/Icons";
-import { OptionSelect } from "../../../common/optionSelect/OptionSelect";
-import { ExportToWordContainer } from "./exportToWord/ExportToWordContainer";
+import "../../generalBar.css";
+import { Icons } from "../../../../../assets/Icons";
+import { OptionSelect } from "../../../../common/optionSelect/OptionSelect";
+import { ExportToWordContainer } from "../exportToWord/ExportToWordContainer";
 
 export const ReportBar = (reportBarProps) => {
   const {
     activeBar,
     setActiveBar,
     professionalsList,
+    signatureData,
     enableSearchFilterBar,
     selectedRecords,
     patient,
     handleChange,
     professional,
+    signature,
     formData,
   } = reportBarProps;
 
@@ -22,6 +24,7 @@ export const ReportBar = (reportBarProps) => {
     selectedRecords,
     patient,
     professional,
+    signature,
   };
 
   return (
@@ -49,6 +52,28 @@ export const ReportBar = (reportBarProps) => {
           value={formData.idprofesional}
           onChange={handleChange}
           label={"Profesional"}
+        />
+      </Box>
+
+      <Box
+        sx={{
+          width: "45%",
+          maxWidth: "250px",
+          minWidth: "120px",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "5px",
+        }}
+      >
+        <Icons.PersonIcon />
+        <OptionSelect
+          getOptionLabel={(option) => `${option.name}`}
+          name="signatureDataId"
+          placeholder={"Selecc. firma"}
+          clients={signatureData}
+          value={formData.signatureDataId}
+          onChange={handleChange}
+          label={"Firma"}
         />
       </Box>
 

@@ -11,11 +11,13 @@ import {
   TableRow,
   TableCell,
   WidthType,
+  Footer,
 } from "docx";
 import { saveAs } from "file-saver";
 import {
   adressHeaderText,
   confidentialityPolicy,
+  footerText,
   observations,
   title1,
   titleHeaderText,
@@ -32,7 +34,11 @@ export const ExportToWordContainer = ({
   patient,
   selectedRecords,
   professional,
+  signature,
 }) => {
+  console.log(professional);
+  console.log(signature.value);
+
   const getDateRange = (records) => {
     if (records.length === 0) return { minDate: null, maxDate: null };
 
@@ -40,9 +46,6 @@ export const ExportToWordContainer = ({
 
     const minDate = dateFormat(new Date(Math.min(...fechas)));
     const maxDate = dateFormat(new Date(Math.max(...fechas)));
-
-    console.log(minDate, maxDate);
-    console.log(records);
 
     return { minDate, maxDate };
   };
@@ -130,7 +133,7 @@ export const ExportToWordContainer = ({
           }),
         ],
         alignment: AlignmentType.CENTER,
-        spacing: { line: 360, before: 1500, after: 180 },
+        spacing: { line: 360, before: 0, after: 180 },
       });
 
       const signatureParagraph = new Paragraph({
@@ -144,6 +147,24 @@ export const ExportToWordContainer = ({
         ],
         alignment: AlignmentType.CENTER,
         spacing: { line: 360, before: 180, after: 180 },
+      });
+
+      const imageResponse = await fetch(`${professional[signature.value]}`);
+      const buffer = await imageResponse.arrayBuffer();
+
+      // Firma como imagen
+      const signatureImage = new Paragraph({
+        children: [
+          new ImageRun({
+            data: buffer,
+            transformation: {
+              width: 150,
+              height: 100,
+            },
+          }),
+        ],
+        alignment: AlignmentType.CENTER,
+        spacing: { line: 360, before: 1000, after: 180 },
       });
 
       const title = new Paragraph({
@@ -363,6 +384,83 @@ export const ExportToWordContainer = ({
                 ],
               }),
             },
+            footers: {
+              default: new Footer({
+                children: [
+                  new Table({
+                    width: {
+                      size: 100,
+                      type: WidthType.PERCENTAGE,
+                    },
+                    rows: [
+                      new TableRow({
+                        children: [
+                          new TableCell({
+                            children: [
+                              new Paragraph({
+                                children: [
+                                  new TextRun({
+                                    text: `${footerText}`,
+                                    font: "Arial",
+                                    size: 16,
+                                    bold: true,
+                                  }),
+                                ],
+                                alignment: AlignmentType.CENTER,
+                              }),
+                            ],
+                            borders: {
+                              top: {
+                                style: BorderStyle.SINGLE,
+                                size: 20, // ajustá el grosor
+                                color: "000000",
+                              },
+                              bottom: {
+                                style: BorderStyle.NONE,
+                                size: 0,
+                                color: "FFFFFF",
+                              },
+                              left: {
+                                style: BorderStyle.NONE,
+                                size: 0,
+                                color: "FFFFFF",
+                              },
+                              right: {
+                                style: BorderStyle.NONE,
+                                size: 0,
+                                color: "FFFFFF",
+                              },
+                            },
+                          }),
+                        ],
+                      }),
+                    ],
+                    borders: {
+                      top: {
+                        style: BorderStyle.NONE,
+                        size: 0,
+                        color: "FFFFFF",
+                      },
+                      bottom: {
+                        style: BorderStyle.NONE,
+                        size: 0,
+                        color: "FFFFFF",
+                      },
+                      left: {
+                        style: BorderStyle.NONE,
+                        size: 0,
+                        color: "FFFFFF",
+                      },
+                      right: {
+                        style: BorderStyle.NONE,
+                        size: 0,
+                        color: "FFFFFF",
+                      },
+                    },
+                  }),
+                ],
+              }),
+            },
             children: [
               todayParagraph,
               confidentialityParagraph,
@@ -370,6 +468,7 @@ export const ExportToWordContainer = ({
               title,
               ...flattenedParagraphs,
               observationsParagraph,
+              signatureImage,
               lineSignatureParagraph,
               signatureParagraph,
             ],

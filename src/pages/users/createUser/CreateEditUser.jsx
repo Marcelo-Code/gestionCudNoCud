@@ -87,6 +87,7 @@ export const CreateEditUser = (createEditUserProps) => {
                   value={formData.perfil}
                   onChange={handleChange}
                   label={"Perfil"}
+                  required
                 />
               </Box>
             </Box>
@@ -105,6 +106,7 @@ export const CreateEditUser = (createEditUserProps) => {
                   onChange={handleChange}
                   label={"Profesional"}
                   disabled={userId ? true : false}
+                  required
                 />
               </Box>
             </Box>

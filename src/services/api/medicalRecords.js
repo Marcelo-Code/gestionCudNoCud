@@ -10,7 +10,7 @@ export const getMedicalRecords = async () => {
     const { data } = await supabaseClient
       .from("consultas")
       .select(
-        "*, pacientes: idpaciente(nombreyapellidopaciente), profesionales: idprofesional(nombreyapellidoprofesional, matriculaprofesional, cuitprofesional, especialidadprofesional)"
+        "*, pacientes: idpaciente(nombreyapellidopaciente), profesionales: idprofesional(nombreyapellidoprofesional, matriculaprofesional, cuitprofesional, especialidadprofesional, documentofirmaprofesional, documentoselloprofesional, documentoselloyfirmaprofesional)"
       )
       .order("fechaconsulta", { ascending: false });
 
@@ -32,7 +32,7 @@ export const getMedicalRecordsByProfessional = async (professionalId) => {
     const { data } = await supabaseClient
       .from("consultas")
       .select(
-        "*, pacientes: idpaciente(nombreyapellidopaciente), profesionales: idprofesional(nombreyapellidoprofesional, matriculaprofesional, cuitprofesional, especialidadprofesional)"
+        "*, pacientes: idpaciente(nombreyapellidopaciente), profesionales: idprofesional(nombreyapellidoprofesional, matriculaprofesional, cuitprofesional, especialidadprofesional, documentofirmaprofesional, documentoselloprofesional, documentoselloyfirmaprofesional)"
       )
       .eq("idprofesional", professionalId)
       .order("fechaconsulta", { ascending: false });
@@ -56,7 +56,7 @@ export const getMedicalRecordsByPatient = async (patientId) => {
     const { data } = await supabaseClient
       .from("consultas")
       .select(
-        "*, pacientes: idpaciente(nombreyapellidopaciente), profesionales: idprofesional(nombreyapellidoprofesional, matriculaprofesional, cuitprofesional, especialidadprofesional)"
+        "*, pacientes: idpaciente(nombreyapellidopaciente), profesionales: idprofesional(nombreyapellidoprofesional, matriculaprofesional, cuitprofesional, especialidadprofesional, documentoselloyfirmaprofesional, documentofirmaprofesional, documentoselloprofesional)"
       )
       .eq("idpaciente", patientId)
       .order("fechaconsulta", { ascending: false });
@@ -83,7 +83,7 @@ export const getMedicalRecordsByPatientAndByProfessional = async (
     const { data } = await supabaseClient
       .from("consultas")
       .select(
-        "*, pacientes: idpaciente(nombreyapellidopaciente), profesionales: idprofesional(nombreyapellidoprofesional, matriculaprofesional, cuitprofesional, especialidadprofesional)"
+        "*, pacientes: idpaciente(nombreyapellidopaciente), profesionales: idprofesional(nombreyapellidoprofesional, matriculaprofesional, cuitprofesional, especialidadprofesional, documentoselloyfirmaprofesional, documentofirmaprofesional, documentoselloprofesional)"
       )
       .eq("idpaciente", patientId)
       .eq("idprofesional", professionalId)
