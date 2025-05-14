@@ -36,9 +36,6 @@ export const ExportToWordContainer = ({
   professional,
   signature,
 }) => {
-  console.log(professional);
-  console.log(signature.value);
-
   const getDateRange = (records) => {
     if (records.length === 0) return { minDate: null, maxDate: null };
 
@@ -154,14 +151,24 @@ export const ExportToWordContainer = ({
         spacing: { before: 1000, after: 0 },
       });
 
-      const imageResponse = await fetch(`${professional[signature.value]}`);
+      const imageResponse = await fetch("/firma.jpeg", {
+        headers: {
+          "Content-Type": "image/jpeg",
+        },
+      });
+      // `${professional[signature.value]}`);
+
       const buffer = await imageResponse.arrayBuffer();
+      const uint8Buffer = new Uint8Array(buffer);
+      console.log("Image size (bytes):", uint8Buffer.length);
+
+      const base64 = btoa(String.fromCharCode(...uint8Buffer));
 
       // Firma como imagen
       const signatureImage = new Paragraph({
         children: [
           new ImageRun({
-            data: buffer,
+            data: Uint8Array.from(atob(base64), (c) => c.charCodeAt(0)),
             transformation: {
               width: 150,
               height: 100,
@@ -276,13 +283,13 @@ export const ExportToWordContainer = ({
                             children: [
                               new Paragraph({
                                 children: [
-                                  // new ImageRun({
-                                  //   data: imageBlob,
-                                  //   transformation: {
-                                  //     width: 100,
-                                  //     height: 100,
-                                  //   },
-                                  // }),
+                                  new ImageRun({
+                                    data: imageBlob,
+                                    transformation: {
+                                      width: 100,
+                                      height: 100,
+                                    },
+                                  }),
                                 ],
                                 spacing: { after: 10 },
                               }),
