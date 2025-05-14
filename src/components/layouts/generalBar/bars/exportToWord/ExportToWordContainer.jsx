@@ -151,12 +151,11 @@ export const ExportToWordContainer = ({
         spacing: { before: 1000, after: 0 },
       });
 
-      const imageResponse = await fetch("/firma.jpeg", {
-        headers: {
-          "Content-Type": "image/jpeg",
-        },
+      const imageResponse = await fetch(`${professional[signature.value]}`, {
+        // headers: {
+        //   "Content-Type": "image/jpeg",
+        // },
       });
-      // `${professional[signature.value]}`);
 
       const buffer = await imageResponse.arrayBuffer();
       const uint8Buffer = new Uint8Array(buffer);
