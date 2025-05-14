@@ -5,10 +5,9 @@ import { BurguerMenuContainer } from "../../common/burguerMenu/BurguerMenuContai
 import "./navBar.css";
 import { Link } from "react-router-dom";
 import { AlertsContainer } from "../../../pages/alerts/AlertsContainer";
-import { normalizeName } from "../../../utils/helpers";
 
 export const NavBar = (navBarProps) => {
-  const { showLogo, handleLogout, userProfile, userName } = navBarProps;
+  const { showLogo } = navBarProps;
 
   return (
     <Box>
@@ -41,20 +40,8 @@ export const NavBar = (navBarProps) => {
         </Box>
 
         <Box style={{ padding: "10px" }}>
-          <Tooltip title="Logout" placement="top-end" arrow>
-            <IconButton onClick={handleLogout}>
-              <Icons.LogoutIcon sx={{ color: "white" }} />
-            </IconButton>
-          </Tooltip>
-        </Box>
-
-        <Box style={{ padding: "10px" }}>
           <AlertsContainer />
         </Box>
-      </Box>
-      <Box className="generalSubTitle">
-        <b>¡Bienvenido!: </b> {normalizeName(userName) || "Cargando..."}
-        <b>Perfil:</b> {userProfile || "Cargando..."}
       </Box>
     </Box>
   );

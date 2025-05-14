@@ -3,6 +3,11 @@
   src: url(/fonts/broughton.ttf);
 }
 
+@font-face {
+  font-family: "roboto";
+  src: url(/fonts/roboto.ttf);
+}
+
 .generalContainer {
   display: flex;
   flex-direction: column;
@@ -14,12 +19,13 @@
 .generalTitle {
   width: 100%;
   text-align: center;
-  padding: 10px;
-  font-family: "broughton";
-  text-shadow: 0 0 20px white;
+  padding: 5px;
+  font-family: "roboto";
   background-color: rgba(0, 0, 0, 0.3);
-  font-size: 1.5em;
+  font-size: 20px;
+  /* font-weight: bold; */
 }
+
 .generalSubTitle {
   width: 100%;
   text-align: center;

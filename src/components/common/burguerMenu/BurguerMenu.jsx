@@ -10,9 +10,11 @@ import { Icons } from "../../../assets/Icons";
 import "./burguerMenu.css";
 import { Link } from "react-router-dom";
 import { IconButton, Tooltip } from "@mui/material";
+import { normalizeName } from "../../../utils/helpers";
 
 export const BurguerMenu = (burguerMenuProps) => {
-  const { toggleDrawer, options, open } = burguerMenuProps;
+  const { toggleDrawer, options, open, userName, userProfile, handleLogout } =
+    burguerMenuProps;
   return (
     <Box>
       <Tooltip title="Menú" placement="top-end" arrow>
@@ -34,7 +36,6 @@ export const BurguerMenu = (burguerMenuProps) => {
               width: "100%",
               display: "flex",
               justifyContent: "flex-end",
-              px: 2,
             }}
           >
             <Tooltip title="Cerrar" placement="top-end" arrow>
@@ -44,18 +45,31 @@ export const BurguerMenu = (burguerMenuProps) => {
             </Tooltip>
           </Box>
           <Box
+            className="generalTitle"
+            sx={{ textAlign: "left", paddingLeft: 3 }}
+          >
+            <b>Usuario: </b> {normalizeName(userName) || "Cargando..."}
+          </Box>
+          <Box
+            className="generalTitle"
+            sx={{ textAlign: "left", paddingLeft: 3 }}
+          >
+            <b>Perfil: </b>
+            {userProfile || "Cargando..."}
+          </Box>
+          <Box
             sx={{
               display: "flex",
               flexDirection: "column",
-              justifyContent: "center", // centra verticalmente
-              alignItems: "center", // opcional: centra horizontalmente también
-              height: "94%",
-              overflow: "hidden",
+              justifyContent: "space-between", // centra verticalmente
+              alignItems: "start", // opcional: centra horizontalmente también
+              height: "80%",
+              // overflow: "hidden",
             }}
           >
-            <List>
+            <List sx={{ width: "100%" }}>
               {options.map(({ icon, option, link }) => (
-                <ListItem key={option}>
+                <ListItem sx={{ padding: "0px" }} key={option}>
                   <ListItemButton component={Link} to={link}>
                     <ListItemIcon
                       sx={{
@@ -68,8 +82,8 @@ export const BurguerMenu = (burguerMenuProps) => {
                       primary={option}
                       primaryTypographyProps={{
                         color: "black",
-                        fontFamily: "broughton, 'Times New Roman', serif",
-                        fontSize: "1.2rem",
+                        fontFamily: "roboto",
+                        fontSize: "19px",
                       }}
                       onClick={toggleDrawer(false)}
                     />
@@ -77,6 +91,31 @@ export const BurguerMenu = (burguerMenuProps) => {
                 </ListItem>
               ))}
             </List>
+            <ListItem sx={{ padding: "0px" }}>
+              <ListItemButton
+                onClick={() => {
+                  // toggleDrawer(false);
+                  handleLogout();
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    color: "white",
+                  }}
+                >
+                  <Icons.LogoutIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Logout"
+                  onClick={toggleDrawer(false)}
+                  primaryTypographyProps={{
+                    color: "black",
+                    fontFamily: "roboto",
+                    fontSize: "19px",
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
           </Box>
         </Box>
       </Drawer>

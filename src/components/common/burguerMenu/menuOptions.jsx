@@ -57,7 +57,7 @@ export const userOptions = ({ professionalId }) => {
     },
     {
       icon: <Icons.PersonIcon />,
-      option: "Mis datos",
+      option: "Perfil/datos profesional",
       link: `/professionals/detail/${professionalId}`,
     },
     {
