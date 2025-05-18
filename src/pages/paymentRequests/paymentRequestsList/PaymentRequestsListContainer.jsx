@@ -52,9 +52,12 @@ export const PaymentRequestsListContainer = () => {
       action = getPaymentRequestByCudBillingRecordId(cudBillingRecordId);
     } else if (professionalId) {
       action = getPaymentRequestByProfessionalId(professionalId);
+    } else if (userProfile === "profesional") {
+      action = getPaymentRequestByProfessionalId(userProfessionalId);
     } else {
       action = getPaymentRequests();
     }
+
     setIsLoading(true);
 
     Promise.all([
@@ -75,8 +78,6 @@ export const PaymentRequestsListContainer = () => {
   }, [updateList, cudBillingRecordId]);
 
   if (isLoading) return <LoadingContainer />;
-
-  console.log(paymentRequests);
 
   //Campos de busqueda para el filtro
   const paymentRequestFieldsToSearch = [

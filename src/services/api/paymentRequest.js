@@ -139,14 +139,18 @@ export const getPaymentRequestByProfessionalId = async (professionalId) => {
       .select(
         "*, facturacioncud: idfacturacioncud(nrofactura, idprofesional, pacientes: idpaciente(obrasocialpaciente, nombreyapellidopaciente), profesionales: idprofesional(matriculaprofesional, nombreyapellidoprofesional))"
       )
-      .eq("idfacturacioncud.idprofesional", professionalId)
       .order("fechareclamo", { ascending: false });
 
     if (error) throw error;
+
+    const filteredData = data.filter(
+      (item) => item.facturacioncud?.idprofesional === parseInt(professionalId)
+    );
+
     return {
       status: 201,
       message: "Registro obtenido con éxito",
-      data,
+      data: filteredData,
     };
   } catch (error) {
     return {

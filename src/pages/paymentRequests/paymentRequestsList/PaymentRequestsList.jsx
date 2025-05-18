@@ -38,8 +38,6 @@ export const PaymentRequestsList = ({
     createRoute += `/professional/${professionalId}`;
   }
 
-  console.log(editRoute);
-
   const generalBarContainerProps = {
     //Barra edicion
     editMode,
