@@ -17,12 +17,13 @@ import { BackButtonContainer } from "../../../components/common/backButton/BackB
 export const PatientDetail = (patientDetailProps) => {
   const { formData, patientAge, userProfessionalId } = patientDetailProps;
 
-  let medicalRecordsListRoute;
-  if (userProfessionalId) {
-    medicalRecordsListRoute = `/medicalRecords/list/professional/${userProfessionalId}/patient`;
-  } else {
-    medicalRecordsListRoute = `/medicalRecords/list/patient`;
-  }
+  const medicalRecordsListRoute = `/medicalRecords/list/patient`;
+  // let medicalRecordsListRoute;
+  // if (userProfessionalId) {
+  //   medicalRecordsListRoute = `/medicalRecords/list/professional/${userProfessionalId}/patient`;
+  // } else {
+  //   medicalRecordsListRoute = `/medicalRecords/list/patient`;
+  // }
 
   let billingRecordsListRoute;
   if (userProfessionalId) {

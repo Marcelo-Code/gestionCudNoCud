@@ -30,6 +30,7 @@ export const Documentation = (documentationProps) => {
     handleFileChange,
     fileInputRef,
     userProfile,
+    userProfessionalId,
   } = documentationProps;
 
   const generalBarContainerProps = {
@@ -57,7 +58,8 @@ export const Documentation = (documentationProps) => {
       </Box>
 
       {/* Solamente los usuarios admin pueden editar documentación */}
-      {userProfile === "admin" && (
+      {(userProfile === "admin" ||
+        userProfessionalId === parseInt(professionalId)) && (
         <GeneralBarContainer {...generalBarContainerProps} />
       )}
 

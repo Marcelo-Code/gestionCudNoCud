@@ -515,6 +515,16 @@ const AppContent = () => {
                   }
                 />
 
+                {/* Editar reclamo con profesional*/}
+                <Route
+                  path="/paymentRequests/edit/professional/:professionalId/:paymentRequestId"
+                  element={
+                    <ProtectedUserRoute>
+                      <CreateEditPaymentRequestContainer />
+                    </ProtectedUserRoute>
+                  }
+                />
+
                 {/* Lista de reclamos */}
                 <Route
                   path="/paymentRequests/list"
@@ -524,6 +534,12 @@ const AppContent = () => {
                 {/* Lista de reclamos con facturación CUD (con nro factura) */}
                 <Route
                   path="/paymentRequests/list/cudBillingRecords/:cudBillingRecordId"
+                  element={<PaymentRequestsListContainer />}
+                />
+
+                {/* Lista de reclamos con profesional */}
+                <Route
+                  path="/paymentRequests/list/professional/:professionalId"
                   element={<PaymentRequestsListContainer />}
                 />
 

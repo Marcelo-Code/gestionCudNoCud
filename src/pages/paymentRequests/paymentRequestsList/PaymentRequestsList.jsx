@@ -15,6 +15,7 @@ export const PaymentRequestsList = ({
   editMode,
   setEditMode,
   cudBillingRecordId,
+  professionalId,
   cudBillingRecord,
   userProfile,
   userProfessionalId,
@@ -30,8 +31,14 @@ export const PaymentRequestsList = ({
     createRoute += `/cudBillingRecords/${cudBillingRecordId}/professional/${cudBillingRecord.idprofesional}`;
     editRoute += `/cudBillingRecords/${cudBillingRecordId}/professional/${cudBillingRecord.idprofesional}`;
   } else if (userProfessionalId && userProfile !== "admin") {
-    createRoute += `/professional/${userProfessionalId}`;
+    editRoute += `/professional/${userProfessionalId}`;
   }
+
+  if (professionalId) {
+    createRoute += `/professional/${professionalId}`;
+  }
+
+  console.log(editRoute);
 
   const generalBarContainerProps = {
     //Barra edicion
@@ -68,7 +75,7 @@ export const PaymentRequestsList = ({
               const editAllowed =
                 userProfile === "admin" ||
                 userProfessionalId ===
-                  paymentRequest.facturacioncud.idprofesional;
+                  paymentRequest?.facturacioncud?.idprofesional;
               return (
                 <Card key={paymentRequest.id} className="medicalRecordListItem">
                   <CardContent>
@@ -80,24 +87,24 @@ export const PaymentRequestsList = ({
                       <Box>
                         <b>Profesional: </b>
                         {
-                          paymentRequest.facturacioncud.profesionales
-                            .nombreyapellidoprofesional
+                          paymentRequest?.facturacioncud?.profesionales
+                            ?.nombreyapellidoprofesional
                         }
                       </Box>
                       <Box>
                         <b>Obra social: </b>
                         {
-                          paymentRequest.facturacioncud.pacientes
-                            .obrasocialpaciente
+                          paymentRequest?.facturacioncud?.pacientes
+                            ?.obrasocialpaciente
                         }
                       </Box>
                       <Box>
                         <b>Factura: </b>
-                        {paymentRequest.facturacioncud.nrofactura}
+                        {paymentRequest?.facturacioncud?.nrofactura}
                       </Box>
                       <Box>
                         <b>Medio reclamo: </b>
-                        {paymentRequest.medioreclamo}
+                        {paymentRequest?.medioreclamo}
                       </Box>
                     </Box>
                     <Box className="medicalRecordListItemDescription">
@@ -105,14 +112,16 @@ export const PaymentRequestsList = ({
                         <b>Descripción reclamo: </b>
                       </Typography>
                       <Typography>
-                        {paymentRequest.descripcionreclamo}
+                        {paymentRequest?.descripcionreclamo}
                       </Typography>
                     </Box>
                     <Box className="medicalRecordListItemDescription">
                       <Typography>
                         <b>Respuesta reclamo: </b>
                       </Typography>
-                      <Typography>{paymentRequest.respuestareclamo}</Typography>
+                      <Typography>
+                        {paymentRequest?.respuestareclamo}
+                      </Typography>
                     </Box>
                   </CardContent>
                   <CardActions className="medicalRecordListItemActions">

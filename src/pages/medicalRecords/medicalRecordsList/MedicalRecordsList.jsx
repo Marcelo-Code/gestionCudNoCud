@@ -53,8 +53,7 @@ export const MedicalRecordsList = ({
     //Si no se ingresa por el perfil del profesional y el usuario no es admin se utiliza el id del profesional del contexto
     createRoute += `/professional/${userProfessionalId}`;
     editRoute += `/professional/${userProfessionalId}`;
-  }
-  if (patientId) {
+  } else if (patientId) {
     createRoute += `/patient/${patientId}`;
     editRoute += `/patient/${patientId}`;
   }

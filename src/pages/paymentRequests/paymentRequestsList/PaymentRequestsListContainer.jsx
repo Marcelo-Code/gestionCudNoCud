@@ -6,6 +6,7 @@ import { LoadingContainer } from "../../loading/LoadingContainer";
 import {
   deletePaymentRequestRecord,
   getPaymentRequestByCudBillingRecordId,
+  getPaymentRequestByProfessionalId,
   getPaymentRequests,
 } from "../../../services/api/paymentRequest";
 import { PaymentRequestsList } from "./PaymentRequestsList";
@@ -49,6 +50,8 @@ export const PaymentRequestsListContainer = () => {
     let action;
     if (cudBillingRecordId) {
       action = getPaymentRequestByCudBillingRecordId(cudBillingRecordId);
+    } else if (professionalId) {
+      action = getPaymentRequestByProfessionalId(professionalId);
     } else {
       action = getPaymentRequests();
     }
@@ -137,6 +140,7 @@ export const PaymentRequestsListContainer = () => {
     editMode,
     setEditMode,
     cudBillingRecordId,
+    professionalId,
     cudBillingRecord,
     userProfile,
     userProfessionalId,
@@ -146,5 +150,6 @@ export const PaymentRequestsListContainer = () => {
     DEFAULT_SORT_OPTIONS,
   };
 
+  // return <h1>Reclamos</h1>;
   return <PaymentRequestsList {...paymentRequestsListProps} />;
 };

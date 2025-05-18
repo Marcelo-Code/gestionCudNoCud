@@ -45,7 +45,7 @@ export const DocumentationContainer = () => {
   const [uploadingDocumentName, setUploadingDocumentName] = useState(null);
 
   //importa el perfil de usuario del contexto
-  const { userProfile } = useContext(GeneralContext);
+  const { userProfile, userProfessionalId } = useContext(GeneralContext);
 
   //hook para el selector de archivos
   const fileInputRef = useRef(null);
@@ -197,6 +197,7 @@ export const DocumentationContainer = () => {
     fileInputRef,
     handleDownloadDocument,
     userProfile,
+    userProfessionalId,
   };
 
   return <Documentation {...documentationProps} />;
