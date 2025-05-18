@@ -64,6 +64,9 @@ export const CreateEditMedicalRecord = ({
                   required
                   variant="outlined"
                   type="date"
+                  inputProps={{
+                    max: new Date().toISOString().split("T")[0],
+                  }}
                   InputLabelProps={{
                     shrink: true,
                   }}

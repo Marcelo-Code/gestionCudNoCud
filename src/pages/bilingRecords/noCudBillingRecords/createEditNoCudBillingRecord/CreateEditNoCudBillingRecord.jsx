@@ -140,6 +140,9 @@ export const CreateEditNoCudBillingRecord = (createEditCudBillingProps) => {
                 required
                 variant="outlined"
                 type="date"
+                inputProps={{
+                  max: new Date().toISOString().split("T")[0],
+                }}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -176,6 +179,9 @@ export const CreateEditNoCudBillingRecord = (createEditCudBillingProps) => {
                     required={formData.estadopago === "pagado"}
                     variant="outlined"
                     type="date"
+                    inputProps={{
+                      max: new Date().toISOString().split("T")[0],
+                    }}
                     InputLabelProps={{
                       shrink: true,
                     }}

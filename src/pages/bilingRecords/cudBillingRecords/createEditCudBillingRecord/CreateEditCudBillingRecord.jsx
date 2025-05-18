@@ -204,6 +204,9 @@ export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
                 required
                 variant="outlined"
                 type="date"
+                inputProps={{
+                  max: new Date().toISOString().split("T")[0],
+                }}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -418,6 +421,9 @@ export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  inputProps={{
+                    max: new Date().toISOString().split("T")[0],
+                  }}
                   value={formData.fecharecepcionos}
                   disabled={formData.estadofacturacion !== "recibido"}
                 />
@@ -435,6 +441,9 @@ export const CreateEditCudBillingRecord = (createEditCudBillingProps) => {
                     required={formData.estadofacturacion === "pagado"}
                     variant="outlined"
                     type="date"
+                    inputProps={{
+                      max: new Date().toISOString().split("T")[0],
+                    }}
                     InputLabelProps={{
                       shrink: true,
                     }}
