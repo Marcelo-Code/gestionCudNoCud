@@ -78,7 +78,7 @@ export const patientInitialState = {
 export const medicalRecordInitialState = {
   idpaciente: "",
   idprofesional: "",
-  fechaconsulta: null,
+  fechaconsulta: "",
   tipoconsulta: "",
   descripcion: "",
 };

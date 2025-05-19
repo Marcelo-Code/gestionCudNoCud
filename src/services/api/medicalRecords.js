@@ -117,7 +117,7 @@ export const getMedicalRecord = async (medicalRecordId) => {
     return {
       status: 200,
       message: "Registro obtenido con éxito",
-      data: data[0],
+      data,
     };
   } catch (error) {
     return {
