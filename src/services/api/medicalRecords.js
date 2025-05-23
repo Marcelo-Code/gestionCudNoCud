@@ -110,7 +110,8 @@ export const getMedicalRecord = async (medicalRecordId) => {
       .select(
         "*, pacientes: idpaciente(nombreyapellidopaciente), profesionales: idprofesional(nombreyapellidoprofesional, matriculaprofesional, cuitprofesional, especialidadprofesional)"
       )
-      .eq("id", medicalRecordId);
+      .eq("id", medicalRecordId)
+      .single();
 
     if (error) throw error;
 
