@@ -82,7 +82,7 @@ export const CudBillingRecordsList2 = (cudBillingRecordsListProps) => {
   const inLineStyle = {
     width: "100%",
     display: "inline-flex",
-    justifyContent: "left",
+    justifyContent: "right",
     alignItems: "center",
     gap: "8px",
     verticalAlign: "middle",
@@ -94,44 +94,52 @@ export const CudBillingRecordsList2 = (cudBillingRecordsListProps) => {
       headerName: "Id",
       width: 50,
       pinned: true,
+      align: "right",
     },
 
     {
       field: "nombreyapellidoprofesional",
       headerName: "Profesional",
       width: 150,
+      align: "right",
     },
     {
       field: "nombreyapellidopaciente",
       headerName: "Paciente",
       width: 150,
+      align: "right",
     },
     {
       field: "especialidadprofesional",
       headerName: "Prestación",
       width: 150,
+      align: "right",
     },
     {
       field: "periodofacturado",
       headerName: "Período Facturado",
       width: 150,
       renderCell: (params) => monthFormat(params.value),
+      align: "right",
     },
     {
       field: "fechapresentacionos",
       headerName: "Fecha Presentación O.S.",
       width: 150,
       renderCell: (params) => dateFormat(params.value),
+      align: "right",
     },
     {
       field: "estadofacturacion",
       headerName: "Estado Facturación",
       width: 150,
+      align: "right",
+
       renderCell: (params) => {
         return (
           <Box sx={inLineStyle}>
-            <TrafficLightStatus status={params.row.estadofacturacion} />
             {params.row.estadofacturacion}
+            <TrafficLightStatus status={params.row.estadofacturacion} />
           </Box>
         );
       },
@@ -153,9 +161,20 @@ export const CudBillingRecordsList2 = (cudBillingRecordsListProps) => {
       headerName: "Monto Facturado",
       width: 130,
       renderCell: (params) => currencyFormat(params.value),
+      align: "right",
     },
-    { field: "nrofactura", headerName: "Nro. Factura", width: 130 },
-    { field: "obrasocialpaciente", headerName: "Obra Social", width: 130 },
+    {
+      field: "nrofactura",
+      headerName: "Nro. Factura",
+      width: 130,
+      align: "right",
+    },
+    {
+      field: "obrasocialpaciente",
+      headerName: "Obra Social",
+      width: 130,
+      align: "right",
+    },
     {
       field: "fecharecepcionos",
       headerName: "Fecha Aviso Recepción O.S.",
@@ -200,6 +219,8 @@ export const CudBillingRecordsList2 = (cudBillingRecordsListProps) => {
       field: "fechacobro",
       headerName: "Fecha de Cobro",
       width: 130,
+      align: "right",
+
       renderCell: (params) => {
         if (params.row.fechacobro) {
           return dateFormat(params.row.fechacobro);
@@ -213,18 +234,21 @@ export const CudBillingRecordsList2 = (cudBillingRecordsListProps) => {
       headerName: "Monto Percibido",
       width: 130,
       renderCell: (params) => currencyFormat(params.value),
+      align: "right",
     },
     {
       field: "retencion",
       headerName: "35% Retención",
       width: 130,
       renderCell: (params) => currencyFormat(params.value),
+      align: "right",
     },
     {
       field: "montofinalprofesional",
       headerName: "Monto Final Profesional",
       width: 130,
       renderCell: (params) => currencyFormat(params.value),
+      align: "right",
     },
     {
       field: "documentocomprobrantepagoretencion",
