@@ -407,7 +407,7 @@ export const CudBillingRecordsList2 = (cudBillingRecordsListProps) => {
       <Box className="billingRecordsListContainer">
         <Box sx={{ maxWidth: "98.5vw" }}>
           <Box sx={{ width: "100%" }}>
-            <Paper sx={{ width: "100%" }}>
+            <Paper sx={{ width: "100%", height: 390 }}>
               <DataGridPro
                 localeText={localeText}
                 rows={rows}
