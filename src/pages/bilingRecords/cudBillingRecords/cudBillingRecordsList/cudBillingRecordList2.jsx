@@ -92,9 +92,17 @@ export const CudBillingRecordsList2 = (cudBillingRecordsListProps) => {
     {
       field: "id",
       headerName: "Id",
-      width: 50,
+      width: 65,
       pinned: true,
       align: "right",
+      renderCell: (params) => {
+        return (
+          <Box sx={inLineStyle}>
+            {params.row.id}
+            <TrafficLightStatus status={params.row.estadofacturacion} />
+          </Box>
+        );
+      },
     },
 
     {
@@ -397,9 +405,9 @@ export const CudBillingRecordsList2 = (cudBillingRecordsListProps) => {
       </Box>
 
       <Box className="billingRecordsListContainer">
-        <Card sx={{ maxWidth: "98.5vw" }}>
-          <CardContent>
-            <Paper sx={{ height: 400, width: "100%" }}>
+        <Box sx={{ maxWidth: "98.5vw" }}>
+          <Box sx={{ width: "100%" }}>
+            <Paper sx={{ width: "100%" }}>
               <DataGridPro
                 localeText={localeText}
                 rows={rows}
@@ -430,38 +438,24 @@ export const CudBillingRecordsList2 = (cudBillingRecordsListProps) => {
             </Paper>
 
             {/* Fila de totales */}
-
-            <Box
-              sx={{
-                display: "flex",
-                p: 2,
-                backgroundColor: "#f9f9f9",
-                borderTop: "1px solid #ccc",
-                borderRadius: "0 0 4px 4px",
-                justifyContent: "space-between",
-                flexWrap: "wrap",
-                gap: 2,
-              }}
-            >
-              <Box>
-                <strong>Total Facturado:</strong>{" "}
-                {currencyFormat(totalMontoFacturado)}
-              </Box>
-              <Box>
-                <strong>Total Percibido:</strong>{" "}
-                {currencyFormat(totalMontoPercibido)}
-              </Box>
-              <Box>
-                <strong>Total Retención:</strong>{" "}
-                {currencyFormat(totalRetencion)}
-              </Box>
-              <Box>
-                <strong>Total Profesional:</strong>{" "}
-                {currencyFormat(totalProfesional)}
-              </Box>
-            </Box>
-          </CardContent>
-        </Card>
+          </Box>
+        </Box>
+      </Box>
+      <Box className="billingRecordsListFooter">
+        <Box>
+          <strong>Total Facturado:</strong>{" "}
+          {currencyFormat(totalMontoFacturado)}
+        </Box>
+        <Box>
+          <strong>Total Percibido:</strong>{" "}
+          {currencyFormat(totalMontoPercibido)}
+        </Box>
+        <Box>
+          <strong>Total Retención:</strong> {currencyFormat(totalRetencion)}
+        </Box>
+        <Box>
+          <strong>Total Profesional:</strong> {currencyFormat(totalProfesional)}
+        </Box>
       </Box>
       <BackButtonContainer />
     </Box>

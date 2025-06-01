@@ -1,11 +1,13 @@
+@font-face {
+  font-family: "roboto";
+  src: url("../../../../assets/fonts/Roboto-Regular.ttf");
+}
+
 .billingRecordsListContainer {
   width: 100%;
   overflow-x: auto;
-  overflow-y: auto;
-  max-height: 500px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 4px;
-  font-family: Arial, Helvetica, sans-serif;
+  overflow-y: hidden;
+  font-family: "roboto";
 }
 
 .billingRecordsTable {
@@ -22,4 +24,15 @@
   background-color: white;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
   text-align: center;
+}
+
+.billingRecordsListFooter {
+  display: flex;
+  padding: 10px;
+  background-color: #f9f9f9;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  font-family: "roboto";
 }
