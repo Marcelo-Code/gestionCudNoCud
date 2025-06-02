@@ -1,7 +1,6 @@
 import { useContext, useMemo, useState } from "react";
-import { CudBillingRecordsList } from "./CudBillingRecordsList";
 import { GeneralContext } from "../../../../context/GeneralContext";
-import { CudBillingRecordsList2 } from "./cudBillingRecordList2";
+import { CudBillingRecordsList } from "./cudBillingRecordList";
 
 export const CudBillingRecordsListContainer = (
   cudBillingRecordsListContainerProps
@@ -169,6 +168,5 @@ export const CudBillingRecordsListContainer = (
     sortConfig,
   };
 
-  // return <CudBillingRecordsList {...cudBillingRecordsListProps} />;
-  return <CudBillingRecordsList2 {...cudBillingRecordsListProps} />;
+  return <CudBillingRecordsList {...cudBillingRecordsListProps} />;
 };

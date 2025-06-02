@@ -1,13 +1,9 @@
-import { Box, Card, CardContent, IconButton, Tooltip } from "@mui/material";
+import { Box, IconButton, Tooltip } from "@mui/material";
 import "../../../../assets/css/globalFormat.css";
 import "./cudBillingRecordsList.css";
 import { GeneralBarContainer } from "../../../../components/layouts/generalBar/GeneralBarContainer";
 import { Icons } from "../../../../assets/Icons";
-import {
-  dateFormat,
-  getExtension,
-  monthFormat,
-} from "../../../../utils/helpers";
+import { dateFormat, monthFormat } from "../../../../utils/helpers";
 import { Link, useNavigate } from "react-router-dom";
 import { TrafficLightStatus } from "../../../../components/common/trafficLightStatus/TrafficLight";
 import { BackButtonContainer } from "../../../../components/common/backButton/BackButtonContainer";
@@ -17,8 +13,9 @@ import Paper from "@mui/material/Paper";
 import { currencyFormat } from "../../../../components/common/currencyFormat/CurrencyFormatContainer";
 import { GridPagination, DataGridPro } from "@mui/x-data-grid-pro";
 import { useState } from "react";
+import { getDocument } from "../../../../components/common/getDocument/GetDocument";
 
-export const CudBillingRecordsList2 = (cudBillingRecordsListProps) => {
+export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
   const {
     cudBillingRecords,
     setEditMode,
@@ -156,13 +153,13 @@ export const CudBillingRecordsList2 = (cudBillingRecordsListProps) => {
       field: "documentofacturamensual",
       headerName: "Factura Mensual",
       width: 150,
-      ...getDocument(),
+      renderCell: (params) => getDocument(params.row.documentofacturamensual),
     },
     {
       field: "imgasistenciamensual",
       headerName: "Asistencia Mensual",
       width: 150,
-      ...getDocument(),
+      renderCell: (params) => getDocument(params.row.imgasistenciamensual),
     },
     {
       field: "montofacturado",
@@ -262,7 +259,8 @@ export const CudBillingRecordsList2 = (cudBillingRecordsListProps) => {
       field: "documentocomprobrantepagoretencion",
       headerName: "Pago Retención",
       width: 130,
-      ...getDocument(),
+      renderCell: (params) =>
+        getDocument(params.row.documentocomprobrantepagoretencion),
     },
     {
       field: "edicion",
@@ -406,39 +404,35 @@ export const CudBillingRecordsList2 = (cudBillingRecordsListProps) => {
 
       <Box className="billingRecordsListContainer">
         <Box sx={{ maxWidth: "98.5vw" }}>
-          <Box sx={{ width: "100%" }}>
-            <Paper sx={{ width: "100%", height: 390 }}>
-              <DataGridPro
-                localeText={localeText}
-                rows={rows}
-                columns={filteredColumns}
-                pageSizeOptions={[5, 10, 15]}
-                paginationModel={paginationModel}
-                onPaginationModelChange={(newModel) =>
-                  setPaginationModel(newModel)
-                }
-                pagination
-                initialState={{
-                  pinnedColumns: { left: ["id"], right: ["edicion"] },
-                }}
-                components={{
-                  Pagination: GridPagination,
-                }}
-                componentsProps={{
-                  pagination: {
-                    labelRowsPerPage: "Filas por página",
-                  },
-                }}
-                slotProps={{
-                  pagination: {
-                    labelRowsPerPage: "Filas por página",
-                  },
-                }}
-              />
-            </Paper>
-
-            {/* Fila de totales */}
-          </Box>
+          <Paper sx={{ width: "100%", height: 390 }}>
+            <DataGridPro
+              localeText={localeText}
+              rows={rows}
+              columns={filteredColumns}
+              pageSizeOptions={[5, 10, 15]}
+              paginationModel={paginationModel}
+              onPaginationModelChange={(newModel) =>
+                setPaginationModel(newModel)
+              }
+              pagination
+              initialState={{
+                pinnedColumns: { left: ["id"], right: ["edicion"] },
+              }}
+              components={{
+                Pagination: GridPagination,
+              }}
+              componentsProps={{
+                pagination: {
+                  labelRowsPerPage: "Filas por página",
+                },
+              }}
+              slotProps={{
+                pagination: {
+                  labelRowsPerPage: "Filas por página",
+                },
+              }}
+            />
+          </Paper>
         </Box>
       </Box>
       <Box className="billingRecordsListFooter">
@@ -461,38 +455,3 @@ export const CudBillingRecordsList2 = (cudBillingRecordsListProps) => {
     </Box>
   );
 };
-
-const getDocument = () => ({
-  renderCell: (params) => {
-    const url = params.value;
-    if (!url) return "Sin Documento";
-
-    const extension = getExtension(url).toLowerCase();
-
-    const iconDocumentStyle = {
-      margin: "10px",
-      fontSize: "2em",
-      verticalAlign: "middle",
-    };
-
-    return (
-      <Link
-        to={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{ display: "flex", alignItems: "center", gap: "4px" }}
-      >
-        {["jpg", "png", "jpeg"].includes(extension) && (
-          <Icons.ImageIcon sx={iconDocumentStyle} />
-        )}
-        {["doc", "docx"].includes(extension) && (
-          <Icons.ArticleIcon sx={iconDocumentStyle} />
-        )}
-        {["pdf"].includes(extension) && (
-          <Icons.PictureAsPdfIcon sx={iconDocumentStyle} />
-        )}
-        {extension.toUpperCase()}
-      </Link>
-    );
-  },
-});

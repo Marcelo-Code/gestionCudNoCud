@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { NoCudBillingRecordsList } from "./NoCudBillingRecordsList";
 import { GeneralContext } from "../../../../context/GeneralContext";
+import { NoCudBillingRecordsList2 } from "./NoCudBillingRecordsList2";
 
 export const NoCudBillingRecordsListContainer = (
   noCudBillingRecordsListContainerProps
@@ -109,5 +110,6 @@ export const NoCudBillingRecordsListContainer = (
     DEFAULT_SORT_OPTIONS,
   };
 
-  return <NoCudBillingRecordsList {...noCudBillingRecordsListProps} />;
+  return <NoCudBillingRecordsList2 {...noCudBillingRecordsListProps} />;
+  // return <NoCudBillingRecordsList {...noCudBillingRecordsListProps} />;
 };
