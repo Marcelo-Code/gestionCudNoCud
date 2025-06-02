@@ -89,6 +89,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     {
       field: "id",
       headerName: "Id",
+      headerAlign: "center",
       width: 65,
       pinned: true,
       align: "right",
@@ -105,24 +106,28 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     {
       field: "nombreyapellidoprofesional",
       headerName: "Profesional",
+      headerAlign: "center",
       width: 150,
       align: "right",
     },
     {
       field: "nombreyapellidopaciente",
       headerName: "Paciente",
+      headerAlign: "center",
       width: 150,
       align: "right",
     },
     {
       field: "especialidadprofesional",
       headerName: "Prestación",
+      headerAlign: "center",
       width: 150,
       align: "right",
     },
     {
       field: "periodofacturado",
       headerName: "Período Facturado",
+      headerAlign: "center",
       width: 150,
       renderCell: (params) => monthFormat(params.value),
       align: "right",
@@ -130,6 +135,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     {
       field: "fechapresentacionos",
       headerName: "Fecha Presentación O.S.",
+      headerAlign: "center",
       width: 150,
       renderCell: (params) => dateFormat(params.value),
       align: "right",
@@ -137,6 +143,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     {
       field: "estadofacturacion",
       headerName: "Estado Facturación",
+      headerAlign: "center",
       width: 150,
       align: "right",
 
@@ -152,18 +159,21 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     {
       field: "documentofacturamensual",
       headerName: "Factura Mensual",
+      headerAlign: "center",
       width: 150,
       renderCell: (params) => getDocument(params.row.documentofacturamensual),
     },
     {
       field: "imgasistenciamensual",
       headerName: "Asistencia Mensual",
+      headerAlign: "center",
       width: 150,
       renderCell: (params) => getDocument(params.row.imgasistenciamensual),
     },
     {
       field: "montofacturado",
       headerName: "Monto Facturado",
+      headerAlign: "center",
       width: 130,
       renderCell: (params) => currencyFormat(params.value),
       align: "right",
@@ -171,24 +181,28 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     {
       field: "nrofactura",
       headerName: "Nro. Factura",
+      headerAlign: "center",
       width: 130,
       align: "right",
     },
     {
       field: "obrasocialpaciente",
       headerName: "Obra Social",
+      headerAlign: "center",
       width: 130,
       align: "right",
     },
     {
       field: "fecharecepcionos",
       headerName: "Fecha Aviso Recepción O.S.",
+      headerAlign: "center",
       width: 130,
       renderCell: (params) => dateFormat(params.value),
     },
     {
       field: "reclamos",
       headerName: "Reclamos",
+      headerAlign: "center",
       width: 100,
       renderCell: (params) => {
         const paymentRequestsCount = paymentRequests.filter(
@@ -223,6 +237,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     {
       field: "fechacobro",
       headerName: "Fecha de Cobro",
+      headerAlign: "center",
       width: 130,
       align: "right",
 
@@ -237,6 +252,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     {
       field: "montopercibido",
       headerName: "Monto Percibido",
+      headerAlign: "center",
       width: 130,
       renderCell: (params) => currencyFormat(params.value),
       align: "right",
@@ -244,6 +260,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     {
       field: "retencion",
       headerName: "35% Retención",
+      headerAlign: "center",
       width: 130,
       renderCell: (params) => currencyFormat(params.value),
       align: "right",
@@ -251,6 +268,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     {
       field: "montofinalprofesional",
       headerName: "Monto Final Profesional",
+      headerAlign: "center",
       width: 130,
       renderCell: (params) => currencyFormat(params.value),
       align: "right",
@@ -258,6 +276,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     {
       field: "documentocomprobrantepagoretencion",
       headerName: "Pago Retención",
+      headerAlign: "center",
       width: 130,
       renderCell: (params) =>
         getDocument(params.row.documentocomprobrantepagoretencion),

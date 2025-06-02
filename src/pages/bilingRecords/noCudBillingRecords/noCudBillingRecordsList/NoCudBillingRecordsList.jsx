@@ -25,7 +25,6 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
     patientId,
     professionalId,
     patient,
-    professional,
     userProfessionalId,
     userProfile,
     noCudBillingRecordsfieldsToSearch,
