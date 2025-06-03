@@ -45,6 +45,8 @@ import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import StorageTwoToneIcon from "@mui/icons-material/StorageTwoTone";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import SortIcon from "@mui/icons-material/Sort";
 
 export const Icons = {
   PersonAddIcon,
@@ -94,4 +96,6 @@ export const Icons = {
   StorageTwoToneIcon,
   RemoveRedEyeIcon,
   RestartAltIcon,
+  FilterListIcon,
+  SortIcon,
 };

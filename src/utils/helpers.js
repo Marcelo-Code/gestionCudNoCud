@@ -82,3 +82,6 @@ export const normalizeName = (name) => {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 };
+
+export const generalBackgroundColor = "aqua";
+export const generalColor = "black";

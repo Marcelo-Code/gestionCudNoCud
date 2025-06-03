@@ -1,21 +1,24 @@
-import { Box, Card, CardContent, IconButton, Tooltip } from "@mui/material";
+import { Box, IconButton, Paper, Tooltip } from "@mui/material";
 import "../../../../assets/css/globalFormat.css";
 import "./noCudBillingRecordsList.css";
-import { GeneralBarContainer } from "../../../../components/layouts/generalBar/GeneralBarContainer";
 import { Icons } from "../../../../assets/Icons";
-import {
-  currencyFormat,
-  dateFormat,
-  getExtension,
-} from "../../../../utils/helpers";
-import { Link, useNavigate } from "react-router-dom";
+import { dateFormat } from "../../../../utils/helpers";
+import { useNavigate } from "react-router-dom";
 import { TrafficLightStatus } from "../../../../components/common/trafficLightStatus/TrafficLight";
 import { BackButtonContainer } from "../../../../components/common/backButton/BackButtonContainer";
 import { errorAlert } from "../../../../components/common/alerts/alerts";
+import { useState } from "react";
+import { GridPagination, DataGridPro } from "@mui/x-data-grid-pro";
+import { currencyFormat } from "../../../../components/common/currencyFormat/CurrencyFormatContainer";
+import { getDocument } from "../../../../components/common/getDocument/GetDocument";
+import { GeneralBarContainer } from "../../../../components/layouts/generalToolsBar/GeneralBarContainer";
+import {
+  cudBillingRecordsFilterOptions,
+  noCudBillingRecordsfieldsToSearch,
+} from "./filtersNoCudBillingRecordsList";
 
 export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
   const {
-    noCudBillingRecords,
     editMode,
     setEditMode,
     handleDeleteNoCudBillingRecord,
@@ -27,10 +30,9 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
     patient,
     userProfessionalId,
     userProfile,
-    noCudBillingRecordsfieldsToSearch,
-    setFilteredNoCudBillingRecords,
     records,
-    DEFAULT_SORT_OPTIONS,
+    setFilteredRecords,
+    filteredNoCudBillingRecords,
   } = cudBillingRecordsListProps;
 
   let createRoute =
@@ -62,335 +64,338 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
     to: `${createRoute}`,
     disableEditionBarButton: disableEditionBarButton,
     tooltipMessage: disableEditionBarButton
-      ? "El paciente no es CUD"
+      ? "El paciente es CUD"
       : "Crear factura no CUD",
-    fieldsToSearch: noCudBillingRecordsfieldsToSearch,
-    setFilteredRecords: setFilteredNoCudBillingRecords,
+    FIELDS_TO_SEARCH: noCudBillingRecordsfieldsToSearch,
+    FILTER_OPTIONS: cudBillingRecordsFilterOptions,
+    setFilteredRecords,
     records,
-    DEFAULT_SORT_OPTIONS,
   };
 
   const iconStyle = { color: "blue", fontSize: "1.2em", margin: "5px" };
   const inLineStyle = {
     width: "100%",
     display: "inline-flex",
-    justifyContent: "left",
+    justifyContent: "right",
     alignItems: "center",
     gap: "8px",
   };
 
-  const colStyle = {
-    padding: "16px",
-    // fuerza el quiebre de palabras largas si es necesario
-    wordWrap: "break-word",
-    // permite el salto de línea
-    whiteSpace: "normal",
-    maxWidth: "300px",
-    minWidth: "200px",
+  const columns = [
+    {
+      field: "id",
+      headerName: "Id",
+      headerAlign: "center",
+      width: 65,
+      pinned: true,
+      align: "right",
+      renderCell: (params) => {
+        return (
+          <Box sx={inLineStyle}>
+            {params.row.id}
+            <TrafficLightStatus status={params.row.estadopago} />
+          </Box>
+        );
+      },
+    },
+
+    {
+      field: "nombreyapellidoprofesional",
+      headerName: "Profesional",
+      headerAlign: "center",
+      width: 150,
+      align: "right",
+    },
+    {
+      field: "especialidadprofesional",
+      headerName: "Prestación",
+      headerAlign: "center",
+      width: 150,
+      align: "right",
+    },
+    {
+      field: "nombreyapellidopaciente",
+      headerName: "Paciente",
+      headerAlign: "center",
+      width: 150,
+      align: "right",
+    },
+    {
+      field: "fechasesion",
+      headerName: "Fecha Sesión",
+      headerAlign: "center",
+      width: 150,
+      align: "right",
+      renderCell: (params) => {
+        if (params.value) {
+          return dateFormat(params.value);
+        } else {
+          return "Sin fecha";
+        }
+      },
+    },
+    {
+      field: "estadopago",
+      headerName: "Estado Pago",
+      headerAlign: "center",
+      width: 150,
+      align: "right",
+
+      renderCell: (params) => {
+        return (
+          <Box sx={inLineStyle}>
+            {params.row.estadopago}
+            <TrafficLightStatus status={params.row.estadopago} />
+          </Box>
+        );
+      },
+    },
+    {
+      field: "fechadepago",
+      headerName: "Fecha de Pago",
+      headerAlign: "center",
+      width: 150,
+      renderCell: (params) => dateFormat(params.value),
+      align: "right",
+    },
+    {
+      field: "mediopago",
+      headerName: "Medio de Pago",
+      headerAlign: "center",
+      width: 150,
+      align: "right",
+    },
+    {
+      field: "montosesion",
+      headerName: "Monto Sesión",
+      headerAlign: "center",
+      width: 150,
+      renderCell: (params) => currencyFormat(params.value),
+      align: "right",
+    },
+    {
+      field: "retencion",
+      headerName: "35% Retención",
+      headerAlign: "center",
+      width: 150,
+      renderCell: (params) => {
+        return (
+          <Box
+            sx={{
+              textDecoration: params.row.documentocomprobantepagoretencion
+                ? "line-through"
+                : "none:",
+            }}
+          >
+            {currencyFormat(params.value)}
+          </Box>
+        );
+      },
+      align: "right",
+    },
+    {
+      field: "montofinalprofesional",
+      headerName: "Monto Final Profesional",
+      headerAlign: "center",
+      width: 150,
+      renderCell: (params) => currencyFormat(params.value),
+      align: "right",
+    },
+    {
+      field: "documentofactura",
+      headerName: "Factura Familiar",
+      headerAlign: "center",
+      width: 150,
+
+      renderCell: (params) => getDocument(params.row.documentofactura),
+    },
+    {
+      field: "documentocomprobantepagoretencion",
+      headerName: "Documento Pago Retención",
+      headerAlign: "center",
+      width: 150,
+      renderCell: (params) =>
+        getDocument(params.row.documentocomprobantepagoretencion),
+    },
+    {
+      field: "edicion",
+      headerName: "",
+      width: 100,
+      sortable: false,
+      filterable: false,
+      disableColumnSelector: true,
+      cellClassName: "sticky-col-edicion",
+      headerClassName: "sticky-col-edicion",
+
+      renderCell: (params) => {
+        const record = params.row;
+        const editAllowed =
+          userProfile === "admin" ||
+          userProfessionalId === params.row.idprofesional;
+        return (
+          <Box sx={{ display: "flex", justifyContent: "center", gap: "1px" }}>
+            <Tooltip title="Editar" placement="top-end" arrow>
+              <IconButton
+                onClick={(e) => {
+                  if (editAllowed) {
+                    navigate(`${editRoute}/${record.id}`);
+                  } else {
+                    e.preventDefault(); // evita comportamiento por defecto
+                    errorAlert("Usuario no autorizado, solamente lectura");
+                  }
+                }}
+              >
+                <Icons.EditIcon sx={iconStyle} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Eliminar" placement="top-end" arrow>
+              <IconButton
+                onClick={() => {
+                  editAllowed
+                    ? handleDeleteNoCudBillingRecord(record.id)
+                    : errorAlert("Usuario no autorizado, solo lectura");
+                }}
+              >
+                <Icons.DeleteIcon sx={{ ...iconStyle, color: "red" }} />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        );
+      },
+    },
+  ];
+
+  const rows = filteredNoCudBillingRecords.map((record) => ({
+    id: record.id,
+    nombreyapellidoprofesional: record.profesionales.nombreyapellidoprofesional,
+    especialidadprofesional: record.profesionales.especialidadprofesional,
+    nombreyapellidopaciente: record.pacientes.nombreyapellidopaciente,
+    periodofacturado: record.periodofacturado,
+    fechasesion: record.fechasesion,
+    estadopago: record.estadopago,
+    fechadepago: record.fechadepago,
+    mediopago: record.mediopago,
+    montosesion: record.montosesion,
+    retencion: record.retencion,
+    montofinalprofesional: record.montofinalprofesional,
+    documentofactura: record.documentofactura,
+    documentocomprobantepagoretencion: record.documentocomprobantepagoretencion,
+  }));
+
+  const localeText = {
+    // Menú de columnas
+    columnMenuSortAsc: "Ordenar ascendente",
+    columnMenuSortDesc: "Ordenar descendente",
+    columnMenuFilter: "Filtrar",
+    columnMenuHideColumn: "Ocultar columna",
+    columnMenuManageColumns: "Administrar columnas",
+
+    // Toolbar
+    toolbarColumns: "Columnas",
+    toolbarColumnsLabel: "Seleccionar columnas",
+    toolbarFilters: "Filtros",
+    toolbarFiltersLabel: "Mostrar filtros",
+    toolbarDensity: "Densidad",
+    toolbarDensityLabel: "Densidad",
+    toolbarDensityCompact: "Compacta",
+    toolbarDensityStandard: "Estándar",
+    toolbarDensityComfortable: "Cómoda",
+    toolbarExport: "Exportar",
+    toolbarExportLabel: "Exportar",
+    toolbarExportCSV: "Descargar como CSV",
+    toolbarExportPrint: "Imprimir",
+
+    // Panel de filtros
+    filterPanelAddFilter: "Agregar filtro",
+    filterPanelDeleteIconLabel: "Eliminar",
+    filterPanelLinkOperator: "Operador lógico",
+    filterPanelOperators: "Operadores",
+    filterPanelOperatorAnd: "Y",
+    filterPanelOperatorOr: "O",
+    filterPanelColumns: "Columnas",
+    filterPanelInputLabel: "Valor",
+    filterPanelInputPlaceholder: "Valor del filtro",
+
+    // Footer
+    footerRowSelected: (count) =>
+      count === 1 ? "1 fila seleccionada" : `${count} filas seleccionadas`,
+    footerTotalRows: "Filas totales:",
+    footerPaginationRowsPerPage: "Filas por página",
+
+    // Sin datos
+    noRowsLabel: "Sin filas",
+    noResultsOverlayLabel: "No se encontraron resultados",
+
+    //Pines
+    pinToLeft: "Fijar a la izquierda",
+    pinToRight: "Fijar a la derecha",
+    unpin: "Desfijar",
+
+    // Paginación
+    footerRowsPerPage: "Filas por página:",
   };
 
-  const iconDocumentStyle = {
-    margin: "10px",
-    fontSize: "2em",
-    verticalAlign: "middle",
-  };
+  const filteredColumns = editMode
+    ? columns
+    : columns.filter((col) => col.field !== "edicion");
+
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 5,
+  });
 
   return (
     <Box className="generalContainer">
       <GeneralBarContainer {...generalBarContainerProps} />
       <Box className="generalSubTitle">
-        {`${noCudBillingRecords.length} registros obtenidos`}
+        {`${filteredNoCudBillingRecords.length} registros obtenidos`}
       </Box>
 
-      <Card sx={{ width: "100vw" }}>
-        <CardContent>
-          <Box className="billingRecordsListContainer">
-            <table className="billingRecordsTable">
-              <thead className="billingRecordsTableHeader">
-                <tr>
-                  <th
-                    style={{
-                      position: "sticky",
-                      left: 0,
-                      zIndex: 3,
-                      backgroundColor: "#fff",
-                      width: "60px",
-                      textAlign: "center",
-                      padding: "2px",
-                    }}
-                  >
-                    #
-                  </th>
-                  {editMode && (
-                    <th
-                      style={{
-                        position: "sticky",
-                        left: "20px",
-                        zIndex: 3,
-                        backgroundColor: "#fff",
-                        padding: "16px",
-                        width: "70px",
-                        textAlign: "center",
-                      }}
-                    >
-                      Edición
-                    </th>
-                  )}
-                  {[
-                    "Profesional",
-                    "Prestación",
-                    "Paciente",
-                    "Fecha Sesión",
-                    "Estado Pago",
-                    "Fecha de Pago",
-                    "Medio de Pago",
-                    "Monto Sesión",
-                    "35% Retención",
-                    "Monto Final Profesional",
-                    "Factura Familia",
-                    "Comprobante Retención",
-                  ].map((label, index) => (
-                    <th
-                      key={index}
-                      style={{
-                        padding: "16px",
-                        textAlign: "left",
-                        minWidth: "100px",
-                        width: "auto",
-                      }}
-                    >
-                      {label}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {noCudBillingRecords.map((record, index) => {
-                  // Si el usuario no es admin, solamente puede editarse sus propias consultas
-                  const editAllowed =
-                    userProfile === "admin" ||
-                    userProfessionalId === record.idprofesional;
-
-                  return (
-                    <tr
-                      key={record.id}
-                      style={{
-                        borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
-                        backgroundColor: "inherit",
-                      }}
-                      onMouseEnter={(e) =>
-                        (e.currentTarget.style.backgroundColor =
-                          "rgba(0,0,0,0.04)")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.style.backgroundColor = "inherit")
-                      }
-                    >
-                      <td
-                        style={{
-                          position: "sticky",
-                          left: 0,
-                          margin: 0,
-                          backgroundColor: "#fff",
-                          zIndex: 2,
-                          padding: "2px",
-                          textAlign: "center",
-                        }}
-                      >
-                        {index + 1}
-                      </td>
-                      {editMode && (
-                        <td
-                          style={{
-                            position: "sticky",
-                            left: "20px",
-                            zIndex: 2,
-                            backgroundColor: "#fff",
-                            padding: "10px",
-                          }}
-                        >
-                          <div style={{ display: "flex", gap: "8px" }}>
-                            <Tooltip title="Eliminar" placement="top-end" arrow>
-                              <IconButton
-                                onClick={() => {
-                                  editAllowed
-                                    ? handleDeleteNoCudBillingRecord(record.id)
-                                    : errorAlert(
-                                        "Usuario no autorizado, solo lectura"
-                                      );
-                                }}
-                              >
-                                <Icons.DeleteIcon sx={iconStyle} />
-                              </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Editar" placement="top-end" arrow>
-                              <IconButton
-                                onClick={(e) => {
-                                  if (editAllowed) {
-                                    navigate(`${editRoute}/${record.id}`);
-                                  } else {
-                                    e.preventDefault(); // evita comportamiento por defecto
-                                    errorAlert(
-                                      "Usuario no autorizado, solamente lectura"
-                                    );
-                                  }
-                                }}
-                              >
-                                <Icons.EditIcon sx={iconStyle} />
-                              </IconButton>
-                            </Tooltip>
-                          </div>
-                        </td>
-                      )}
-                      <td style={colStyle}>
-                        {record.profesionales.nombreyapellidoprofesional}
-                      </td>
-                      <td style={colStyle}>
-                        {record.profesionales.especialidadprofesional}
-                      </td>
-                      <td style={colStyle}>
-                        {record.pacientes.nombreyapellidopaciente}
-                      </td>
-                      <td style={colStyle}>
-                        {record.fechasesion
-                          ? dateFormat(record.fechasesion)
-                          : "Sin fecha"}
-                      </td>
-                      <td style={colStyle}>
-                        <span style={inLineStyle}>
-                          <TrafficLightStatus status={record.estadopago} />
-                          {record.estadopago}
-                        </span>
-                      </td>
-                      <td style={{ padding: "16px" }}>
-                        {record.fechadepago
-                          ? dateFormat(record.fechadepago)
-                          : "Sin fecha"}
-                      </td>
-                      <td style={{ padding: "16px" }}>{record.mediopago}</td>
-                      <td style={{ textAlign: "right", padding: "16px" }}>
-                        {currencyFormat(record.montosesion)}
-                      </td>
-                      <td
-                        style={{
-                          textAlign: "right",
-                          padding: "16px",
-                          textDecoration:
-                            record.documentocomprobantepagoretencion
-                              ? "line-through"
-                              : "none",
-                        }}
-                      >
-                        {currencyFormat(record.retencion)}
-                      </td>
-                      <td style={{ textAlign: "right", padding: "16px" }}>
-                        {currencyFormat(record.montofinalprofesional)}
-                      </td>
-                      <td style={colStyle}>
-                        {record.documentofactura ? (
-                          <>
-                            <Link
-                              to={record.documentofactura}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              Documento Pago Retención
-                            </Link>
-                            {["jpg", "png", "jpeg"].includes(
-                              getExtension(record.documentofactura)
-                            ) && <Icons.ImageIcon sx={iconDocumentStyle} />}
-                            {["doc", "docx"].includes(
-                              getExtension(record.documentofactura)
-                            ) && <Icons.ArticleIcon sx={iconDocumentStyle} />}
-                            {["pdf"].includes(
-                              getExtension(record.documentofactura)
-                            ) && (
-                              <Icons.PictureAsPdfIcon sx={iconDocumentStyle} />
-                            )}
-                            {getExtension(
-                              record.documentofactura
-                            ).toUpperCase()}
-                          </>
-                        ) : (
-                          "Sin documento"
-                        )}
-                      </td>
-                      <td style={colStyle}>
-                        {record.documentocomprobantepagoretencion ? (
-                          <>
-                            <Link
-                              to={record.documentocomprobantepagoretencion}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              Documento Pago Retención
-                            </Link>
-                            {["jpg", "png", "jpeg"].includes(
-                              getExtension(
-                                record.documentocomprobantepagoretencion
-                              )
-                            ) && <Icons.ImageIcon sx={iconDocumentStyle} />}
-                            {["doc", "docx"].includes(
-                              getExtension(
-                                record.documentocomprobantepagoretencion
-                              )
-                            ) && <Icons.ArticleIcon sx={iconDocumentStyle} />}
-                            {["pdf"].includes(
-                              getExtension(
-                                record.documentocomprobantepagoretencion
-                              )
-                            ) && (
-                              <Icons.PictureAsPdfIcon sx={iconDocumentStyle} />
-                            )}
-                            {getExtension(
-                              record.documentocomprobantepagoretencion
-                            ).toUpperCase()}
-                          </>
-                        ) : (
-                          "Sin documento"
-                        )}
-                      </td>
-                      <td style={{ padding: "16px" }}></td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-              <tfoot>
-                <tr
-                  style={{
-                    position: "sticky",
-                    bottom: 0,
-                    backgroundColor: "#fff",
-                    borderTop: "1px solid rgba(0, 0, 0, 0.12)",
-                    zIndex: 2,
-                  }}
-                >
-                  <td
-                    colSpan={editMode ? 9 : 8}
-                    style={{
-                      padding: "16px",
-                      fontWeight: "bold",
-                      textAlign: "right",
-                    }}
-                  >
-                    Totales:
-                  </td>
-                  <td style={{ padding: "16px", textAlign: "right" }}>
-                    {currencyFormat(totalMontoSesion)}
-                  </td>
-                  <td style={{ padding: "16px", textAlign: "right" }}>
-                    {currencyFormat(totalRetencion)}
-                  </td>
-                  <td style={{ padding: "16px", textAlign: "right" }}>
-                    {currencyFormat(totalProfesional)}
-                  </td>
-                  <td colSpan={6}></td>
-                </tr>
-              </tfoot>
-            </table>
-          </Box>
-        </CardContent>
-      </Card>
+      <Box className="billingRecordsListContainer">
+        <Box sx={{ maxWidth: "98.5vw" }}>
+          <Paper sx={{ width: "100%", height: 390 }}>
+            <DataGridPro
+              localeText={localeText}
+              rows={rows}
+              columns={filteredColumns}
+              pageSizeOptions={[5, 10, 15]}
+              paginationModel={paginationModel}
+              onPaginationModelChange={(newModel) =>
+                setPaginationModel(newModel)
+              }
+              pagination
+              initialState={{
+                pinnedColumns: { left: ["id"], right: ["edicion"] },
+              }}
+              components={{
+                Pagination: GridPagination,
+              }}
+              componentsProps={{
+                pagination: {
+                  labelRowsPerPage: "Filas por página",
+                },
+              }}
+              slotProps={{
+                pagination: {
+                  labelRowsPerPage: "Filas por página",
+                },
+              }}
+            />
+          </Paper>
+        </Box>
+      </Box>
+      <Box className="billingRecordsListFooter">
+        <Box>
+          <strong>Total Monto Sesión:</strong>{" "}
+          {currencyFormat(totalMontoSesion)}
+        </Box>
+        <Box>
+          <strong>Total Retención:</strong> {currencyFormat(totalRetencion)}
+        </Box>
+        <Box>
+          <strong>Total Profesional:</strong> {currencyFormat(totalProfesional)}
+        </Box>
+      </Box>
       <BackButtonContainer />
     </Box>
   );

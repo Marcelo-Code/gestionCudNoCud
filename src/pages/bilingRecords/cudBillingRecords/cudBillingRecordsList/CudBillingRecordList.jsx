@@ -1,7 +1,6 @@
 import { Box, IconButton, Tooltip } from "@mui/material";
 import "../../../../assets/css/globalFormat.css";
 import "./cudBillingRecordsList.css";
-import { GeneralBarContainer } from "../../../../components/layouts/generalBar/GeneralBarContainer";
 import { Icons } from "../../../../assets/Icons";
 import { dateFormat, monthFormat } from "../../../../utils/helpers";
 import { Link, useNavigate } from "react-router-dom";
@@ -14,10 +13,14 @@ import { currencyFormat } from "../../../../components/common/currencyFormat/Cur
 import { GridPagination, DataGridPro } from "@mui/x-data-grid-pro";
 import { useState } from "react";
 import { getDocument } from "../../../../components/common/getDocument/GetDocument";
+import { GeneralBarContainer } from "../../../../components/layouts/generalToolsBar/GeneralBarContainer";
+import {
+  cudBillingRecordsfieldsToSearch,
+  cudBillingRecordsFilterOptions,
+} from "./filtersCudBillingRecordsList";
 
 export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
   const {
-    cudBillingRecords,
     setEditMode,
     editMode,
     handleDeleteCudBillingRecord,
@@ -31,11 +34,9 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     paymentRequests,
     userProfessionalId,
     userProfile,
-    cudBillingRecordsfieldsToSearch,
-    setFilteredCudBillingRecords,
+    setFilteredRecords,
     records,
-    DEFAULT_SORT_OPTIONS,
-    sortedRecords,
+    filteredCudBillingRecords,
   } = cudBillingRecordsListProps;
 
   let createRoute = "/billingRecords/createCudBillingRecord";
@@ -69,10 +70,11 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     tooltipMessage: disableEditionBarButton
       ? "El paciente no es CUD"
       : "Crear factura CUD",
-    fieldsToSearch: cudBillingRecordsfieldsToSearch,
-    setFilteredRecords: setFilteredCudBillingRecords,
+    FIELDS_TO_SEARCH: cudBillingRecordsfieldsToSearch,
+    FILTER_OPTIONS: cudBillingRecordsFilterOptions,
+    setFilteredRecords,
     records,
-    DEFAULT_SORT_OPTIONS,
+    filteredCudBillingRecords,
   };
 
   const iconStyle = { color: "blue", fontSize: "1.2em", margin: "5px" };
@@ -333,7 +335,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     ? columns
     : columns.filter((col) => col.field !== "edicion");
 
-  const rows = sortedRecords.map((record) => ({
+  const rows = filteredCudBillingRecords.map((record) => ({
     id: record.id,
     nombreyapellidoprofesional: record.profesionales.nombreyapellidoprofesional,
     nombreyapellidopaciente: record.pacientes.nombreyapellidopaciente,
@@ -418,7 +420,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     <Box className="generalContainer">
       <GeneralBarContainer {...generalBarContainerProps} />
       <Box className="generalSubTitle">
-        {`${cudBillingRecords.length} registros obtenidos`}
+        {`${filteredCudBillingRecords.length} registros obtenidos`}
       </Box>
 
       <Box className="billingRecordsListContainer">
