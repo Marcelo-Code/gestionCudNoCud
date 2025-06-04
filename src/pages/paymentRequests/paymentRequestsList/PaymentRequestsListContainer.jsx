@@ -69,6 +69,10 @@ export const PaymentRequestsListContainer = () => {
       .then(([paymentRequestResponse, cudBillingRecordResponse]) => {
         const paymentRequestsData = paymentRequestResponse.data;
         const cudBillingRecordData = cudBillingRecordResponse.data[0];
+
+        console.log(paymentRequestsData);
+        console.log(cudBillingRecordData);
+
         setPaymentRequests(paymentRequestsData);
         setFilteredPaymentRequests(paymentRequestsData);
         setCudBillingRecord(cudBillingRecordData);

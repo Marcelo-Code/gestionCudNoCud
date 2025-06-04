@@ -39,6 +39,8 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     filteredCudBillingRecords,
   } = cudBillingRecordsListProps;
 
+  console.log(userProfessionalId);
+
   let createRoute = "/billingRecords/createCudBillingRecord";
   let editRoute = "/billingRecords/cudBillingRecords/edit";
 

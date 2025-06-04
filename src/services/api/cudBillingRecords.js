@@ -67,7 +67,6 @@ export const getCudBillingRecord = async (cudBillingRecordId) => {
         "*, pacientes: idpaciente(nombreyapellidopaciente, obrasocialpaciente), profesionales: idprofesional(nombreyapellidoprofesional, matriculaprofesional, cuitprofesional, especialidadprofesional)"
       )
       .eq("id", cudBillingRecordId);
-
     if (error) throw error;
     return {
       status: 201,
