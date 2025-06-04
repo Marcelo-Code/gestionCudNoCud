@@ -109,7 +109,7 @@ export const CreateEditMedicalRecordContainer = () => {
           const patientsResponseData = patientsResponse.data;
           const professionalsResponseData = professionalsResponse.data;
           const medicalRecordsResponseData = medicalRecordsResponse.data;
-          const medicalRecordResponseData = medicalRecordResponse.data[0];
+          const medicalRecordResponseData = medicalRecordResponse.data;
           const patientResponseData = patientResponse.data[0];
           const professionalResponseData = professionalResponse.data[0];
 
