@@ -64,6 +64,8 @@ export const GeneralContextProvider = ({ children }) => {
   const [userName, setUserName] = useState("");
   const [userProfessionalId, setUserProfessionalId] = useState(null);
 
+  //Obtener los datos del usuario autenticado cuando se monta el componente
+  //o cuando se actualiza la pantalla, de lo contrario quedaría sin datos y habría que logearse nuevamente
   useEffect(() => {
     Promise.all([checkAuth(), getUsers()])
       .then(([responseAuth]) => {

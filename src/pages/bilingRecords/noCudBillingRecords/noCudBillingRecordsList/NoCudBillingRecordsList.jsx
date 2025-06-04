@@ -16,6 +16,7 @@ import {
   cudBillingRecordsFilterOptions,
   noCudBillingRecordsfieldsToSearch,
 } from "./filtersNoCudBillingRecordsList";
+import { allowCondition } from "../../../../routes/allowedConditions";
 
 export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
   const {
@@ -229,9 +230,12 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
 
       renderCell: (params) => {
         const record = params.row;
-        const editAllowed =
-          userProfile === "admin" ||
-          userProfessionalId === params.row.idprofesional;
+        const editAllowed = allowCondition(
+          userProfile,
+          userProfessionalId,
+          params.row.idprofesional
+        );
+
         return (
           <Box sx={{ display: "flex", justifyContent: "center", gap: "1px" }}>
             <Tooltip title="Editar" placement="top-end" arrow>
@@ -271,6 +275,7 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
     especialidadprofesional: record.profesionales.especialidadprofesional,
     nombreyapellidopaciente: record.pacientes.nombreyapellidopaciente,
     periodofacturado: record.periodofacturado,
+    idprofesional: record.idprofesional,
     fechasesion: record.fechasesion,
     estadopago: record.estadopago,
     fechadepago: record.fechadepago,
