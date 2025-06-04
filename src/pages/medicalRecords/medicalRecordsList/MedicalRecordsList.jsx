@@ -20,6 +20,7 @@ import { BackButtonContainer } from "../../../components/common/backButton/BackB
 import { GeneralBarContainer } from "../../../components/layouts/generalBar/GeneralBarContainer";
 import { EditModeButtonGroupContainer } from "../../../components/common/editModeButtonGroup/EditModeButtonGroupContainer";
 import { PaginationContainer } from "../../../components/common/pagination/PaginationContainer";
+import { allowCondition } from "../../../routes/allowedConditions";
 export const MedicalRecordsList = ({
   medicalRecords,
   professionalsList,
@@ -96,9 +97,12 @@ export const MedicalRecordsList = ({
           <Box className="listContainer">
             {recordsToShow.map((medicalRecord) => {
               // Si el usuario no es admin, solamente puede editarse sus propias consultas
-              const editAllowed =
-                userProfile === "admin" ||
-                userProfessionalId === medicalRecord.idprofesional;
+              const editAllowed = allowCondition(
+                userProfile,
+                userProfessionalId,
+                medicalRecord.idprofesional
+              );
+
               return (
                 <Card key={medicalRecord.id} className="medicalRecordListItem">
                   <CardContent>

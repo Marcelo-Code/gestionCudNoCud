@@ -60,28 +60,22 @@ export const GeneralContextProvider = ({ children }) => {
   });
 
   const [authUser, setAuthUser] = useState({});
-  // const [users, setUsers] = useState([]);
   const [userProfile, setUserProfile] = useState("");
   const [userName, setUserName] = useState("");
   const [userProfessionalId, setUserProfessionalId] = useState(null);
 
-  // useEffect(() => {
-  //   localStorage.setItem("isLoggedIn", isLoggedIn.toString());
-  //   Promise.all([checkAuth(), getUsers()])
-
-  //     .then(([responseAuth, responseUsers]) => {
-  //       const responseAuthUserData = responseAuth.userData;
-  //       const responseUsersData = responseUsers.data;
-
-  //       setUserProfile(responseAuthUserData.perfil);
-  //       setUserName(responseAuthUserData.nombreyapellidousuario);
-  //       setUserProfessionalId(parseInt(responseAuthUserData.professionalid));
-  //       setUsers(responseUsersData);
-  //       setAuthUser(responseAuthUserData);
-  //       console.log(responseAuthUserData);
-  //     })
-  //     .catch((error) => console.log(error));
-  // }, [isLoggedIn]);
+  useEffect(() => {
+    Promise.all([checkAuth(), getUsers()])
+      .then(([responseAuth]) => {
+        const responseAuthUserData = responseAuth.userData;
+        setUserProfile(responseAuthUserData.perfil);
+        setUserName(responseAuthUserData.nombreyapellidousuario);
+        setUserProfessionalId(parseInt(responseAuthUserData.professionalid));
+        setAuthUser(responseAuthUserData);
+        console.log(responseAuthUserData);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   const data = {
     handleGoBack,
@@ -94,7 +88,6 @@ export const GeneralContextProvider = ({ children }) => {
     setIsLoggedIn,
     authUser,
     setAuthUser,
-    // users,
     userProfile,
     setUserProfile,
     userName,

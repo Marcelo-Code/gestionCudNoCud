@@ -35,6 +35,7 @@ export const LoginContainer = () => {
       .then((response) => {
         if (response.status === 200) {
           setIsLoggedIn(true);
+          localStorage.setItem("isLoggedIn", true);
           setUserProfile(response.userData.perfil);
           setUserProfessionalId(response.userData.idprofesional);
           setUserName(response.userData.nombreyapellidousuario);

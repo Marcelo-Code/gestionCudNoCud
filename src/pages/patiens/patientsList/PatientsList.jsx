@@ -13,6 +13,7 @@ import { Icons } from "../../../assets/Icons";
 import { BackButtonContainer } from "../../../components/common/backButton/BackButtonContainer";
 import { EditModeButtonGroupContainer } from "../../../components/common/editModeButtonGroup/EditModeButtonGroupContainer";
 import { GeneralBarContainer } from "../../../components/layouts/generalBar/GeneralBarContainer";
+import { allowCondition } from "../../../routes/allowedConditions";
 
 export const PatientsList = (patientsListProps) => {
   const {
@@ -56,7 +57,7 @@ export const PatientsList = (patientsListProps) => {
       </Box>
       <Box className="listContainer">
         {patients.map((patient) => {
-          const isAllowed = userProfile === "admin";
+          const isAllowed = allowCondition(userProfile);
           return (
             <Card
               key={patient.id}

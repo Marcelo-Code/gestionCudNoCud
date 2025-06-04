@@ -13,6 +13,7 @@ import { Icons } from "../../../assets/Icons";
 import { BackButtonContainer } from "../../../components/common/backButton/BackButtonContainer";
 import { EditModeButtonGroupContainer } from "../../../components/common/editModeButtonGroup/EditModeButtonGroupContainer";
 import { GeneralBarContainer } from "../../../components/layouts/generalBar/GeneralBarContainer";
+import { allowCondition } from "../../../routes/allowedConditions";
 
 export const ProfessionalsList = (professionalsListProps) => {
   const {
@@ -51,7 +52,7 @@ export const ProfessionalsList = (professionalsListProps) => {
       <Box className="generalSubTitle">{`${professionals.length} registros obtenidos`}</Box>
       <Box className="listContainer">
         {professionals.map((professional) => {
-          const isAllowed = userProfile === "admin";
+          const isAllowed = allowCondition(userProfile);
           return (
             <Card
               key={professional.id}

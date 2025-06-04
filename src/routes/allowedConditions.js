@@ -1,7 +1,11 @@
-export const allowCondition = (profile, userId, professionalId) => {
-  if (profile === "admin") return true;
+export const allowCondition = (
+  userProfile,
+  userId = null,
+  professionalId = null
+) => {
+  if (userProfile === "admin") return true;
   if (
-    profile === "profesional" &&
+    userProfile === "profesional" &&
     parseInt(userId) === parseInt(professionalId)
   )
     return true;
