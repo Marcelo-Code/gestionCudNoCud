@@ -277,12 +277,12 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
       align: "right",
     },
     {
-      field: "documentocomprobrantepagoretencion",
+      field: "documentocomprobantepagoretencion",
       headerName: "Pago Retención",
       headerAlign: "center",
       width: 130,
       renderCell: (params) =>
-        getDocument(params.row.documentocomprobrantepagoretencion),
+        getDocument(params.row.documentocomprobantepagoretencion),
     },
     {
       field: "edicion",
@@ -359,8 +359,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     montopercibido: record.montopercibido,
     retencion: record.retencion,
     montofinalprofesional: record.montofinalprofesional,
-    documentocomprobrantepagoretencion:
-      record.documentocomprobrantepagoretencion,
+    documentocomprobantepagoretencion: record.documentocomprobantepagoretencion,
   }));
 
   const localeText = {
