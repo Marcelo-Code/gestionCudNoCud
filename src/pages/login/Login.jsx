@@ -11,6 +11,7 @@ export const Login = ({
   password,
   setPassword,
   error,
+  buttonIsLoading,
 }) => {
   return (
     <Container component="main" maxWidth="xs" className="loginContainer">
@@ -62,6 +63,7 @@ export const Login = ({
             sx={{ mt: 3, mb: 2 }}
             startIcon={<Icons.LoginIcon />}
             onClick={handleLogin}
+            loading={buttonIsLoading}
           >
             LogIn
           </Button>

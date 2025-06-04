@@ -2,7 +2,6 @@
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { confirmationAlert } from "../components/common/alerts/alerts";
-import { supabaseClient } from "../services/config/config";
 import { getUsers } from "../services/api/users";
 import { checkAuth } from "../services/api/log";
 
@@ -61,28 +60,28 @@ export const GeneralContextProvider = ({ children }) => {
   });
 
   const [authUser, setAuthUser] = useState({});
-  const [users, setUsers] = useState([]);
+  // const [users, setUsers] = useState([]);
   const [userProfile, setUserProfile] = useState("");
   const [userName, setUserName] = useState("");
   const [userProfessionalId, setUserProfessionalId] = useState(null);
-  const [updateUserProfile, setUpdateUserProfile] = useState(false);
 
-  useEffect(() => {
-    localStorage.setItem("isLoggedIn", isLoggedIn.toString());
-    Promise.all([checkAuth(), getUsers()])
+  // useEffect(() => {
+  //   localStorage.setItem("isLoggedIn", isLoggedIn.toString());
+  //   Promise.all([checkAuth(), getUsers()])
 
-      .then(([responseAuth, responseUsers]) => {
-        const responseAuthUserData = responseAuth.userData;
-        const responseUsersData = responseUsers.data;
+  //     .then(([responseAuth, responseUsers]) => {
+  //       const responseAuthUserData = responseAuth.userData;
+  //       const responseUsersData = responseUsers.data;
 
-        setUserProfile(responseAuthUserData.perfil);
-        setUserName(responseAuthUserData.nombreyapellidousuario);
-        setUserProfessionalId(parseInt(responseAuthUserData.professionalid));
-        setUsers(responseUsersData);
-        setAuthUser(responseAuthUserData);
-      })
-      .catch((error) => console.log(error));
-  }, [isLoggedIn, updateUserProfile]);
+  //       setUserProfile(responseAuthUserData.perfil);
+  //       setUserName(responseAuthUserData.nombreyapellidousuario);
+  //       setUserProfessionalId(parseInt(responseAuthUserData.professionalid));
+  //       setUsers(responseUsersData);
+  //       setAuthUser(responseAuthUserData);
+  //       console.log(responseAuthUserData);
+  //     })
+  //     .catch((error) => console.log(error));
+  // }, [isLoggedIn]);
 
   const data = {
     handleGoBack,
@@ -94,11 +93,14 @@ export const GeneralContextProvider = ({ children }) => {
     isLoggedIn,
     setIsLoggedIn,
     authUser,
-    users,
+    setAuthUser,
+    // users,
     userProfile,
+    setUserProfile,
     userName,
+    setUserName,
     userProfessionalId,
-    setUpdateUserProfile,
+    setUserProfessionalId,
     handleCheckboxChange,
     selectedRecords,
   };

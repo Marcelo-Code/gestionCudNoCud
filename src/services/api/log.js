@@ -36,3 +36,43 @@ export const checkAuth = async () => {
     return { status: 500, message: error.message || "Error inesperado" };
   }
 };
+
+export const login = async (email, password) => {
+  if (!email || !password) {
+    return {
+      status: 400,
+      message: "Email y contraseña son obligatorios",
+    };
+  }
+
+  try {
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+
+    if (error) throw error;
+
+    const userId = data.user.id;
+
+    // Buscar datos del usuario en la tabla 'usuarios'
+    const { data: userData, error: userError } = await supabaseClient
+      .from("usuarios")
+      .select("*")
+      .eq("auth_user_id", userId)
+      .single();
+
+    if (userError) throw userError;
+
+    return {
+      status: 200,
+      message: "Login successful",
+      userData,
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      message: error.message || "Error inesperado",
+    };
+  }
+};

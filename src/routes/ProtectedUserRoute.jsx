@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { LoadingContainer } from "../pages/loading/LoadingContainer";
 import { checkAuth } from "../services/api/log";
+import { allowCondition } from "./allowedConditions";
 
 export const ProtectedUserRoute = ({ children }) => {
   const { professionalId } = useParams();
@@ -10,12 +11,18 @@ export const ProtectedUserRoute = ({ children }) => {
   const [userProfile, setUserProfile] = useState(null);
   const [professionalUserId, setProfessionalUserId] = useState(null);
   const [authError, setAuthError] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const verifyUser = async () => {
       const response = await checkAuth();
 
       console.log(response);
+
+      // Si el status es 401, no hay sesión activa, redirigir al login
+      if (response.status === 401) {
+        navigate("/login");
+      }
 
       if (response.status !== 200 || !response.userData) {
         setAuthError(true);
@@ -32,12 +39,11 @@ export const ProtectedUserRoute = ({ children }) => {
   if (isLoading) return <LoadingContainer />;
   if (authError) return <Navigate to="/unauthorized" />;
 
-  console.log(professionalId, professionalUserId);
-
-  const isAllowed =
-    userProfile === "admin" ||
-    (userProfile === "profesional" &&
-      String(professionalUserId) === String(professionalId));
+  const isAllowed = allowCondition(
+    userProfile,
+    professionalUserId,
+    professionalId
+  );
 
   return isAllowed ? children : <Navigate to="/unauthorized" />;
 };

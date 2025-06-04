@@ -18,6 +18,7 @@ import {
   cudBillingRecordsfieldsToSearch,
   cudBillingRecordsFilterOptions,
 } from "./filtersCudBillingRecordsList";
+import { allowCondition } from "../../../../routes/allowedConditions";
 
 export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
   const {
@@ -295,9 +296,11 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
 
       renderCell: (params) => {
         const record = params.row;
-        const editAllowed =
-          userProfile === "admin" ||
-          userProfessionalId === params.row.idprofesional;
+        const editAllowed = allowCondition(
+          userProfile,
+          userProfessionalId,
+          params.row.idprofesional
+        );
 
         return (
           <Box sx={{ display: "flex", justifyContent: "center", gap: "1px" }}>
@@ -306,7 +309,6 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                 onClick={(e) => {
                   if (editAllowed) {
                     navigate(`${editRoute}/${record.id}`);
-                    console.log(`${editRoute}/${record.id}`);
                   } else {
                     e.preventDefault();
                     errorAlert("Usuario no autorizado, solamente lectura");

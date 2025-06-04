@@ -1,15 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Home } from "./Home";
 import { getTotalStorageAndDbSize } from "../../services/api/generalFunctions";
 import { LoadingContainer } from "../loading/LoadingContainer";
-import { GeneralContext } from "../../context/GeneralContext";
 
 export const HomeContainer = () => {
   const [totalSize, setTotalSize] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const { setUpdateUserProfile } = useContext(GeneralContext);
   useEffect(() => {
-    setUpdateUserProfile((prev) => !prev);
     setIsLoading(true);
     getTotalStorageAndDbSize()
       .then((res) => {
