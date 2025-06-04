@@ -8,7 +8,7 @@ export const ProtectedUserRoute = ({ children }) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [userProfile, setUserProfile] = useState(null);
-  const [userId, setUserId] = useState(null);
+  const [professionalUserId, setProfessionalUserId] = useState(null);
   const [authError, setAuthError] = useState(false);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export const ProtectedUserRoute = ({ children }) => {
       }
 
       setUserProfile(response.userData.perfil);
-      setUserId(response.userData.id);
+      setProfessionalUserId(response.userData.idprofesional);
     };
 
     verifyUser().finally(() => setIsLoading(false));
@@ -32,10 +32,12 @@ export const ProtectedUserRoute = ({ children }) => {
   if (isLoading) return <LoadingContainer />;
   if (authError) return <Navigate to="/unauthorized" />;
 
+  console.log(professionalId, professionalUserId);
+
   const isAllowed =
     userProfile === "admin" ||
     (userProfile === "profesional" &&
-      String(userId) === String(professionalId));
+      String(professionalUserId) === String(professionalId));
 
   return isAllowed ? children : <Navigate to="/unauthorized" />;
 };

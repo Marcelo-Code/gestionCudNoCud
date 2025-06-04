@@ -39,8 +39,6 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     filteredCudBillingRecords,
   } = cudBillingRecordsListProps;
 
-  console.log(userProfessionalId);
-
   let createRoute = "/billingRecords/createCudBillingRecord";
   let editRoute = "/billingRecords/cudBillingRecords/edit";
 
@@ -300,6 +298,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
         const editAllowed =
           userProfile === "admin" ||
           userProfessionalId === params.row.idprofesional;
+
         return (
           <Box sx={{ display: "flex", justifyContent: "center", gap: "1px" }}>
             <Tooltip title="Editar" placement="top-end" arrow>
@@ -307,6 +306,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
                 onClick={(e) => {
                   if (editAllowed) {
                     navigate(`${editRoute}/${record.id}`);
+                    console.log(`${editRoute}/${record.id}`);
                   } else {
                     e.preventDefault();
                     errorAlert("Usuario no autorizado, solamente lectura");
@@ -343,6 +343,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     nombreyapellidopaciente: record.pacientes.nombreyapellidopaciente,
     especialidadprofesional: record.profesionales.especialidadprofesional,
     periodofacturado: record.periodofacturado,
+    idprofesional: record.idprofesional,
     fechapresentacionos: record.fechapresentacionos,
     estadofacturacion: record.estadofacturacion,
     documentofacturamensual: record.documentofacturamensual,

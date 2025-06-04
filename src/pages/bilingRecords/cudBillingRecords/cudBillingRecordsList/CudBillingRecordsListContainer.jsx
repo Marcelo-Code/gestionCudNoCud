@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { GeneralContext } from "../../../../context/GeneralContext";
-import { CudBillingRecordsList } from "./CudBillingRecordList";
+import { CudBillingRecordsList } from "./cudBillingRecordList";
 
 export const CudBillingRecordsListContainer = (
   cudBillingRecordsListContainerProps

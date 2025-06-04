@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { confirmationAlert } from "../components/common/alerts/alerts";
 import { supabaseClient } from "../services/config/config";
 import { getUsers } from "../services/api/users";
+import { checkAuth } from "../services/api/log";
 
 export const GeneralContext = createContext();
 
@@ -68,21 +69,17 @@ export const GeneralContextProvider = ({ children }) => {
 
   useEffect(() => {
     localStorage.setItem("isLoggedIn", isLoggedIn.toString());
-    Promise.all([supabaseClient.auth.getUser(), getUsers()])
-      .then(([responseAuthUser, responseUsers]) => {
-        const responseAuthUserData = responseAuthUser.data.user;
+    Promise.all([checkAuth(), getUsers()])
+
+      .then(([responseAuth, responseUsers]) => {
+        const responseAuthUserData = responseAuth.userData;
         const responseUsersData = responseUsers.data;
 
-        const user = responseUsersData.find(
-          (user) => user.email === responseAuthUserData.email
-        );
-
-        setUserProfile(user.perfil);
-        setUserName(user.nombreyapellidousuario);
-        setUserProfessionalId(user.professionalid);
-
-        setAuthUser(responseAuthUserData);
+        setUserProfile(responseAuthUserData.perfil);
+        setUserName(responseAuthUserData.nombreyapellidousuario);
+        setUserProfessionalId(parseInt(responseAuthUserData.professionalid));
         setUsers(responseUsersData);
+        setAuthUser(responseAuthUserData);
       })
       .catch((error) => console.log(error));
   }, [isLoggedIn, updateUserProfile]);
