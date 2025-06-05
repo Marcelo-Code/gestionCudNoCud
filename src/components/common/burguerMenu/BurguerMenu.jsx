@@ -62,7 +62,8 @@ export const BurguerMenu = (burguerMenuProps) => {
               flexDirection: "column",
               justifyContent: "space-between", // centra verticalmente
               alignItems: "start", // opcional: centra horizontalmente también
-              // height: "80%",
+              height: "85%",
+              backgroundColor: "aqua",
               // overflow: "auto",
             }}
           >
@@ -91,7 +92,7 @@ export const BurguerMenu = (burguerMenuProps) => {
               ))}
             </List>
 
-            <ListItem sx={{ padding: "0px" }}>
+            <ListItem sx={{ padding: "0px", margin: "0px" }}>
               <ListItemButton
                 component={Link}
                 to="/users/updatePasswordLoggedInUser"
@@ -114,7 +115,7 @@ export const BurguerMenu = (burguerMenuProps) => {
                 />
               </ListItemButton>
             </ListItem>
-            <ListItem sx={{ padding: "0px" }}>
+            <ListItem sx={{ padding: "0px", margin: "0px" }}>
               <ListItemButton
                 onClick={() => {
                   // toggleDrawer(false);
