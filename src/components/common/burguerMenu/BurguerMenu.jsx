@@ -62,13 +62,13 @@ export const BurguerMenu = (burguerMenuProps) => {
               flexDirection: "column",
               justifyContent: "space-between", // centra verticalmente
               alignItems: "start", // opcional: centra horizontalmente también
-              // height: "90%",
+              // height: "80%",
               // overflow: "auto",
             }}
           >
             <List sx={{ width: "100%" }}>
               {options.map(({ icon, option, link }) => (
-                <ListItem sx={{ padding: "0px" }} key={option}>
+                <ListItem sx={{ padding: "0px", margin: "0px" }} key={option}>
                   <ListItemButton component={Link} to={link}>
                     <ListItemIcon
                       sx={{
@@ -82,7 +82,7 @@ export const BurguerMenu = (burguerMenuProps) => {
                       primaryTypographyProps={{
                         color: "black",
                         fontFamily: "roboto",
-                        fontSize: "19px",
+                        fontSize: "18px",
                       }}
                       onClick={toggleDrawer(false)}
                     />
@@ -109,7 +109,7 @@ export const BurguerMenu = (burguerMenuProps) => {
                   primaryTypographyProps={{
                     color: "black",
                     fontFamily: "roboto",
-                    fontSize: "19px",
+                    fontSize: "18px",
                   }}
                 />
               </ListItemButton>
@@ -134,7 +134,7 @@ export const BurguerMenu = (burguerMenuProps) => {
                   primaryTypographyProps={{
                     color: "black",
                     fontFamily: "roboto",
-                    fontSize: "19px",
+                    fontSize: "18px",
                   }}
                 />
               </ListItemButton>
