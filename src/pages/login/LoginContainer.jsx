@@ -23,36 +23,43 @@ export const LoginContainer = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    const userResponse = await getUserByEmail(email);
+    try {
+      // Obtener usuario por email
+      const userResponse = await getUserByEmail(email);
 
-    if (!userResponse || userResponse.length === 0) {
-      errorAlert("El usuario no existe o se encuentra inactivo");
-      return;
+      // Verificar si el usuario existe o está activo
+      if (!userResponse || userResponse.length === 0) {
+        return errorAlert("El usuario no existe o se encuentra inactivo");
+      }
+
+      // Iniciar carga de botón
+      setButtonIsLoading(true);
+
+      // Intentar login
+      const response = await login(email, password);
+      const { status, userData, message } = response;
+
+      if (status !== 200) {
+        return errorAlert(message); // Muestra el error si no es exitoso
+      }
+
+      // Guardar estado y datos en localStorage
+      const { perfil, idprofesional, nombreyapellidousuario } = userData;
+      setIsLoggedIn(true);
+      localStorage.setItem("isLoggedIn", "true"); // Guardar como string "true"
+      setUserProfile(perfil);
+      setUserProfessionalId(idprofesional);
+      setUserName(nombreyapellidousuario);
+      setAuthUser(userData);
+
+      // Redirigir al usuario
+      navigate("/");
+    } catch (error) {
+      errorAlert(error.message || "Error inesperado");
+      setError(error);
+    } finally {
+      setButtonIsLoading(false); // Restablecer el estado de carga
     }
-
-    setButtonIsLoading(true);
-    login(email, password)
-      .then((response) => {
-        if (response.status === 200) {
-          setIsLoggedIn(true);
-          localStorage.setItem("isLoggedIn", true);
-          setUserProfile(response.userData.perfil);
-          setUserProfessionalId(response.userData.idprofesional);
-          setUserName(response.userData.nombreyapellidousuario);
-          setAuthUser(response.userData);
-          console.log(response);
-
-          navigate("/");
-        } else {
-          errorAlert(response.message);
-        }
-      })
-      .catch((error) => {
-        errorAlert(error.message);
-      })
-      .finally(() => {
-        setButtonIsLoading(false);
-      });
   };
 
   const loginProps = {

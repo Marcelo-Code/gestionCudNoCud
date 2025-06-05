@@ -26,7 +26,6 @@ export const BurguerMenu = (burguerMenuProps) => {
         <Box
           sx={{
             width: 300,
-            height: "100%",
             backgroundColor: "aqua",
           }}
           role="presentation"
@@ -63,8 +62,8 @@ export const BurguerMenu = (burguerMenuProps) => {
               flexDirection: "column",
               justifyContent: "space-between", // centra verticalmente
               alignItems: "start", // opcional: centra horizontalmente también
-              height: "80%",
-              // overflow: "hidden",
+              // height: "90%",
+              // overflow: "auto",
             }}
           >
             <List sx={{ width: "100%" }}>
@@ -91,6 +90,30 @@ export const BurguerMenu = (burguerMenuProps) => {
                 </ListItem>
               ))}
             </List>
+
+            <ListItem sx={{ padding: "0px" }}>
+              <ListItemButton
+                component={Link}
+                to="/users/updatePasswordLoggedInUser"
+              >
+                <ListItemIcon
+                  sx={{
+                    color: "white",
+                  }}
+                >
+                  <Icons.KeyIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Actualizar Contraseña"
+                  onClick={toggleDrawer(false)}
+                  primaryTypographyProps={{
+                    color: "black",
+                    fontFamily: "roboto",
+                    fontSize: "19px",
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
             <ListItem sx={{ padding: "0px" }}>
               <ListItemButton
                 onClick={() => {

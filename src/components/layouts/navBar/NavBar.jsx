@@ -29,7 +29,7 @@ export const NavBar = (navBarProps) => {
           </Box>
         )}
 
-        <Box style={{ p: 1 }}>
+        {/* <Box style={{ p: 1 }}>
           <Tooltip title="Actualizar contraseña" placement="top-end" arrow>
             <Link to={"/users/updatePasswordLoggedInUser"}>
               <IconButton>
@@ -37,7 +37,7 @@ export const NavBar = (navBarProps) => {
               </IconButton>
             </Link>
           </Tooltip>
-        </Box>
+        </Box> */}
 
         <Box style={{ padding: "10px" }}>
           <AlertsContainer />

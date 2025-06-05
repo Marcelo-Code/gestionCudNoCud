@@ -66,17 +66,38 @@ export const GeneralContextProvider = ({ children }) => {
 
   //Obtener los datos del usuario autenticado cuando se monta el componente
   //o cuando se actualiza la pantalla, de lo contrario quedaría sin datos y habría que logearse nuevamente
+
+  const verifyAuth = async () => {
+    try {
+      const response = await checkAuth();
+
+      if (response.status !== 200 || !response.userData) {
+        setAuthUser(null);
+        setUserProfile(null);
+        setUserName(null);
+        setUserProfessionalId(null);
+        setIsLoggedIn(false);
+        localStorage.clear();
+        return { success: false, status: response.status };
+      }
+
+      const { perfil, nombreyapellidousuario, professionalid } =
+        response.userData;
+
+      setUserProfile(perfil);
+      setUserName(nombreyapellidousuario);
+      setUserProfessionalId(parseInt(professionalid));
+      setAuthUser(response.userData);
+
+      return { success: true, userData: response.userData };
+    } catch (error) {
+      console.error("Error en verifyAndSetAuth:", error);
+      return { success: false, error };
+    }
+  };
+
   useEffect(() => {
-    Promise.all([checkAuth(), getUsers()])
-      .then(([responseAuth]) => {
-        const responseAuthUserData = responseAuth.userData;
-        setUserProfile(responseAuthUserData.perfil);
-        setUserName(responseAuthUserData.nombreyapellidousuario);
-        setUserProfessionalId(parseInt(responseAuthUserData.professionalid));
-        setAuthUser(responseAuthUserData);
-        console.log(responseAuthUserData);
-      })
-      .catch((error) => console.log(error));
+    verifyAuth();
   }, []);
 
   const data = {
@@ -98,6 +119,7 @@ export const GeneralContextProvider = ({ children }) => {
     setUserProfessionalId,
     handleCheckboxChange,
     selectedRecords,
+    verifyAuth,
   };
 
   return (

@@ -1,47 +1,38 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { LoadingContainer } from "../pages/loading/LoadingContainer";
-import { checkAuth } from "../services/api/log";
 import { allowCondition } from "./allowedConditions";
+import { GeneralContext } from "../context/GeneralContext";
 
 export const ProtectedUserRoute = ({ children }) => {
   const { professionalId } = useParams();
-
   const [isLoading, setIsLoading] = useState(true);
-  const [userProfile, setUserProfile] = useState(null);
-  const [professionalUserId, setProfessionalUserId] = useState(null);
-  const [authError, setAuthError] = useState(false);
+
+  const { userProfile, userProfessionalId, verifyAuth } =
+    useContext(GeneralContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     const verifyUser = async () => {
-      const response = await checkAuth();
+      setIsLoading(true);
+      const response = await verifyAuth();
 
-      console.log(response);
-
-      // Si el status es 401, no hay sesión activa, redirigir al login
-      if (response.status === 401) {
-        navigate("/login");
+      if (!response.success) {
+        if (response.status === 401 || response.status === 404) {
+          navigate("/login");
+        }
       }
-
-      if (response.status !== 200 || !response.userData) {
-        setAuthError(true);
-        return;
-      }
-
-      setUserProfile(response.userData.perfil);
-      setProfessionalUserId(response.userData.idprofesional);
+      setIsLoading(false);
     };
 
-    verifyUser().finally(() => setIsLoading(false));
+    verifyUser();
   }, []);
 
   if (isLoading) return <LoadingContainer />;
-  if (authError) return <Navigate to="/unauthorized" />;
 
   const isAllowed = allowCondition(
     userProfile,
-    professionalUserId,
+    userProfessionalId,
     professionalId
   );
 

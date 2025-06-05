@@ -7,3 +7,24 @@
   font-family: "roboto";
   src: url("/fonts/roboto.ttf") format("truetype");
 }
+
+/* Aplica a scrollbars en navegadores basados en WebKit (Chrome, Edge, Safari) */
+.MuiDrawer-paper::-webkit-scrollbar {
+  width: 10px;
+}
+
+.MuiDrawer-paper::-webkit-scrollbar-track {
+  background: aqua;
+}
+
+.MuiDrawer-paper::-webkit-scrollbar-thumb {
+  background-color: #00cccc;
+  border-radius: 10px;
+  border: 2px solid aqua;
+}
+
+/* Firefox */
+.MuiDrawer-paper {
+  scrollbar-width: thin;
+  scrollbar-color: #00cccc aqua;
+}
