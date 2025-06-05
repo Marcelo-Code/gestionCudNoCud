@@ -46,7 +46,7 @@ export const CreateEditPatient = ({
               <TextField
                 style={elementStyle}
                 id="outlined-basic"
-                label="Nombre y Apellido Paciente"
+                label="Nombre Paciente"
                 variant="outlined"
                 name="nombreyapellidopaciente"
                 onChange={handleChange}
@@ -76,7 +76,6 @@ export const CreateEditPatient = ({
                 variant="outlined"
                 name="telefonoobrasocial"
                 onChange={handleChange}
-                required
                 value={formData.telefonoobrasocial}
               />
             </Box>
@@ -90,8 +89,8 @@ export const CreateEditPatient = ({
                 name="email1obrasocial"
                 type="email"
                 onChange={handleChange}
-                required
                 value={formData.email1obrasocial}
+                required
               />
             </Box>
             <Box className="createEditPatientElement">
@@ -150,6 +149,7 @@ export const CreateEditPatient = ({
               <Icons.ImportContactsIcon />
               <NumericFormat
                 customInput={TextField}
+                required
                 label="DNI"
                 name="dnipaciente"
                 style={elementStyle}
@@ -240,7 +240,7 @@ export const CreateEditPatient = ({
               <TextField
                 style={elementStyle}
                 id="outlined-basic"
-                label="Nombre y Apellido Responsable"
+                label="Nombre Responsable"
                 variant="outlined"
                 name="nombreyapellidoresponsable"
                 onChange={handleChange}
@@ -318,7 +318,7 @@ export const CreateEditPatient = ({
               <TextField
                 style={elementStyle}
                 id="outlined-basic"
-                label="Nombre Docente Referente"
+                label="Docente Referente"
                 variant="outlined"
                 name="nombreyapellidodocentereferenteescuela"
                 onChange={handleChange}
@@ -331,7 +331,7 @@ export const CreateEditPatient = ({
               <TextField
                 style={elementStyle}
                 id="outlined-basic"
-                label="Nombre Directivo Escuela"
+                label="Directivo Escuela"
                 variant="outlined"
                 name="nombreyapellidodirectivoescuela"
                 onChange={handleChange}
@@ -356,7 +356,7 @@ export const CreateEditPatient = ({
               <TextField
                 style={elementStyle}
                 id="outlined-basic"
-                label="Nombre Docente Ref. Esc. Esp."
+                label="Docente Ref. Esc. Esp."
                 variant="outlined"
                 name="nombreyapellidodocentereferenteescuelaespecial"
                 onChange={handleChange}
@@ -420,7 +420,7 @@ export const CreateEditPatient = ({
               <Icons.EventIcon />
               <TextField
                 sx={elementStyle}
-                label="Fecha initio tto."
+                label="Fecha inicio tto."
                 name="fechainiciotto"
                 value={formData.fechainiciotto}
                 onChange={handleChange}
