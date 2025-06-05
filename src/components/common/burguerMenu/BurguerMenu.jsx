@@ -27,6 +27,7 @@ export const BurguerMenu = (burguerMenuProps) => {
           sx={{
             width: 300,
             backgroundColor: "aqua",
+            height: "100vh",
           }}
           role="presentation"
         >
@@ -62,9 +63,9 @@ export const BurguerMenu = (burguerMenuProps) => {
               flexDirection: "column",
               justifyContent: "space-between", // centra verticalmente
               alignItems: "start", // opcional: centra horizontalmente también
-              height: "85%",
               backgroundColor: "aqua",
-              // overflow: "auto",
+              overflow: "auto",
+              height: "85%",
             }}
           >
             <List sx={{ width: "100%" }}>
@@ -90,56 +91,57 @@ export const BurguerMenu = (burguerMenuProps) => {
                   </ListItemButton>
                 </ListItem>
               ))}
+              <ListItem sx={{ padding: "0px", margin: "0px" }}>
+                <ListItemButton
+                  component={Link}
+                  to="/users/updatePasswordLoggedInUser"
+                >
+                  <ListItemIcon
+                    sx={{
+                      color: "white",
+                    }}
+                  >
+                    <Icons.KeyIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Actualizar Contraseña"
+                    onClick={toggleDrawer(false)}
+                    primaryTypographyProps={{
+                      color: "black",
+                      fontFamily: "roboto",
+                      fontSize: "18px",
+                    }}
+                  />
+                </ListItemButton>
+              </ListItem>
             </List>
-
-            <ListItem sx={{ padding: "0px", margin: "0px" }}>
-              <ListItemButton
-                component={Link}
-                to="/users/updatePasswordLoggedInUser"
-              >
-                <ListItemIcon
-                  sx={{
-                    color: "white",
+            <List>
+              <ListItem sx={{ padding: "0px", margin: "0px" }}>
+                <ListItemButton
+                  onClick={() => {
+                    // toggleDrawer(false);
+                    handleLogout();
                   }}
                 >
-                  <Icons.KeyIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Actualizar Contraseña"
-                  onClick={toggleDrawer(false)}
-                  primaryTypographyProps={{
-                    color: "black",
-                    fontFamily: "roboto",
-                    fontSize: "18px",
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-            <ListItem sx={{ padding: "0px", margin: "0px" }}>
-              <ListItemButton
-                onClick={() => {
-                  // toggleDrawer(false);
-                  handleLogout();
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    color: "white",
-                  }}
-                >
-                  <Icons.LogoutIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Logout"
-                  onClick={toggleDrawer(false)}
-                  primaryTypographyProps={{
-                    color: "black",
-                    fontFamily: "roboto",
-                    fontSize: "18px",
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
+                  <ListItemIcon
+                    sx={{
+                      color: "white",
+                    }}
+                  >
+                    <Icons.LogoutIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Logout"
+                    onClick={toggleDrawer(false)}
+                    primaryTypographyProps={{
+                      color: "black",
+                      fontFamily: "roboto",
+                      fontSize: "18px",
+                    }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            </List>
           </Box>
         </Box>
       </Drawer>
