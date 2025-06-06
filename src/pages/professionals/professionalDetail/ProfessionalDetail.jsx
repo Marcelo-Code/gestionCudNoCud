@@ -131,7 +131,7 @@ export const ProfessionalDetail = (professionalDetailProps) => {
               display: "flex",
               flexWrap: "wrap",
               gap: 2,
-              margin: "10px",
+              margin: "0 10px 0 10px",
             }}
           >
             <Box sx={{ flex: 1, minWidth: "200px" }}>

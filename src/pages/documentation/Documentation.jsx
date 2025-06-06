@@ -137,7 +137,16 @@ export const Documentation = (documentationProps) => {
           );
         })}
       </Box>
-      <BackButtonContainer />
+      <Box
+        sx={{
+          margin: "auto",
+          width: "100%",
+          maxWidth: "400px",
+          marginTop: "20px",
+        }}
+      >
+        <BackButtonContainer />
+      </Box>
     </Box>
   );
 };
