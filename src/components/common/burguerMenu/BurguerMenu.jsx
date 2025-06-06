@@ -45,13 +45,13 @@ export const BurguerMenu = (burguerMenuProps) => {
             </Tooltip>
           </Box>
           <Box
-            className="generalTitle"
+            className="generalSubTitle"
             sx={{ textAlign: "left", paddingLeft: 3 }}
           >
             <b>Usuario: </b> {normalizeName(userName) || "Cargando..."}
           </Box>
           <Box
-            className="generalTitle"
+            className="generalSubTitle"
             sx={{ textAlign: "left", paddingLeft: 3 }}
           >
             <b>Perfil: </b>
@@ -61,14 +61,14 @@ export const BurguerMenu = (burguerMenuProps) => {
             sx={{
               display: "flex",
               flexDirection: "column",
-              justifyContent: "space-between", // centra verticalmente
-              alignItems: "start", // opcional: centra horizontalmente también
+              justifyContent: "space-between",
+              alignItems: "start",
               backgroundColor: "aqua",
               overflow: "auto",
-              height: "85%",
+              height: "80%",
             }}
           >
-            <List sx={{ width: "100%" }}>
+            <List sx={{ width: "100%", fontSize: "16px" }}>
               {options.map(({ icon, option, link }) => (
                 <ListItem sx={{ padding: "0px", margin: "0px" }} key={option}>
                   <ListItemButton component={Link} to={link}>
@@ -84,38 +84,14 @@ export const BurguerMenu = (burguerMenuProps) => {
                       primaryTypographyProps={{
                         color: "black",
                         fontFamily: "roboto",
-                        fontSize: "18px",
                       }}
                       onClick={toggleDrawer(false)}
                     />
                   </ListItemButton>
                 </ListItem>
               ))}
-              <ListItem sx={{ padding: "0px", margin: "0px" }}>
-                <ListItemButton
-                  component={Link}
-                  to="/users/updatePasswordLoggedInUser"
-                >
-                  <ListItemIcon
-                    sx={{
-                      color: "white",
-                    }}
-                  >
-                    <Icons.KeyIcon />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Actualizar Contraseña"
-                    onClick={toggleDrawer(false)}
-                    primaryTypographyProps={{
-                      color: "black",
-                      fontFamily: "roboto",
-                      fontSize: "18px",
-                    }}
-                  />
-                </ListItemButton>
-              </ListItem>
             </List>
-            <List>
+            <List sx={{ width: "100%", fontSize: "16px" }}>
               <ListItem sx={{ padding: "0px", margin: "0px" }}>
                 <ListItemButton
                   onClick={() => {
@@ -136,7 +112,7 @@ export const BurguerMenu = (burguerMenuProps) => {
                     primaryTypographyProps={{
                       color: "black",
                       fontFamily: "roboto",
-                      fontSize: "18px",
+                      fontSize: "17px",
                     }}
                   />
                 </ListItemButton>

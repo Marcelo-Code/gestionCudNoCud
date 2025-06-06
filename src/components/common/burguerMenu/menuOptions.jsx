@@ -46,6 +46,11 @@ export const adminOptions = [
     option: "Usuarios Inactivos",
     link: "/users/list/inactive",
   },
+  {
+    icon: <Icons.KeyIcon />,
+    option: "Actualizar contraseña",
+    link: `/users/updatePasswordLoggedInUser`,
+  },
 ];
 
 export const userOptions = ({ professionalId }) => {
@@ -69,6 +74,11 @@ export const userOptions = ({ professionalId }) => {
       icon: <Icons.ReceiptIcon />,
       option: "Facturación general",
       link: `/billingRecords/list/professional/${professionalId}`,
+    },
+    {
+      icon: <Icons.KeyIcon />,
+      option: "Actualizar contraseña",
+      link: `/users/updatePasswordLoggedInUser`,
     },
 
     {
