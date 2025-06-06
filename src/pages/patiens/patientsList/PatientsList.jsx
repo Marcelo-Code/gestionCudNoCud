@@ -135,7 +135,7 @@ export const PatientsList = (patientsListProps) => {
       <Box
         sx={{
           margin: "auto",
-          width: "90%",
+          width: "100%",
           maxWidth: "400px",
           marginTop: "20px",
         }}
