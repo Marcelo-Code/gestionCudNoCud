@@ -7,8 +7,8 @@ export const BackButton = (BackButtonProps) => {
     <Box className="backButtonContainer">
       <Button
         size="small"
+        fullWidth
         variant="outlined"
-        sx={{ width: "90%", maxWidth: "400px", margin: "10px" }}
         onClick={() => handleGoBack(modifiedFlag)}
       >
         Volver

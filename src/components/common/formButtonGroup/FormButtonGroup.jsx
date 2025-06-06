@@ -7,8 +7,8 @@ export const FormButtonGroup = (formButtonGroupProps) => {
     formButtonGroupProps;
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, margin: "10px" }}>
+    <Box sx={{ width: "90%", margin: "20px auto" }}>
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
         <Box sx={{ flex: 1, minWidth: "200px" }}>
           <Button
             fullWidth
@@ -41,7 +41,8 @@ export const FormButtonGroup = (formButtonGroupProps) => {
         <Button
           onClick={() => handleGoBack(modifiedFlag)}
           size="small"
-          fullWidth
+          variant="outlined"
+          sx={{ width: "100%", marginTop: "10px" }}
         >
           Volver
         </Button>

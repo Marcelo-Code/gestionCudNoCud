@@ -81,7 +81,16 @@ export const UpdatePasswordLoggedInUser = (updatePasswordLoggedInUserProps) => {
           </Button>
         </Box>
       </form>
-      <BackButtonContainer />
+      <Box
+        sx={{
+          margin: "auto",
+          width: "90%",
+          maxWidth: "400px",
+          marginTop: "20px",
+        }}
+      >
+        <BackButtonContainer />
+      </Box>
     </Box>
   );
 };

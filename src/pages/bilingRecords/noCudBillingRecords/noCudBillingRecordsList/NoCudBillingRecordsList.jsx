@@ -376,7 +376,16 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
           <strong>Total Profesional:</strong> {currencyFormat(totalProfesional)}
         </Box>
       </Box>
-      <BackButtonContainer />
+      <Box
+        sx={{
+          margin: "auto",
+          width: "90%",
+          maxWidth: "400px",
+          marginTop: "20px",
+        }}
+      >
+        <BackButtonContainer />
+      </Box>
     </Box>
   );
 };
