@@ -284,7 +284,7 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     {
       field: "edicion",
       headerName: "",
-      width: 100,
+      width: 120,
       sortable: false,
       filterable: false,
       disableColumnSelector: true,
