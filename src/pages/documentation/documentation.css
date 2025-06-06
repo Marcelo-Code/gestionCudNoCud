@@ -1,5 +1,7 @@
 .patientDocumentationItem {
-  width: 230px;
+  width: 45%;
+  min-width: 180px;
+  max-width: 250px;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -17,4 +19,10 @@
   padding: 20px;
   height: 150px;
   text-align: center;
+}
+
+@media screen and (max-width: 400px) {
+  .patientDocumentationItem {
+    width: 80%;
+  }
 }
