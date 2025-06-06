@@ -42,12 +42,6 @@ export const Documentation = (documentationProps) => {
     enableSearchFilterBar: false,
   };
 
-  const iconDocumentStyle = {
-    margin: "10px",
-    fontSize: "2em",
-    verticalAlign: "middle",
-  };
-
   const iconStyle = { color: "blue", fontSize: "1.2em", margin: "5px" };
 
   return (

@@ -37,7 +37,7 @@ export const PatientsList = (patientsListProps) => {
     enableSearchFilterBar: false,
   };
 
-  const iconStyle = { color: "blue", fontSize: "1.5em", margin: "10px" };
+  const iconStyle = { color: "blue", fontSize: "1.2em", margin: "5px" };
 
   return (
     <Box className="generalContainer">
@@ -108,7 +108,7 @@ export const PatientsList = (patientsListProps) => {
                 )}
                 {!editMode && active === "active" && (
                   <Link to={`/patients/detail/${patient.id}`}>
-                    <Button variant="outlined" fullWidth>
+                    <Button size="small" variant="outlined" fullWidth>
                       Ver detalles
                     </Button>
                   </Link>

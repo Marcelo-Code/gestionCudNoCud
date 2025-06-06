@@ -1,12 +1,11 @@
-import { Box, IconButton, Tooltip } from "@mui/material";
+import { Box, Tooltip } from "@mui/material";
 import "../../../../assets/css/globalFormat.css";
 import "./cudBillingRecordsList.css";
 import { Icons } from "../../../../assets/Icons";
 import { dateFormat, monthFormat } from "../../../../utils/helpers";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { TrafficLightStatus } from "../../../../components/common/trafficLightStatus/TrafficLight";
 import { BackButtonContainer } from "../../../../components/common/backButton/BackButtonContainer";
-import { errorAlert } from "../../../../components/common/alerts/alerts";
 
 import Paper from "@mui/material/Paper";
 import { currencyFormat } from "../../../../components/common/currencyFormat/CurrencyFormatContainer";
@@ -19,6 +18,7 @@ import {
   cudBillingRecordsFilterOptions,
 } from "./filtersCudBillingRecordsList";
 import { allowCondition } from "../../../../routes/allowedConditions";
+import { EditModeButtonGroupContainer } from "../../../../components/common/editModeButtonGroup/EditModeButtonGroupContainer";
 
 export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
   const {
@@ -59,8 +59,6 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
   //Se deshabilita la barra de edición si el paciente no es CUD
   const disableEditionBarButton = !!(patientId && !patient.cud);
 
-  const navigate = useNavigate();
-
   const generalBarContainerProps = {
     buttonText: "Factura CUD",
     buttonIcon: <Icons.AddIcon />,
@@ -78,7 +76,6 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
     filteredCudBillingRecords,
   };
 
-  const iconStyle = { color: "blue", fontSize: "1.2em", margin: "5px" };
   const inLineStyle = {
     width: "100%",
     display: "inline-flex",
@@ -303,33 +300,11 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
         );
 
         return (
-          <Box sx={{ display: "flex", justifyContent: "center", gap: "1px" }}>
-            <Tooltip title="Editar" placement="top-end" arrow>
-              <IconButton
-                onClick={(e) => {
-                  if (editAllowed) {
-                    navigate(`${editRoute}/${record.id}`);
-                  } else {
-                    e.preventDefault();
-                    errorAlert("Usuario no autorizado, solamente lectura");
-                  }
-                }}
-              >
-                <Icons.EditIcon sx={iconStyle} />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Eliminar" placement="top-end" arrow>
-              <IconButton
-                onClick={() => {
-                  editAllowed
-                    ? handleDeleteCudBillingRecord(record.id)
-                    : errorAlert("Usuario no autorizado, solo lectura");
-                }}
-              >
-                <Icons.DeleteIcon sx={{ ...iconStyle, color: "red" }} />
-              </IconButton>
-            </Tooltip>
-          </Box>
+          <EditModeButtonGroupContainer
+            deleteFunction={() => handleDeleteCudBillingRecord(record.id)}
+            editLink={`${editRoute}/${record.id}`}
+            isAllowed={editAllowed}
+          />
         );
       },
     },

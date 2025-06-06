@@ -35,7 +35,7 @@ export const UsersList = (usersListProps) => {
     enableSearchFilterBar: false,
   };
 
-  const iconStyle = { color: "blue", fontSize: "1.5em", margin: "10px" };
+  const iconStyle = { color: "blue", fontSize: "1.2em", margin: "5px" };
 
   return (
     <Box className="generalContainer">

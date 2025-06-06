@@ -37,7 +37,7 @@ export const ProfessionalsList = (professionalsListProps) => {
     enableSearchFilterBar: false,
   };
 
-  const iconStyle = { color: "blue", fontSize: "1.5em", margin: "10px" };
+  const iconStyle = { color: "blue", fontSize: "1.2em", margin: "5px" };
 
   return (
     <Box className="generalContainer">
@@ -116,7 +116,7 @@ export const ProfessionalsList = (professionalsListProps) => {
                 )}
                 {!editMode && active === "active" && (
                   <Link to={`/professionals/detail/${professional.id}`}>
-                    <Button variant="outlined" fullWidth>
+                    <Button size="small" variant="outlined" fullWidth>
                       Ver detalles
                     </Button>
                   </Link>
