@@ -53,7 +53,16 @@ export const MedicalRecordDetail = (medicalRecordDetailProps) => {
           </Typography>
         </CardContent>
       </Card>
-      <BackButtonContainer />
+      <Box
+        sx={{
+          margin: "auto",
+          width: "90%",
+          maxWidth: "400px",
+          marginTop: "20px",
+        }}
+      >
+        <BackButtonContainer />
+      </Box>
     </Box>
   );
 };
