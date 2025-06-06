@@ -1,10 +1,15 @@
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import "../../assets/css/globalFormat.css";
 import "./home.css";
 import DonutChart from "../../components/common/donutChart/DonutChart";
+// import { generateDoc } from "../../components/layouts/generalBar/bars/exportToWord/GenerateDocContainer";
 
 export const Home = (homeProps) => {
   const { totalSize } = homeProps;
+
+  // const handleGenerateDoc = async () => {
+  //   await generateDoc();
+  // };
 
   return (
     <Box className="generalContainer">
@@ -21,6 +26,13 @@ export const Home = (homeProps) => {
           nameChart={"Storage"}
         />
       </Box>
+      {/* <Button
+        onClick={() => {
+          handleGenerateDoc();
+        }}
+      >
+        DOC
+      </Button> */}
     </Box>
   );
 };

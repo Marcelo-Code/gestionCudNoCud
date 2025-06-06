@@ -14,6 +14,7 @@ import { getExtension } from "../../utils/helpers";
 import { LoadingContainer } from "../loading/LoadingContainer";
 import { BackButtonContainer } from "../../components/common/backButton/BackButtonContainer";
 import { GeneralBarContainer } from "../../components/layouts/generalBar/GeneralBarContainer";
+import { getDocument } from "../../components/common/getDocument/GetDocument";
 
 export const Documentation = (documentationProps) => {
   const {
@@ -47,7 +48,7 @@ export const Documentation = (documentationProps) => {
     verticalAlign: "middle",
   };
 
-  const iconStyle = { color: "blue", fontSize: "1.5em", margin: "10px" };
+  const iconStyle = { color: "blue", fontSize: "1.2em", margin: "5px" };
 
   return (
     <Box className="generalContainer">
@@ -67,47 +68,21 @@ export const Documentation = (documentationProps) => {
         {documentData.map((document, index) => {
           return (
             <Card className="patientDocumentationItem" key={index}>
-              <Typography className="patientDocumentationItemTitle">
-                <b>{document.title}</b>
-              </Typography>
+              <Box className="generalSubTitle">{document.title}</Box>
 
-              <Typography
-                className="patientDocumentationItemDocumentation"
-                component="div"
+              <Box
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "80px",
+                }}
               >
                 {/* Si hay documentación cargada mostrar el nombre del documento */}
                 {formData[document.name] &&
                   uploadingDocumentName !== document.name && (
-                    <Box>
-                      <Box sx={{ height: "50px" }}>
-                        <Link
-                          to={formData[document.name]}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          underline="hover"
-                          color="primary"
-                          component="a"
-                        >
-                          {patientId &&
-                            `${document.title}/${formData.nombreyapellidopaciente}`}
-                          {professionalId &&
-                            `${document.title}/${formData.nombreyapellidoprofesional}`}
-                        </Link>
-                      </Box>
-                      <Box>
-                        {/* Renderiza el tipo de archivo que se cargó */}
-                        {getExtension(formData[document.name]).toUpperCase()}
-                        {getExtension(formData[document.name]) === "pdf" && (
-                          <Icons.PictureAsPdfIcon sx={iconDocumentStyle} />
-                        )}
-                        {["jpg", "png", "jpeg"].includes(
-                          getExtension(formData[document.name])
-                        ) && <Icons.ImageIcon sx={iconDocumentStyle} />}
-                        {["doc", "docx"].includes(
-                          getExtension(formData[document.name])
-                        ) && <Icons.ArticleIcon sx={iconDocumentStyle} />}
-                      </Box>
-                    </Box>
+                    <Box>{getDocument(formData[document.name])}</Box>
                   )}
                 {/* Si no hay documentación mostrar "Sin documentación" */}
                 {!formData[document.name] &&
@@ -119,19 +94,12 @@ export const Documentation = (documentationProps) => {
                   // "Cargando..."
                   <LoadingContainer />
                 )}
-              </Typography>
+              </Box>
 
               {/* Si se está subiendo o eliminando un archivo se oculta el CardActions */}
               {editMode && !uploadingDocumentName && (
                 <CardActions sx={{ justifyContent: "center" }}>
                   {/* Llama a función de borrado */}
-                  <Tooltip title="Eliminar documento" placement="top-end" arrow>
-                    <IconButton
-                      onClick={() => handleDeleteDocument(document.name)}
-                    >
-                      <Icons.DeleteIcon sx={iconStyle} />
-                    </IconButton>
-                  </Tooltip>
 
                   {/* Llama a la función de carga de archivos */}
                   <Tooltip title="Subir documento" placement="top-end" arrow>
@@ -160,6 +128,13 @@ export const Documentation = (documentationProps) => {
                       onClick={() => handleDownloadDocument(document.name)}
                     >
                       <Icons.DownloadIcon sx={iconStyle} />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Eliminar documento" placement="top-end" arrow>
+                    <IconButton
+                      onClick={() => handleDeleteDocument(document.name)}
+                    >
+                      <Icons.DeleteIcon sx={{ ...iconStyle, color: "red" }} />
                     </IconButton>
                   </Tooltip>
                 </CardActions>

@@ -50,7 +50,10 @@ export const ExportToWordContainer = ({
   const generateDoc = async () => {
     try {
       const response = await fetch(logo);
-      const imageBlob = await response.blob();
+
+      const imageBlob = await response.arrayBuffer();
+
+      // const imageBlob = await response.blob();
       const docParagraphs = selectedRecords.map((record) => {
         const dateRecord = dateFormat(record.fechaconsulta);
 
@@ -284,6 +287,7 @@ export const ExportToWordContainer = ({
                                 children: [
                                   new ImageRun({
                                     data: imageBlob,
+
                                     transformation: {
                                       width: 100,
                                       height: 100,
