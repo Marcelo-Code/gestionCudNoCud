@@ -235,27 +235,30 @@ export const Settings = (settingsProps) => {
 
       <Box
         sx={{
-          width: "40%",
           minWidth: "300px",
           marginTop: "20px",
           display: "flex",
           justifyContent: "center",
           flexWrap: "wrap",
+          gap: "10px",
         }}
       >
-        <Button
-          onClick={() => handleSubmit()}
-          loading={isLoadingButton}
-          size="small"
-          fullWidth
-          sx={{ margin: "10px" }}
-          variant="contained"
-          startIcon={<Icons.SaveIcon />}
-          disabled={!modifiedFlag}
-        >
-          Guardar
-        </Button>
-        <BackButtonContainer />
+        <Box sx={{ width: "280px" }}>
+          <Button
+            onClick={() => handleSubmit()}
+            loading={isLoadingButton}
+            size="small"
+            fullWidth
+            variant="contained"
+            startIcon={<Icons.SaveIcon />}
+            disabled={!modifiedFlag}
+          >
+            Guardar
+          </Button>
+        </Box>
+        <Box sx={{ width: "300px" }}>
+          <BackButtonContainer />
+        </Box>
       </Box>
     </Box>
   );
