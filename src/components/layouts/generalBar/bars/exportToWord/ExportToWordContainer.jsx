@@ -29,6 +29,7 @@ import { getAge } from "../../../../../utils/mathUtils";
 import { errorAlert, successAlert } from "../../../../common/alerts/alerts";
 import { ExportToWord } from "./ExportToWord";
 import { dateFormat } from "../../../../../utils/helpers";
+import { getReportData } from "../../../../../services/api/reportData";
 
 export const ExportToWordContainer = ({
   patient,
@@ -36,6 +37,7 @@ export const ExportToWordContainer = ({
   professional,
   signature,
 }) => {
+  const [buttonIsLoading, setButtonIsLoading] = useState(false);
   const getDateRange = (records) => {
     if (records.length === 0) return { minDate: null, maxDate: null };
 
@@ -47,7 +49,7 @@ export const ExportToWordContainer = ({
     return { minDate, maxDate };
   };
 
-  const generateDoc = async () => {
+  const generateDoc = async (data) => {
     try {
       const response = await fetch(logo);
 
@@ -96,7 +98,8 @@ export const ExportToWordContainer = ({
             bold: true,
           }),
           new TextRun({
-            text: `${confidentialityPolicy}`,
+            // text: `${confidentialityPolicy}`,
+            text: `${data.politicaconfidencialidadinforme}`,
             font: "Arial",
             size: 24,
           }),
@@ -114,7 +117,8 @@ export const ExportToWordContainer = ({
             bold: true,
           }),
           new TextRun({
-            text: `${observations}`,
+            // text: `${observations}`,
+            text: `${data.observacionesinforme}`,
             font: "Arial",
             size: 24,
           }),
@@ -162,8 +166,6 @@ export const ExportToWordContainer = ({
 
       const buffer = await imageResponse.arrayBuffer();
       const uint8Buffer = new Uint8Array(buffer);
-      console.log("Image size (bytes):", uint8Buffer.length);
-
       const base64 = btoa(String.fromCharCode(...uint8Buffer));
 
       // Firma como imagen
@@ -184,7 +186,8 @@ export const ExportToWordContainer = ({
       const title = new Paragraph({
         children: [
           new TextRun({
-            text: `${title1}`,
+            // text: `${title1}`,
+            text: `${data.tituloinforme}`,
             font: "Arial",
             size: 24,
             bold: true,
@@ -325,7 +328,8 @@ export const ExportToWordContainer = ({
                               new Paragraph({
                                 children: [
                                   new TextRun({
-                                    text: `${titleHeaderText}`,
+                                    // text: `${titleHeaderText}`,
+                                    text: `${data.encabezadoinforme}`,
                                     font: "Arial",
                                     size: 32,
                                     bold: true,
@@ -336,7 +340,8 @@ export const ExportToWordContainer = ({
                               new Paragraph({
                                 children: [
                                   new TextRun({
-                                    text: `${adressHeaderText}`,
+                                    // text: `${adressHeaderText}`,
+                                    text: `${data.datosinstitucioninforme}`,
                                     font: "Arial",
                                     size: 17,
                                     bold: true,
@@ -415,7 +420,8 @@ export const ExportToWordContainer = ({
                               new Paragraph({
                                 children: [
                                   new TextRun({
-                                    text: `${footerText}`,
+                                    // text: `${footerText}`,
+                                    text: `${data.pieinforme}`,
                                     font: "Arial",
                                     size: 16,
                                     bold: true,
@@ -505,15 +511,18 @@ export const ExportToWordContainer = ({
   };
 
   const handleGenerateDoc = async () => {
-    generateDoc()
-      .then((res) => {
-        console.log(res);
-        successAlert("Informe generado exitosamente");
-      })
-      .catch((error) => {
-        console.log(error);
-        errorAlert("Error al generar informe");
-      });
+    try {
+      setButtonIsLoading(true);
+      const dataReportResponse = await getReportData();
+
+      await generateDoc(dataReportResponse.data);
+
+      successAlert("Informe generado exitosamente");
+    } catch (error) {
+      errorAlert("Error al generar el informe");
+    } finally {
+      setButtonIsLoading(false);
+    }
   };
 
   const [enableReportButton, setEnableReportButton] = useState(false);
@@ -529,6 +538,7 @@ export const ExportToWordContainer = ({
   const exportToWordProps = {
     handleGenerateDoc,
     enableReportButton,
+    buttonIsLoading,
   };
 
   return <ExportToWord {...exportToWordProps} />;

@@ -1,5 +1,3 @@
-import { id } from "date-fns/locale";
-
 export const patientDocumentData = [
   {
     name: "imgdnifrentepaciente",
@@ -49,9 +47,14 @@ export const patientDocumentData = [
 
 export const professionalDocumentData = [
   {
-    name: "documentoconstanciamatriculaprofesional",
+    name: "documentocertificadornpprofesional",
     title: "Certificado RNP",
   },
+  {
+    name: "documentoconstanciamatriculaprofesional",
+    title: "Constancia Matricula",
+  },
+
   {
     name: "documentotitulofrenteprofesional",
     title: "Título Frente",

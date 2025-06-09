@@ -47,6 +47,7 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import SortIcon from "@mui/icons-material/Sort";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 export const Icons = {
   PersonAddIcon,
@@ -98,4 +99,5 @@ export const Icons = {
   RestartAltIcon,
   FilterListIcon,
   SortIcon,
+  SettingsIcon,
 };

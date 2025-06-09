@@ -2,13 +2,14 @@
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { confirmationAlert } from "../components/common/alerts/alerts";
-import { getUsers } from "../services/api/users";
 import { checkAuth } from "../services/api/log";
 
 export const GeneralContext = createContext();
 
 export const GeneralContextProvider = ({ children }) => {
   const navigate = useNavigate();
+
+  const [updateFooter, setUpdateFooter] = useState(false);
 
   //hook para cambiar el tamaño de la fuente
   const [textSize, setTextSize] = useState(15);
@@ -120,6 +121,8 @@ export const GeneralContextProvider = ({ children }) => {
     handleCheckboxChange,
     selectedRecords,
     verifyAuth,
+    updateFooter,
+    setUpdateFooter,
   };
 
   return (

@@ -35,6 +35,7 @@ import { PageNotFoundContainer } from "./pages/pageNotFound/PageNotFoundContaine
 import { UpdatePasswordLoggedInUserContainer } from "./pages/users/updatePasswordLoggedInUser/UpdatePasswordLoggedInUserContainer";
 import { ProtectedUserRoute } from "./routes/ProtectedUserRoute";
 import { UnauthorizedUserPageContainer } from "./pages/unauthorizedUserPage/UnauthorizedUserPageContainer";
+import { SettingsContainer } from "./pages/settings/SettingsContainer";
 
 function App() {
   return (
@@ -577,6 +578,15 @@ const AppContent = () => {
                 <Route
                   path="/users/updatePasswordLoggedInUser"
                   element={<UpdatePasswordLoggedInUserContainer />}
+                />
+                {/* Ajustes */}
+                <Route
+                  path="/settings"
+                  element={
+                    <ProtectedUserRoute>
+                      <SettingsContainer />
+                    </ProtectedUserRoute>
+                  }
                 />
               </Routes>
             </ProtectedRoute>

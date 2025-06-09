@@ -1,6 +1,6 @@
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 import { Icons } from "../../../assets/Icons";
-export const FooterData = () => {
+export const FooterData = (data) => {
   return (
     <Accordion slotProps={{ heading: { component: "h4" } }}>
       <AccordionSummary
@@ -30,28 +30,31 @@ export const FooterData = () => {
         }}
       >
         <div>
-          <b>E-mail para recepción CVs:</b> equiporeinodelreves@gmail.com
+          <b>E-mail para recepción CVs: </b>
+          {data.emailrecepcioncvs}
         </div>
         <div>
-          <b>E-mail para administración:</b> elreinodelreves.admi@gmail.com
+          <b>E-mail para administración: </b>
+          {data.emailadministracion}
         </div>
         <div>
           <b>
             E-mail para coordinación clínica -informes institucionales e
-            interinstitucionales-:
-          </b>{" "}
-          coordinacionclinica.reinodreves@gmail.com
+            interinstitucionales-:{" "}
+          </b>
+          {data.emailcoordinacion}
         </div>
         <div>
-          <b>E-mail inscripción a espacios de-formación:</b>{" "}
-          inscripcioneselreinodelreves@gmail.com
+          <b>E-mail inscripción a espacios de-formación: </b>
+          {data.emailinscripcion}
         </div>
         <div style={{ marginTop: "20px" }}>
-          <b>Teléfono administración:</b> 3416529113
+          <b>Teléfono administración: </b>
+          {data.telefonoadministracion}
         </div>
         <div>
-          <b>Horarios de atención administración:</b> martes, jueves y viernes 9
-          hs a 14 hs
+          <b>Horarios de atención administración: </b>
+          {data.horariosatencion}
         </div>
       </AccordionDetails>
     </Accordion>

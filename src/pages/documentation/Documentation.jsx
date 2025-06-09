@@ -2,15 +2,13 @@ import {
   Box,
   Card,
   CardActions,
+  CircularProgress,
   IconButton,
   Tooltip,
-  Typography,
 } from "@mui/material";
 import "../../assets/css/globalFormat.css";
 import "./documentation.css";
 import { Icons } from "../../assets/Icons";
-import { Link } from "react-router-dom";
-import { getExtension } from "../../utils/helpers";
 import { LoadingContainer } from "../loading/LoadingContainer";
 import { BackButtonContainer } from "../../components/common/backButton/BackButtonContainer";
 import { GeneralBarContainer } from "../../components/layouts/generalBar/GeneralBarContainer";
@@ -85,8 +83,7 @@ export const Documentation = (documentationProps) => {
                 {/* Si el nombre del documento coincide con el que se esta cargando, mostrar "Cargando..." */}
                 {/*Lo hará solamente en el box del documento que se esta cargando*/}
                 {uploadingDocumentName === document.name && (
-                  // "Cargando..."
-                  <LoadingContainer />
+                  <CircularProgress />
                 )}
               </Box>
 

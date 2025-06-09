@@ -51,6 +51,11 @@ export const adminOptions = [
     option: "Actualizar contraseña",
     link: `/users/updatePasswordLoggedInUser`,
   },
+  {
+    icon: <Icons.SettingsIcon />,
+    option: "Ajustes",
+    link: `/settings`,
+  },
 ];
 
 export const userOptions = ({ professionalId }) => {
