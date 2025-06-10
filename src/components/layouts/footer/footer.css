@@ -8,6 +8,11 @@
   src: url("/fonts/Matsury.ttf");
 }
 
+@font-face {
+  font-family: "roboto";
+  src: url("/fonts/roboto.ttf");
+}
+
 .footerContainer {
   background-color: aqua;
   bottom: 0px;
@@ -20,13 +25,15 @@
 .footerTitle {
   padding: 20px;
   font-family: "broughton";
-  text-shadow: 0 0 20px black;
+  /* text-shadow: 0 0 20px black; */
   font-size: 20px;
   text-align: center;
+  /* background-color: rgba(0, 0, 0, 0.1); */
+  margin-bottom: 10px;
 }
 
 .footerNameDeveloper {
-  background-color: rgba(0, 0, 0, 0.3);
+  /* background-color: rgba(0, 0, 0, 0.3); */
   width: 100%;
   text-align: center;
   font-family: "matsury";

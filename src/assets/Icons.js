@@ -48,6 +48,9 @@ import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import SortIcon from "@mui/icons-material/Sort";
 import SettingsIcon from "@mui/icons-material/Settings";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
+import QueryBuilderIcon from "@mui/icons-material/QueryBuilder";
 
 export const Icons = {
   PersonAddIcon,
@@ -100,4 +103,7 @@ export const Icons = {
   FilterListIcon,
   SortIcon,
   SettingsIcon,
+  ContentCopyIcon,
+  AlternateEmailIcon,
+  QueryBuilderIcon,
 };
