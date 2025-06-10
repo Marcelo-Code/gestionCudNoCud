@@ -70,7 +70,7 @@ export const FooterContainer = () => {
       ),
     },
     {
-      title: "E-mail inscripción a espacios de-formación: ",
+      title: "E-mail inscripción a espacios de formación: ",
 
       text: (
         <a href={`mailto:${data.emailinscripcion}`} style={{ color: "blue" }}>
