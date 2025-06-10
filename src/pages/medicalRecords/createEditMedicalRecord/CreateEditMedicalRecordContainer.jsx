@@ -75,11 +75,9 @@ export const CreateEditMedicalRecordContainer = () => {
     const action = medicalRecordId ? updateMedicalRecord : createMedicalRecord;
 
     action(formData)
-      .then((response) => {
-        console.log(response);
+      .then(() => {
         handleGoBack();
       })
-      .catch((error) => console.log(error))
       .finally(() => setIsLoadingButton(false));
   };
 
@@ -91,7 +89,7 @@ export const CreateEditMedicalRecordContainer = () => {
       getMedicalRecords(),
       medicalRecordId
         ? getMedicalRecord(medicalRecordId)
-        : Promise.resolve({ data: [null] }),
+        : Promise.resolve({ data: null }),
       patientId ? getPatient(patientId) : Promise.resolve({ data: [null] }),
       professionalId
         ? getProfessional(professionalId)
@@ -112,8 +110,6 @@ export const CreateEditMedicalRecordContainer = () => {
           const medicalRecordResponseData = medicalRecordResponse.data;
           const patientResponseData = patientResponse.data[0];
           const professionalResponseData = professionalResponse.data[0];
-
-          console.log(medicalRecordResponse);
 
           setPatients(patientsResponseData);
           setProfessionals(professionalsResponseData);
