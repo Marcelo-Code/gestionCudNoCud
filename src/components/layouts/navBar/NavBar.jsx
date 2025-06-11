@@ -18,7 +18,7 @@ export const NavBar = () => {
                 component="img"
                 src="/images/crown.png"
                 alt="Logo"
-                sx={{ width: "35px", height: "35px", mt: 1.5, mr: 1 }}
+                sx={{ width: "30px", height: "30px", mt: 1.5, mr: 1 }}
               />
             </Link>
           </Tooltip>
