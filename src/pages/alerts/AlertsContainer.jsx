@@ -2,11 +2,9 @@ import { useContext, useEffect, useState } from "react";
 import { Alerts } from "./Alerts";
 import { getPatients } from "../../services/api/patients";
 import { getProfessionals } from "../../services/api/professionals";
-import { LoadingContainer } from "../loading/LoadingContainer";
 import dayjs from "dayjs";
 import { GeneralContext } from "../../context/GeneralContext";
-import { formatDate } from "date-fns";
-import { dateFormat } from "../../utils/helpers";
+import { Icons } from "../../assets/Icons";
 
 export function AlertsContainer() {
   //hook para los pacientes
@@ -41,7 +39,8 @@ export function AlertsContainer() {
       .finally(() => setIsLoading(false));
   }, [updateList]);
 
-  if (isLoading) return <LoadingContainer />;
+  if (isLoading)
+    return <Icons.NotificationsActiveIcon sx={{ color: "white" }} />;
 
   const professionalsExpirationRnpRecords = professionals
     .map((record) => {

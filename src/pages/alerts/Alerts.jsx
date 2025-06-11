@@ -29,8 +29,8 @@ export const Alerts = (alertsProps) => {
         overflowX: "hidden",
         backgroundColor: "aqua",
         color: "black",
-        px: 2,
-        // py: 1,
+        // px: 2,
+        // py: 2,
       }}
       role="presentation"
       onClick={(e) => e.stopPropagation()}
@@ -41,7 +41,6 @@ export const Alerts = (alertsProps) => {
           width: "100%",
           display: "flex",
           justifyContent: "flex-start",
-          paddingRight: "10px",
         }}
       >
         <Tooltip title="Cerrar" placement="top-end" arrow>
@@ -115,7 +114,15 @@ const Section = ({ title, records, label, daysKey, nameKey }) => {
         <Typography align="center">No hay vencimientos</Typography>
       ) : (
         <Box>
-          <Box sx={{ display: "grid", gridTemplateColumns: "2fr 1fr", mb: 1 }}>
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "2fr 1fr",
+              mb: 1,
+              pl: 2,
+              pr: 1,
+            }}
+          >
             <Typography variant="subtitle2">{label}</Typography>
             <Typography variant="subtitle2" align="right">
               Días
@@ -128,6 +135,8 @@ const Section = ({ title, records, label, daysKey, nameKey }) => {
                 display: "grid",
                 gridTemplateColumns: "2fr 1fr",
                 mb: 0.5,
+                pl: 2,
+                pr: 1,
               }}
             >
               <Typography variant="body2">{record[nameKey]}</Typography>
