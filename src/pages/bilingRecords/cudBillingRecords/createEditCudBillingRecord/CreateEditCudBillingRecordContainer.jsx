@@ -24,6 +24,7 @@ import {
 import { documentationCudBillingFolder } from "../../../../services/config/config";
 import dayjs from "dayjs";
 import { getCurrentDateTimeString } from "../../../../utils/helpers";
+import imageCompression from "browser-image-compression";
 
 export const CreateEditCudBillingRecordContainer = () => {
   const { handleGoBack } = useContext(GeneralContext);
@@ -72,7 +73,7 @@ export const CreateEditCudBillingRecordContainer = () => {
   const comprobantePagoRetencionFileInputRef = useRef(null);
 
   //Función para guardar los cambios en el registro
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const { name, value, files } = e.target;
     const file = files?.[0];
 
@@ -92,7 +93,25 @@ export const CreateEditCudBillingRecordContainer = () => {
         console.error("Formato no permitido");
         return; // Sale si el archivo no es válido
       }
-      updatedFormData[name] = file; // Si el archivo es válido, se guarda
+
+      let finalFile = file;
+
+      // Si el archivo es una imagen, se comprime
+      if (file.type.startsWith("image/")) {
+        const options = {
+          maxSizeMB: 0.5,
+          maxWidthOrHeight: 1024,
+          useWebWorker: true,
+        };
+        try {
+          finalFile = await imageCompression(file, options);
+        } catch (error) {
+          errorAlert("Error al comprimir la imagen ", error);
+          return;
+        }
+      }
+
+      updatedFormData[name] = finalFile; // Si el archivo es válido, se guarda
     }
 
     // Selección automática de la obra social si se cambia el idpaciente

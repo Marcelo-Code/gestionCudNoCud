@@ -29,6 +29,7 @@ import {
   getNoCudPatients,
   getPatient,
 } from "../../../../services/api/patients";
+import imageCompression from "browser-image-compression";
 
 export const CreateEditNoCudBillingRecordContainer = () => {
   const { handleGoBack } = useContext(GeneralContext);
@@ -72,25 +73,39 @@ export const CreateEditNoCudBillingRecordContainer = () => {
   const comprobanteRetencionFileInputRef = useRef(null);
 
   //Función para guardar los cambios en el registro
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const { name, value, files } = e.target;
 
     const file = files?.[0];
 
-    let updatedFormData = { ...formData };
+    let updatedFormData = { ...formData, [name]: value };
 
     // Validación de tipo de archivo
-    if (file && !allowedFileTypes.includes(file.type)) {
-      errorAlert("Formato de archivo no permitido");
-      console.error("Formato no permitido");
-      return;
-    }
-
-    // Si es un archivo, se actualiza el formData con el archivo
     if (file) {
-      updatedFormData[name] = file;
-    } else {
-      updatedFormData[name] = value;
+      if (!allowedFileTypes.includes(file.type)) {
+        errorAlert("Formato de archivo no permitido");
+        console.error("Formato no permitido");
+        return;
+      }
+      let finalFile = file;
+
+      // Si el archivo es una imagen, se comprime
+      if (file.type.startsWith("image/")) {
+        const options = {
+          maxSizeMB: 0.5,
+          maxWidthOrHeight: 1024,
+          useWebWorker: true,
+        };
+        try {
+          finalFile = await imageCompression(file, options);
+        } catch (error) {
+          errorAlert("Error al comprimir la imagen ", error);
+          return;
+        }
+      }
+
+      // Si es un archivo, se actualiza el formData con el archivo
+      updatedFormData[name] = finalFile;
     }
 
     // Selección automática de la obra especialidad si se cambia el idprofesional

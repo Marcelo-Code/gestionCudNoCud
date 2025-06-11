@@ -187,6 +187,10 @@ export const deleteCudBillingRecord = async (
         documentationCudBillingFolder
       ),
       extractPath(record.imgasistenciamensual, documentationCudBillingFolder),
+      extractPath(
+        record.documentocomprobantepagoretencion,
+        documentationCudBillingFolder
+      ),
     ].filter(Boolean); // Saca nulls o undefined
 
     if (filesToDelete.length > 0) {

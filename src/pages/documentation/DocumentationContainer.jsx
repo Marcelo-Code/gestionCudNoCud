@@ -23,6 +23,7 @@ import {
   professionalDocumentData,
 } from "../../data/documentsData";
 import { GeneralContext } from "../../context/GeneralContext";
+import imageCompression from "browser-image-compression";
 
 export const DocumentationContainer = () => {
   //hooks para los datos del formulario
@@ -84,7 +85,7 @@ export const DocumentationContainer = () => {
   };
 
   // Función para manejar la carga de archivos
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     const file = event.target.files[0];
     if (file) {
       // Verifica el formato del archivo
@@ -101,11 +102,26 @@ export const DocumentationContainer = () => {
         console.error("Formato no permitido");
         return;
       }
-      console.log("Archivo seleccionado:", file);
+
+      let finalFile = file;
+
+      if (file.type.startsWith("image/")) {
+        const options = {
+          maxSizeMB: 0.5,
+          maxWidthOrHeight: 1024,
+          useWebWorker: true,
+        };
+        try {
+          finalFile = await imageCompression(file, options);
+        } catch (error) {
+          errorAlert("Error al comprimir la imagen ", error);
+          return;
+        }
+      }
 
       // Llama a la función para subir el archivo
       uploadDocument(
-        file,
+        finalFile,
         folder,
         documentName,
         formData,
