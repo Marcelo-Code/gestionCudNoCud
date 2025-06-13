@@ -2,6 +2,9 @@ import React from "react";
 import { Container, TextField, Button, Box, Typography } from "@mui/material";
 import "./recoverPassword.css";
 import { Icons } from "../../assets/Icons";
+import { gridInitialColumnVisibilityModelSelector } from "@mui/x-data-grid/internals";
+import { generalBackgroundColor, generalColor } from "../../utils/helpers";
+import { BackButtonContainer } from "../../components/common/backButton/BackButtonContainer";
 
 export const RecoverPassword = ({
   handleGoBack,
@@ -27,10 +30,18 @@ export const RecoverPassword = ({
         <Box
           component="form"
           noValidate
-          sx={{ mt: 1 }}
+          sx={{
+            mt: 1,
+            backgroundColor: generalBackgroundColor,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
           className="recoverPasswordForm"
         >
-          <span className="loginTitle">Recuperar Contraseña</span>
+          <span className="recoverPasswordTitle" sx={{ color: generalColor }}>
+            Recuperar Contraseña
+          </span>
           <TextField
             margin="normal"
             required
@@ -46,9 +57,9 @@ export const RecoverPassword = ({
           />
           <Button
             type="submit"
-            fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            size="small"
+            sx={{ mt: 3, mb: 2, width: "240px" }}
             startIcon={<Icons.SendIcon />}
             onClick={handleRecoverPassword}
           >
@@ -64,14 +75,8 @@ export const RecoverPassword = ({
               {successMessage}
             </Typography>
           )}
-          <Button
-            fullWidth
-            variant="outlined"
-            style={{ border: "1px solid white", color: "white" }}
-            onClick={handleGoBack}
-          >
-            Volver
-          </Button>
+
+          <BackButtonContainer />
         </Box>
       </Box>
     </Container>

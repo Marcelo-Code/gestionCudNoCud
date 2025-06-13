@@ -9,6 +9,7 @@ export const BackButton = (BackButtonProps) => {
         size="small"
         fullWidth
         variant="outlined"
+        sx={{ background: "white" }}
         onClick={() => handleGoBack(modifiedFlag)}
       >
         Volver

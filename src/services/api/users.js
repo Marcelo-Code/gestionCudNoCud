@@ -88,21 +88,6 @@ export const updateAuthUser = async (updatedUser) => {
 
     if (updateError) throw updateError;
 
-    // Usa RPC para actualizar la tabla auth.users (a través de una función definida en la base de datos)
-    // const { error: rpcError } = await supabaseClient.rpc("admin_update_user", {
-    //   auth_user_id,
-    //   new_email: email,
-    // });
-
-    // if (rpcError) {
-    //   console.error("Error al actualizar usuario en auth:", rpcError);
-    //   return {
-    //     status: 400,
-    //     message: "No se pudo actualizar el usuario en auth",
-    //     error: rpcError.message,
-    //   };
-    // }
-
     successAlert(`Usuario ${nombreyapellidousuario} actualizado con éxito`);
 
     return {

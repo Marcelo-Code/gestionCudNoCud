@@ -3,6 +3,7 @@ import { Container, TextField, Button, Box, Typography } from "@mui/material";
 import "./login.css";
 import { Link } from "react-router-dom";
 import { Icons } from "../../assets/Icons";
+import { generalBackgroundColor, generalColor } from "../../utils/helpers";
 
 export const Login = ({
   handleLogin,
@@ -14,7 +15,7 @@ export const Login = ({
   buttonIsLoading,
 }) => {
   return (
-    <Container component="main" maxWidth="xs" className="loginContainer">
+    <Container component="main" className="loginContainer">
       <Box
         sx={{
           display: "flex",
@@ -22,9 +23,18 @@ export const Login = ({
           alignItems: "center",
         }}
       >
-        <Box component="form" noValidate sx={{ mt: 1 }} className="loginForm">
-          <span className="loginTitle">Gestión Cud No Cud</span>
-          <span className="loginTitle">Login</span>
+        <Box
+          component="form"
+          noValidate
+          sx={{
+            mt: 1,
+            backgroundColor: generalBackgroundColor,
+            color: generalColor,
+          }}
+          className="loginForm"
+        >
+          <Box className="loginTitle">Gestión Cudnocud</Box>
+          <Box className="loginSubTitle">Login</Box>
           <TextField
             margin="normal"
             required
@@ -52,7 +62,7 @@ export const Login = ({
             onChange={(e) => setPassword(e.target.value)}
           />
           {error && (
-            <Typography color="white" align="center">
+            <Typography color="black" align="center">
               {error}
             </Typography>
           )}
@@ -64,6 +74,7 @@ export const Login = ({
             startIcon={<Icons.LoginIcon />}
             onClick={handleLogin}
             loading={buttonIsLoading}
+            size="small"
           >
             LogIn
           </Button>
@@ -73,7 +84,7 @@ export const Login = ({
             <Typography>
               <Link
                 to={"/recoverPassword"}
-                style={{ color: "white", justifySelf: "center" }}
+                style={{ color: generalColor, justifySelf: "center" }}
               >
                 Olvidé mi contraseña
               </Link>
