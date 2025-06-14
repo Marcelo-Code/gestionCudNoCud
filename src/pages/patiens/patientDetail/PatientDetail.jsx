@@ -69,7 +69,16 @@ export const PatientDetail = (patientDetailProps) => {
   return (
     <Box className="generalContainer">
       <Box className="generalTitle">Detalle de paciente</Box>
-      <Card className="patientDetailContainer">
+      <Card
+        sx={{
+          minWidth: "320px",
+          maxWidth: "850px",
+          width: "95%",
+          color: "black",
+          margin: "20px",
+          fontFamily: "roboto",
+        }}
+      >
         <CardContent>
           <Typography gutterBottom variant="h6" component="div">
             {formData.obrasocialpaciente}

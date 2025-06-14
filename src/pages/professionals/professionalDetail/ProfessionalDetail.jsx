@@ -55,7 +55,16 @@ export const ProfessionalDetail = (professionalDetailProps) => {
     <Box className="generalContainer">
       <Box className="generalTitle">Detalle de profesional</Box>
 
-      <Card className="patientDetailContainer">
+      <Card
+        sx={{
+          minWidth: "320px",
+          maxWidth: "850px",
+          width: "95%",
+          color: "black",
+          margin: "20px",
+          fontFamily: "roboto",
+        }}
+      >
         <CardContent>
           <Typography gutterBottom variant="h7" component="div" sx={emailStyle}>
             <Box>
