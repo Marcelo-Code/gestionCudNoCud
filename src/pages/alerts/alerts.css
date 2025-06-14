@@ -2,3 +2,8 @@
   font-family: "broughton";
   src: url("/fonts/broughton.ttf") format("truetype");
 }
+
+@font-face {
+  font-family: "roboto";
+  src: url("/fonts/roboto.ttf");
+}

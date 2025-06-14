@@ -29,8 +29,6 @@ export const Alerts = (alertsProps) => {
         overflowX: "hidden",
         backgroundColor: "aqua",
         color: "black",
-        // px: 2,
-        // py: 2,
       }}
       role="presentation"
       onClick={(e) => e.stopPropagation()}
@@ -41,6 +39,7 @@ export const Alerts = (alertsProps) => {
           width: "100%",
           display: "flex",
           justifyContent: "flex-start",
+          fontFamily: "roboto",
         }}
       >
         <Tooltip title="Cerrar" placement="top-end" arrow>
@@ -56,7 +55,6 @@ export const Alerts = (alertsProps) => {
           mb: 3,
           borderBottom: "1px solid white",
           pb: 2,
-          fontFamily: "broughton",
         }}
       >
         Documentos a expirar
@@ -102,12 +100,7 @@ export const Alerts = (alertsProps) => {
 const Section = ({ title, records, label, daysKey, nameKey }) => {
   return (
     <Box>
-      <Typography
-        variant="h6"
-        align="center"
-        gutterBottom
-        sx={{ fontFamily: "broughton" }}
-      >
+      <Typography variant="h6" align="center" gutterBottom>
         {title}
       </Typography>
       {records.length === 0 ? (
