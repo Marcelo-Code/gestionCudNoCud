@@ -51,6 +51,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import QueryBuilderIcon from "@mui/icons-material/QueryBuilder";
+import DoDisturbIcon from "@mui/icons-material/DoDisturb";
 
 export const Icons = {
   PersonAddIcon,
@@ -106,4 +107,5 @@ export const Icons = {
   ContentCopyIcon,
   AlternateEmailIcon,
   QueryBuilderIcon,
+  DoDisturbIcon,
 };

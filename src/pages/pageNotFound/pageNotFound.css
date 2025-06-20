@@ -1,6 +1,6 @@
 @font-face {
-  font-family: "broughton";
-  src: url("/fonts/broughton.ttf") format("truetype");
+  font-family: "roboto";
+  src: url("/fonts/roboto.ttf") format("truetype");
 }
 
 .pageNotFoundContainer {
@@ -13,11 +13,10 @@
 }
 
 .pageNotFoundTitle {
-  font-family: "broughton";
+  font-family: "roboto";
   width: 100%;
-  font-size: 2.5em;
+  font-size: 20px;
   text-align: center;
-  text-shadow: 0 0 20px black;
   padding: 20px;
   letter-spacing: 3px;
 }

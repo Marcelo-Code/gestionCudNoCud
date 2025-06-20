@@ -20,8 +20,7 @@ export const ErrorPage = (errorPageContainerProps) => {
           sx={{
             background: "white",
             width: "90%",
-            maxWidth: "800px",
-            minWidth: "300px",
+            minWidth: "320px",
           }}
         >
           Home
