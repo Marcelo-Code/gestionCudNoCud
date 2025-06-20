@@ -180,16 +180,17 @@ export const NoCudBillingRecordsList = (cudBillingRecordsListProps) => {
         return (
           <Box
             sx={{
+              width: "100%",
+              textAlign: "right",
               textDecoration: params.row.documentocomprobantepagoretencion
                 ? "line-through"
-                : "none:",
+                : "none",
             }}
           >
             {currencyFormat(params.value)}
           </Box>
         );
       },
-      align: "right",
     },
     {
       field: "montofinalprofesional",
