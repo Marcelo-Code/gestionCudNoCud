@@ -31,6 +31,7 @@ export const CudBillingRecordsListContainer = (
       return acc + Number.parseFloat(record.montofinalprofesional);
     }, 0);
     const totalRetencion = filteredCudBillingRecords.reduce((acc, record) => {
+      //Si no tiene comprobante de pago de retencion se suma la retencion al valor total
       if (!record.documentocomprobantepagoretencion) {
         return acc + Number.parseFloat(record.retencion);
       }

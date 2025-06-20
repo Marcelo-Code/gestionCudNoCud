@@ -262,8 +262,21 @@ export const CudBillingRecordsList = (cudBillingRecordsListProps) => {
       headerName: "35% Retención",
       headerAlign: "center",
       width: 130,
-      renderCell: (params) => currencyFormat(params.value),
-      align: "right",
+      renderCell: (params) => {
+        return (
+          <Box
+            sx={{
+              width: "100%",
+              textAlign: "right",
+              textDecoration: params.row.documentocomprobantepagoretencion
+                ? "line-through"
+                : "none",
+            }}
+          >
+            {currencyFormat(params.value)}
+          </Box>
+        );
+      },
     },
     {
       field: "montofinalprofesional",
