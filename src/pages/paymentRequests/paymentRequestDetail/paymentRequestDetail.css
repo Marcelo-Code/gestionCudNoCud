@@ -1,0 +1,41 @@
+.paymentRequestDetailContainer {
+  width: 80%;
+  min-width: 300px;
+  min-height: 250px;
+  height: auto;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.paymentRequestDetailHeader {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  border-bottom: 1px solid black;
+  padding: 10px;
+}
+
+.paymentRequestDetailDescription {
+  margin-top: 10px;
+  height: 100px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.paymentRequestDetailContainer {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+
+.paymentRequestDetailContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  box-shadow: 0 0 5px black;
+  padding: 15px;
+}

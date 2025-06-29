@@ -40,9 +40,9 @@ export const PaymentRequestsListContainer = () => {
   //Función para eliminar una consulta
   const handleDeletePaymentRequest = (paymentRequestRecordId) => {
     deletePaymentRequestRecord(paymentRequestRecordId, setUpdateList)
-      .then((response) => {
-        console.log(response);
-      })
+      // .then((response) => {
+      //   console.log(response);
+      // })
       .catch((error) => console.log(error));
   };
 
@@ -69,9 +69,6 @@ export const PaymentRequestsListContainer = () => {
       .then(([paymentRequestResponse, cudBillingRecordResponse]) => {
         const paymentRequestsData = paymentRequestResponse.data;
         const cudBillingRecordData = cudBillingRecordResponse.data[0];
-
-        console.log(paymentRequestsData);
-        console.log(cudBillingRecordData);
 
         setPaymentRequests(paymentRequestsData);
         setFilteredPaymentRequests(paymentRequestsData);

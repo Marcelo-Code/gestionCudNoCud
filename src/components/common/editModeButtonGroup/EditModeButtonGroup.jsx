@@ -6,7 +6,7 @@ import { errorAlert } from "../alerts/alerts";
 export const EditModeButtonGroup = (editModeButtonGroupProps) => {
   const { deleteFunction, editLink, isAllowed } = editModeButtonGroupProps;
   const navigate = useNavigate();
-  const iconStyle = { color: "blue", fontSize: "1.2em", margin: "5px" };
+  const iconStyle = { color: "blue", fontSize: "1.2em", margin: "0 5px 0 5px" };
   return (
     <Box>
       <Tooltip title="Editar" placement="top-end" arrow>

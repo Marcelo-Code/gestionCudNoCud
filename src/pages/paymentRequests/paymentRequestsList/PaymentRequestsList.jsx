@@ -1,4 +1,11 @@
-import { Box, Card, CardActions, CardContent, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Typography,
+} from "@mui/material";
 import { Icons } from "../../../assets/Icons";
 
 import "./paymentRequestsList.css";
@@ -10,6 +17,7 @@ import { GeneralBarContainer } from "../../../components/layouts/generalBar/Gene
 import { EditModeButtonGroupContainer } from "../../../components/common/editModeButtonGroup/EditModeButtonGroupContainer";
 import { PaginationContainer } from "../../../components/common/pagination/PaginationContainer";
 import { allowCondition } from "../../../routes/allowedConditions";
+import { Link } from "react-router-dom";
 export const PaymentRequestsList = ({
   paymentRequests,
   handleDeletePaymentRequest,
@@ -125,16 +133,20 @@ export const PaymentRequestsList = ({
                     </Box>
                   </CardContent>
                   <CardActions className="medicalRecordListItemActions">
-                    {editMode && (
-                      <>
-                        <EditModeButtonGroupContainer
-                          deleteFunction={() =>
-                            handleDeletePaymentRequest(paymentRequest.id)
-                          }
-                          editLink={`${editRoute}/${paymentRequest.id}`}
-                          isAllowed={editAllowed}
-                        />
-                      </>
+                    {editMode ? (
+                      <EditModeButtonGroupContainer
+                        deleteFunction={() =>
+                          handleDeletePaymentRequest(paymentRequest.id)
+                        }
+                        editLink={`${editRoute}/${paymentRequest.id}`}
+                        isAllowed={editAllowed}
+                      />
+                    ) : (
+                      <Link to={`/paymentRequests/detail/${paymentRequest.id}`}>
+                        <Button variant="outlined" size="small">
+                          Ver detalles
+                        </Button>
+                      </Link>
                     )}
                   </CardActions>
                 </Card>

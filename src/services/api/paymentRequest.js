@@ -88,7 +88,8 @@ export const getPaymentRequest = async (paymentRequestId) => {
         "*, facturacioncud: idfacturacioncud(nrofactura, idprofesional, pacientes: idpaciente(obrasocialpaciente, nombreyapellidopaciente), profesionales: idprofesional(matriculaprofesional, nombreyapellidoprofesional))"
       )
       .eq("id", paymentRequestId)
-      .order("fechareclamo", { ascending: false });
+      .order("fechareclamo", { ascending: false })
+      .single();
 
     if (error) throw error;
     return {

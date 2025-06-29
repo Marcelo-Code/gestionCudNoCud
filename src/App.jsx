@@ -36,6 +36,7 @@ import { UpdatePasswordLoggedInUserContainer } from "./pages/users/updatePasswor
 import { ProtectedUserRoute } from "./routes/ProtectedUserRoute";
 import { UnauthorizedUserPageContainer } from "./pages/unauthorizedUserPage/UnauthorizedUserPageContainer";
 import { SettingsContainer } from "./pages/settings/SettingsContainer";
+import { PaymentRequestDetailContainer } from "./pages/paymentRequests/paymentRequestDetail/PaymentRequestDetailContainer";
 
 function App() {
   return (
@@ -530,6 +531,12 @@ const AppContent = () => {
                 <Route
                   path="/paymentRequests/list"
                   element={<PaymentRequestsListContainer />}
+                />
+
+                {/* Detalle reclamos */}
+                <Route
+                  path="/paymentRequests/detail/:paymentRequestId"
+                  element={<PaymentRequestDetailContainer />}
                 />
 
                 {/* Lista de reclamos con facturación CUD (con nro factura) */}
