@@ -16,7 +16,7 @@
 
 .paymentRequestDetailDescription {
   margin-top: 10px;
-  height: 100px;
+  height: auto;
   text-overflow: ellipsis;
   overflow: hidden;
 }
