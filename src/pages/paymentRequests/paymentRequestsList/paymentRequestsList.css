@@ -18,9 +18,12 @@
 
 .medicalRecordListItemDescription {
   margin-top: 10px;
-  height: 100px;
-  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
   overflow: hidden;
+  text-overflow: ellipsis;
+  height: auto;
 }
 
 .medicalRecordListItemActions {

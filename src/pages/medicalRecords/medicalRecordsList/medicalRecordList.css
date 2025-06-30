@@ -1,10 +1,10 @@
 .medicalRecordListItem {
   width: 80%;
   min-width: 300px;
-  min-height: 250px;
-  max-height: 500px;
-  height: auto;
   font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .medicalRecordListItemHeader {
@@ -17,9 +17,12 @@
 
 .medicalRecordListItemDescription {
   margin-top: 10px;
-  height: 100px;
-  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
   overflow: hidden;
+  text-overflow: ellipsis;
+  height: auto;
 }
 
 .medicalRecordListItemActions {

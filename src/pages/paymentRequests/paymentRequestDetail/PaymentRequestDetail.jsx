@@ -16,7 +16,7 @@ export const PaymentRequestDetail = ({ formData, textSize, setTextSize }) => {
       {/* Barra de botones para cambiar el tamaño del texto */}
       <SizeTextButtonGroupContainer {...sizeTextButtonGroupContainerProps} />
 
-      <Card sx={{ width: "80%" }} className="paymentRequestDetailContainer">
+      <Card sx={{ width: "90%" }} className="paymentRequestDetailContainer">
         <CardContent>
           <Box className="paymentRequestDetailHeader">
             <Box>
